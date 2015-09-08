@@ -74,7 +74,7 @@
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<version>2.2</version>
 				<configuration>
-					<url>http://ec2-52-28-238-73.eu-central-1.compute.amazonaws.com:8080/manager/text</url>
+					<url>http://52.28.238.73/manager/text</url>
 					<path>/www</path>
 					<username>maven</username>
 					<password>${env.TOMCAT_PASS}</password>

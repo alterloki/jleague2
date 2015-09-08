@@ -18,7 +18,7 @@ public class DbNewsRepository implements NewsRepository {
         newsItems = new ArrayList<>();
         NewsItem item1 = new NewsItem();
         item1.setId(1);
-        item1.setTitle("Новость 1");
+        item1.setTitle("Новость 1984");
         item1.setText("Сегодня случилось знаковое событие, возвращение блудного попугая. Хонду возглавил Fregll, о же Сержиньё, он же Серёга. В его способностях мы не сомниваемся, однако тяжёлый минус ФМ будет висеть как домоклов меч до самого 15-го тура. Люди добрые помогите чем могёте!!!");
         newsItems.add(item1);
         NewsItem item2 = new NewsItem();
