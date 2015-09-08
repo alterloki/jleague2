@@ -1,0 +1,4 @@
+language: java
+
+deploy:
+          mvn tomcat7:redeploy-o
