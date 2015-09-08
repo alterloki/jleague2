@@ -75,8 +75,9 @@
 				<version>2.2</version>
 				<configuration>
 					<url>http://ec2-52-28-238-73.eu-central-1.compute.amazonaws.com:8080/manager/text</url>
-					<server>TomcatServer</server>
 					<path>/www</path>
+					<username>maven</username>
+					<password>${env.TOMCAT_PASS}</password>
 				</configuration>
 			</plugin>
 		</plugins>
