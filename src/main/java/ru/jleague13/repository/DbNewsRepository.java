@@ -23,7 +23,7 @@ public class DbNewsRepository implements NewsRepository {
         newsItems.add(item1);
         NewsItem item2 = new NewsItem();
         item2.setId(2);
-        item2.setTitle("Новость 2");
+        item2.setTitle("Новость 2 Тралала");
         item2.setText("Вот и прошёл второй трансфер межсезонки. На данном этапе наши команды были чуточку активнее. О проданных игроках особо говорить не будем, все подчистили свои ряды, а вот на покупках хотелось бы остановиться по подробнее. И так пойдём по порядку.");
         newsItems.add(item2);
         NewsItem item3 = new NewsItem();
