@@ -9,6 +9,15 @@ public class NewsItem {
     private String title;
     private String text;
 
+    public NewsItem() {
+    }
+
+    public NewsItem(int id, String title, String text) {
+        this.id = id;
+        this.title = title;
+        this.text = text;
+    }
+
     public int getId() {
         return id;
     }

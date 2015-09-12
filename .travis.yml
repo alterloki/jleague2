@@ -1,4 +1,6 @@
 language: java
 jdk:
   - oraclejdk8
-script: mvn tomcat7:redeploy
+before_script:
+  - mysql -e 'create database jleague13;'
+script: mvn liquibase:update tomcat7:redeploy

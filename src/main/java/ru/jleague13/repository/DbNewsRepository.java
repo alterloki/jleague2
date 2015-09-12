@@ -1,8 +1,16 @@
 package ru.jleague13.repository;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcDaoSupport;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Repository;
 import ru.jleague13.entity.NewsItem;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,39 +20,34 @@ import java.util.List;
 @Repository
 public class DbNewsRepository implements NewsRepository {
 
-    private final ArrayList<NewsItem> newsItems;
-
-    public DbNewsRepository() {
-        newsItems = new ArrayList<>();
-        NewsItem item1 = new NewsItem();
-        item1.setId(1);
-        item1.setTitle("Новость 1984");
-        item1.setText("Сегодня случилось знаковое событие, возвращение блудного попугая. Хонду возглавил Fregll, о же Сержиньё, он же Серёга. В его способностях мы не сомниваемся, однако тяжёлый минус ФМ будет висеть как домоклов меч до самого 15-го тура. Люди добрые помогите чем могёте!!!");
-        newsItems.add(item1);
-        NewsItem item2 = new NewsItem();
-        item2.setId(2);
-        item2.setTitle("Новость 2 Тралала");
-        item2.setText("Вот и прошёл второй трансфер межсезонки. На данном этапе наши команды были чуточку активнее. О проданных игроках особо говорить не будем, все подчистили свои ряды, а вот на покупках хотелось бы остановиться по подробнее. И так пойдём по порядку.");
-        newsItems.add(item2);
-        NewsItem item3 = new NewsItem();
-        item3.setId(3);
-        item3.setTitle("Новость 3");
-        item3.setText("Пока у нас происходят какие-то непонятки с расписанием и оно не появилось на сайте в соответствующем отделе. Пойдём в ручную собирать первый тур чемпионата Японии 30-го сезона и немного прикинем шансы команд.");
-        newsItems.add(item3);
-    }
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @Override
     public List<NewsItem> lastNews(int count) {
-        return newsItems;
+        return jdbcTemplate.query(
+                "select id, title, text from news_item order by id desc limit ?",
+                (rs, i) -> itemFromRs(rs),
+                count);
     }
 
     @Override
     public NewsItem getNewsItem(int id) {
-        return newsItems.get(id);
+        return jdbcTemplate.query(
+                "select id, title, text from news_item where id = ?",
+                this::itemFromRs,
+                id);
     }
 
     @Override
-    public List<NewsItem> lastNewsBefore(int id, int count) {
-        return newsItems;
+    public List<NewsItem> lastNewsBefore(int num, int count) {
+        return jdbcTemplate.query(
+                "select id, title, text from (select * from news_item order by id desc) a where @rownum > ? and @rownum <= ? + ?",
+                (rs, i) -> itemFromRs(rs),
+                num, num, count);
+    }
+
+    private NewsItem itemFromRs(ResultSet rs) throws SQLException {
+        return new NewsItem(rs.getInt("id"), rs.getString("text"), rs.getString("text"));
     }
 }

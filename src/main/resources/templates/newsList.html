@@ -1,87 +1,14 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Японская Лига FA13</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1"/>
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
-    <!-- Optional Bootstrap theme -->
-    <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
-    <style type="text/css">
-        #logo {
-            margin: 20px;
-        }
-        body {
-            background: url(/images/girl.jpg) no-repeat top right #d6d8d7;
-            background-attachment: fixed;
-        }
-    </style>
-</head>
+<head th:replace="main::head"></head>
 <body>
-<nav id="teams-nav" class="navbar navbar-default navbar-inverse navbar-static-top" role="navigation">
-    <div class="navbar-header">
-        <button type="button" data-target="#navbarCollapse" data-toggle="collapse" class="navbar-toggle">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
-        <a href="#" class="navbar-brand">Японская лига FA13</a>
-    </div>
-    <div id="navbarCollapse" class="collapse navbar-collapse">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3"></div>
-                <div class="col-md-6">
-                    <ul class="nav navbar-nav">
-                        <li><a href="#">Akita</a></li>
-                        <li><a href="#">Akita</a></li>
-                        <li><a href="#">Akita</a></li>
-                        <li><a href="#">Akita</a></li>
-                        <li><a href="#">Akita</a></li>
-                        <li><a href="#">Akita</a></li>
-                        <li><a href="#">Akita</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-3"></div>
-            </div>
-        </div>
-    </div>
-</nav>
+<nav th:replace="main::teamsnav"></nav>
 <div class="container">
     <div class="row">
         <div class="col-md-1"></div>
         <div class="col-md-10 col-wrapper">
             <img id="logo" src="/images/jlogo.png"/>
-
-            <div class="row">
-                <div class="col-md-12">
-                    <nav role="navigation" class="navbar navbar-default navbar-inverse">
-                        <!-- Brand and toggle get grouped for better mobile display -->
-                        <div class="navbar-header">
-                            <button type="button" data-target="#navbarCollapse" data-toggle="collapse"
-                                    class="navbar-toggle">
-                                <span class="sr-only">Toggle navigation</span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                                <span class="icon-bar"></span>
-                            </button>
-                            <a href="#" class="navbar-brand">Новости</a>
-                        </div>
-                        <!-- Collection of nav links and other content for toggling -->
-                        <div id="navbarCollapse" class="collapse navbar-collapse">
-                            <ul class="nav navbar-nav">
-                                <li class="active"><a href="#">Почта</a></li>
-                                <li><a href="#">Галлерея</a></li>
-                                <li><a href="#">Messages</a></li>
-                            </ul>
-                            <ul class="nav navbar-nav navbar-right">
-                                <li><a href="#">Login</a></li>
-                            </ul>
-                        </div>
-                    </nav>
-                </div>
-            </div>
+            <div th:replace="main::mainmenu"></div>
             <div class="row">
                 <div class="col-md-8">
                     <div th:each="newsItem : ${news}" class="panel panel-default">
@@ -100,7 +27,7 @@
         <div class="col-md-1"></div>
     </div>
 </div>
-<script src="/js/jquery-1.10.2.js"></script>
+<script src="/js/jquery-2.1.4.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 </body>
 </html>

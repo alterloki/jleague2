@@ -22,10 +22,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
+        <module name="jleague-liquibase" />
         <module name="jleague2" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="jleague-liquibase" target="1.5" />
       <module name="jleague2" target="1.8" />
     </bytecodeTargetLevel>
   </component>

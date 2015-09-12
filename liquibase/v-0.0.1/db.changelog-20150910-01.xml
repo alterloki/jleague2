@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="20150910-01" author="alterloki">
+        <comment>
+            Создание таблицы команд
+        </comment>
+        <sql>
+            CREATE TABLE team
+            (
+            id bigint NOT NULL,
+            short_name character varying(255),
+            name character varying(255),
+            picture character varying(255),
+            CONSTRAINT team_pkey PRIMARY KEY (id)
+            )
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

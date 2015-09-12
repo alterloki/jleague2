@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="20150909-01" author="alterloki">
+        <comment>
+            Создание таблицы пользователей
+        </comment>
+        <sql>
+            CREATE TABLE users
+            (
+            id bigint NOT NULL,
+            login character varying(255),
+            name character varying(255),
+            CONSTRAINT users_pkey PRIMARY KEY (id)
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="20150909-02" author="alterloki">
+        <comment>
+            Создание таблицы новостей
+        </comment>
+        <sql>
+            CREATE TABLE news_item
+            (
+            id bigint NOT NULL,
+            title character varying(255),
+            text character varying(255),
+            CONSTRAINT news_item_pkey PRIMARY KEY (id)
+            )
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
