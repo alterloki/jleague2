@@ -2,6 +2,7 @@ package ru.jleague13.repository;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class TeamDaoTests {
 
     @Before
     public void setUp() {
+        new JdbcTemplate(dataSource).update("delete from team");
         new JdbcTemplate(dataSource).update(
                 "insert into team (short_name, name, picture) values (?,?,?)",
                 "A", "Android", "http://jleague13.ru/1.jpg");
