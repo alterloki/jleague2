@@ -11,6 +11,8 @@ import ru.jleague13.entity.Country;
 import ru.jleague13.images.ImagesManager;
 import ru.jleague13.repository.CountryDao;
 
+import java.io.IOException;
+
 /**
  * @author ashevenkov 15.09.15 0:41.
  */
@@ -20,6 +22,8 @@ public class CountryController {
 
     @Autowired
     private CountryDao countryDao;
+    @Autowired
+    private InformationController informationController;
 
     @RequestMapping(method = RequestMethod.GET)
     public String adminMain(Model model) {
@@ -39,6 +43,16 @@ public class CountryController {
     Country updateCountry(@ModelAttribute Country country) {
         countryDao.saveCountry(country);
         return country;
+    }
+
+    @RequestMapping(value = "/download", method = RequestMethod.POST)
+    public String downloadAndUpdate(@ModelAttribute Country country) {
+        try {
+            informationController.updateCountries();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "admin/country";
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "action=delete")

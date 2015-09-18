@@ -19,4 +19,8 @@ public class FaUrlResolver {
     public String getFaTeamEmblem(Team team) {
         return FA13_URL + "/image/logo/" + team.getShortName() + ".gif";
     }
+
+    public String getFa13Countries() {
+        return FA13_URL + "/team.html";
+    }
 }

@@ -34,6 +34,7 @@
                 </tbody>
             </table>
             <button id="add-country" type="button" class="btn btn-success">Добавить</button>
+            <button id="update-countries" type="button" class="btn btn-success">Загрузить</button>
         </div>
     </div>
 </div>
@@ -53,6 +54,15 @@
             $.ajax({
                 url: '/admin/country',
                 type: 'PUT',
+                success: function(result) {
+                    window.location.href='/admin/country';
+                }
+            });
+        });
+        $('#update-countries').click(function () {
+            $.ajax({
+                url: '/admin/country/download',
+                type: 'POST',
                 success: function(result) {
                     window.location.href='/admin/country';
                 }
