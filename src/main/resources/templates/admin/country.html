@@ -1,0 +1,64 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="main::head"></head>
+<body>
+<nav th:replace="main::adminnav"></nav>
+<div class="container">
+    <div class="row">
+        <div class="page-header">
+            <h2>Страны</h2>
+        </div>
+        <div class="container jumbotron">
+            <table class="table table-bordered table-responsive" id="countries-table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>ФА 13 ID</th>
+                    <th>ФА 13 Index</th>
+                    <th>Название</th>
+                    <th>Флаг</th>
+                    <th>Команды</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="country : ${countries}">
+                    <td th:text="${country.id}"></td>
+                    <td th:text="${country.faId}"></td>
+                    <td th:text="${country.faIndex}"></td>
+                    <td th:text="${country.name}"></td>
+                    <td><img src="" th:attr="src=${country.picture}"/></td>
+                    <td>
+                        <a href="admin/teams.html" th:href="@{/admin/country/{country_id}/team(country_id=${country.id})}">Команды</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <button id="add-country" type="button" class="btn btn-success">Добавить</button>
+        </div>
+    </div>
+</div>
+<script src="/js/jquery-2.1.4.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tabledit.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#countries-table').Tabledit({
+            url: '/admin/country',
+            columns: {
+                identifier: [0, 'id'],
+                editable: [[1, 'faId'], [2, 'faIndex'], [3, 'name']]
+            }
+        });
+        $('#add-country').click(function () {
+            $.ajax({
+                url: '/admin/country',
+                type: 'PUT',
+                success: function(result) {
+                    window.location.href='/admin/country';
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

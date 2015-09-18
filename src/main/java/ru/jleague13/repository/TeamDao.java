@@ -11,8 +11,11 @@ public interface TeamDao {
 
     List<Team> getTeams();
 
-    void deleteTeam(int id);
+    List<Team> getCountryTeams(int countryId);
+
+    void deleteTeam(int teamId);
 
     int saveTeam(Team team);
 
+    void deleteCountryTeams(int id);
 }

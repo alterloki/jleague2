@@ -1,0 +1,37 @@
+package ru.jleague13.images;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import ru.jleague13.entity.Country;
+
+import java.io.File;
+
+/**
+ * @author ashevenkov 18.09.15 15:46.
+ */
+@Component
+public class ImagesManager {
+
+    public static final String IMAGES_URL = "/dimages";
+
+    @Value("${images.dir}")
+    private String imagesDir;
+
+    public String countryFlagFile(Country country) {
+        return imagesDir + flagImageName(country);
+    }
+
+    public String countryFlagUrl(Country country) {
+        return IMAGES_URL + flagImageName(country);
+    }
+
+    private String flagImageName(Country country) {
+        return "/country/" + country.getId() + "_flag.jpg";
+    }
+
+    public void deleteFlagFile(Country country) {
+        //todo return result
+        new File(countryFlagFile(country)).delete();
+    }
+
+}

@@ -25,37 +25,49 @@ public class DbTeamDao implements TeamDao {
     @Override
     public List<Team> getTeams() {
         return jdbcTemplate.query(
-                "select id, short_name, name, picture from team",
+                "select id, short_name, name, country_id from team",
                 (resultSet, i) -> teamFromRs(resultSet));
     }
 
     @Override
-    public void deleteTeam(int id) {
-        jdbcTemplate.update("delete from team where id = ?", id);
+    public List<Team> getCountryTeams(int countryId) {
+        return jdbcTemplate.query(
+                "select id, short_name, name, country_id from team where country_id = ?",
+                (resultSet, i) -> teamFromRs(resultSet), countryId);
+    }
+
+    @Override
+    public void deleteTeam(int teamId) {
+        jdbcTemplate.update("delete from team where id = ?", teamId);
     }
 
     @Override
     public int saveTeam(Team team) {
         if(team.getId() > 0) {
-            jdbcTemplate.update("update team set short_name = ?, name = ?, picture = ? where id = ?",
-                    team.getShortName(), team.getName(), team.getPicture(), team.getId());
+            jdbcTemplate.update("update team set short_name = ?, name = ?, country_id = ? where id = ?",
+                    team.getShortName(), team.getName(), team.getCountryId(), team.getId());
             return team.getId();
         } else {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps =
-                        connection.prepareStatement("insert into team (short_name, name, picture) values (?,?,?)", new String[]{"id"});
+                        connection.prepareStatement("insert into team (short_name, name, country_id) values (?,?,?)", new String[]{"id"});
                 ps.setString(1, team.getShortName());
                 ps.setString(2, team.getName());
-                ps.setString(3, team.getPicture());
+                ps.setInt(3, team.getCountryId());
                 return ps;
             }, keyHolder);
             return keyHolder.getKey().intValue();
         }
     }
 
+    @Override
+    public void deleteCountryTeams(int id) {
+        jdbcTemplate.update("delete from team where country_id = ?", id);
+    }
+
     private Team teamFromRs(ResultSet rs) throws SQLException {
         return new Team(rs.getInt("id"), rs.getString("short_name"),
-                rs.getString("name"), rs.getString("picture"));
+                rs.getString("name"), rs.getInt("country_id"));
     }
 }

@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="main::head"></head>
+<body>
+<nav th:replace="main::adminnav"></nav>
+<div class="container">
+    <div class="row">
+        <div class="page-header">
+            <h2>Команды страны <span th:text="${country.name}">Япония</span></h2>
+        </div>
+        <div class="container jumbotron">
+            <table class="table table-bordered table-responsive" id="teams-table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Индекс</th>
+                    <th>Название</th>
+                    <th>Картинка</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="team : ${teams}">
+                    <td th:text="${team.id}"></td>
+                    <td th:text="${team.shortName}"></td>
+                    <td th:text="${team.name}"></td>
+                    <td>Картинка</td>
+                </tr>
+                </tbody>
+            </table>
+            <button id="add-team" type="button" class="btn btn-success">Добавить</button>
+        </div>
+    </div>
+</div>
+<script src="/js/jquery-2.1.4.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tabledit.js"></script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $('#teams-table').Tabledit({
+            url: '/admin/country/[[${country.id}]]/team',
+            columns: {
+                identifier: [0, 'id'],
+                editable: [[1, 'shortName'], [2, 'name']]
+            }
+        });
+        $('#add-team').click(function () {
+            $.ajax({
+                url: '/admin/country/[[${country.id}]]/team',
+                type: 'PUT',
+                success: function(result) {
+                    window.location.href='/admin/country/[[${country.id}]]/team';
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

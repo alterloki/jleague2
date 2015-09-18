@@ -17,36 +17,7 @@ import java.util.logging.Logger;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
-    private TeamDao teamDao;
-
     @RequestMapping(method = RequestMethod.GET)
-    public String adminMain(Model model) {
-        model.addAttribute("teams", teamDao.getTeams());
-        return "admin";
-    }
-
-    @RequestMapping(value = "/team", method = RequestMethod.POST)
-    public @ResponseBody Team  updateTeam(@ModelAttribute Team team) {
-        teamDao.saveTeam(team);
-        return team;
-    }
-
-    @RequestMapping(value = "/team", method = RequestMethod.POST, params="action=delete")
-    public @ResponseBody Team deleteTeam(@ModelAttribute Team team) {
-        teamDao.deleteTeam(team.getId());
-        return team;
-    }
-
-    @RequestMapping(value = "/team", method = RequestMethod.POST, params="action=restore")
-    public @ResponseBody Team restoreTeam(@ModelAttribute Team team) {
-        //teamDao.deleteTeam(team.getId());
-        return team;
-    }
-
-    @RequestMapping(value = "/team", method = RequestMethod.PUT)
-    public String deleteTeam() {
-        teamDao.saveTeam(new Team());
-        return "admin";
+    public void admin() {
     }
 }

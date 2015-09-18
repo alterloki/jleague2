@@ -34,14 +34,14 @@ public class TeamDaoTests {
     public void setUp() {
         new JdbcTemplate(dataSource).update("delete from team");
         new JdbcTemplate(dataSource).update(
-                "insert into team (short_name, name, picture) values (?,?,?)",
-                "A", "Android", "http://jleague13.ru/1.jpg");
+                "insert into team (short_name, name, country_id) values (?,?,?)",
+                "A", "Android", 1);
         new JdbcTemplate(dataSource).update(
-                "insert into team (short_name, name, picture) values (?,?,?)",
-                "B", "Bear", "http://jleague13.ru/2.jpg");
+                "insert into team (short_name, name, country_id) values (?,?,?)",
+                "B", "Bear", 1);
         new JdbcTemplate(dataSource).update(
-                "insert into team (short_name, name, picture) values (?,?,?)",
-                "C", "Cereal", "http://jleague13.ru/3.jpg");
+                "insert into team (short_name, name, country_id) values (?,?,?)",
+                "C", "Cereal", 1);
     }
 
     @After
@@ -57,7 +57,7 @@ public class TeamDaoTests {
         for (Team team : teams) {
             if(team.getShortName().equals("A")) {
                 assert team.getName().equals("Android");
-                assert team.getPicture().equals("http://jleague13.ru/1.jpg");
+                assert team.getCountryId() == 1;
                 aWas = true;
             }
         }
@@ -96,7 +96,7 @@ public class TeamDaoTests {
         assert team != null;
         team.setShortName("E");
         team.setName("Elastic");
-        team.setPicture("http://jleague13.ru/5.jpg");
+        team.setCountryId(3);
         teamDao.saveTeam(team);
         teams = teamDao.getTeams();
         assert teams.size() == 3;
@@ -108,12 +108,12 @@ public class TeamDaoTests {
         }
         assert team != null;
         assert team.getName().equals("Elastic");
-        assert team.getPicture().equals("http://jleague13.ru/5.jpg");
+        assert team.getCountryId() == 3;
     }
 
     @Test
     public void testSaveNew() {
-        Team team = new Team(0, "D", "Dumbldore", "http://jleague13.ru/4.jpg");
+        Team team = new Team(0, "D", "Dumbldore", 2);
         teamDao.saveTeam(team);
         List<Team> teams = teamDao.getTeams();
         assert teams.size() == 4;
@@ -122,7 +122,7 @@ public class TeamDaoTests {
             if(t.getShortName().equals("D")) {
                 wasD = true;
                 assert t.getName().equals("Dumbldore");
-                assert t.getPicture().equals("http://jleague13.ru/4.jpg");
+                assert t.getCountryId() == 2;
             }
         }
         assert wasD;

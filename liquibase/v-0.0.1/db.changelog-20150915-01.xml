@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="20150915-01" author="alterloki">
+        <comment>
+            Создание таблицы стран
+        </comment>
+        <sql>
+            CREATE TABLE country
+            (
+            id bigint NOT NULL,
+            fa_id character varying(255),
+            name character varying(255),
+            CONSTRAINT country_pkey PRIMARY KEY (id)
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="20150915-02" author="alterloki">
+        <comment>
+            Добавим автоинкремент для таблицы стран
+        </comment>
+        <addAutoIncrement
+                columnDataType="int"
+                columnName="id"
+                incrementBy="1"
+                startWith="1"
+                tableName="country"/>
+    </changeSet>
+
+    <changeSet id="20150915-03" author="alterloki">
+        <dropColumn columnName="picture"
+                    tableName="team"/>
+    </changeSet>
+
+    <changeSet id="20150915-04" author="alterloki">
+        <addColumn tableName="team">
+            <column name="country_id" type="int"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20150915-05" author="alterloki">
+        <addColumn tableName="country">
+            <column name="fa_index" type="varchar(255)"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

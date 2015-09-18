@@ -8,16 +8,20 @@ public class Team {
     private int id;
     private String shortName;
     private String name;
-    private String picture;
+    private int countryId;
 
     public Team() {
     }
 
-    public Team(int id, String shortName, String name, String picture) {
+    public Team(int id, String shortName, String name, int countryId) {
         this.id = id;
         this.shortName = shortName;
         this.name = name;
-        this.picture = picture;
+        this.countryId = countryId;
+    }
+
+    public Team(int countryId) {
+        this.countryId = countryId;
     }
 
     public String getShortName() {
@@ -44,11 +48,11 @@ public class Team {
         this.name = name;
     }
 
-    public String getPicture() {
-        return picture;
+    public int getCountryId() {
+        return countryId;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setCountryId(int countryId) {
+        this.countryId = countryId;
     }
 }
