@@ -36,7 +36,15 @@ public class SimpleUrlDownloadInfo implements DownloadInfo {
     }
 
     @Override
-    public List<Team> downloadTeams() {
-        return null;
+    public List<Team> downloadTeams(Country country) throws IOException {
+        ArrayList<Team> teams = new ArrayList<>();
+        Document doc = Jsoup.connect(faUrlResolver.getFa13Teams(country)).get();
+        Elements select = doc.select("div[id=team]").select("tr[class^=table]");
+        for(int i = 0; i < select.size(); i++) {
+            String shortName = select.get(i).select("a[href^=team]").attr("href").substring(15);
+            String name = select.get(i).select("a[href^=team]").select("b").text();
+            teams.add(new Team(0, shortName, name, country.getId()));
+        }
+        return teams;
     }
 }

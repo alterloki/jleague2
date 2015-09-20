@@ -12,7 +12,7 @@ import java.net.URISyntaxException;
  */
 public interface DownloadImages {
 
-    void downloadFlag(Country country) throws URISyntaxException, IOException;
+    void downloadFlag(Country country) throws IOException;
 
-    void downloadEmblem(Team team);
+    void downloadEmblem(Team team) throws IOException;
 }

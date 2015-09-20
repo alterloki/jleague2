@@ -72,7 +72,7 @@ public class DbCountryDao implements CountryDao {
                     !country.getFaIndex().equals(oldCountry.getFaIndex())) {
                 try {
                     downloadImages.downloadFlag(country);
-                } catch (URISyntaxException | IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -93,7 +93,7 @@ public class DbCountryDao implements CountryDao {
             if (country.getFaIndex() != null && country.getFaIndex().length() > 0) {
                 try {
                     downloadImages.downloadFlag(country);
-                } catch (URISyntaxException | IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }

@@ -8,6 +8,7 @@ import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.jleague13.Jleague2Application;
 import ru.jleague13.entity.Country;
+import ru.jleague13.entity.Team;
 
 import java.io.IOException;
 import java.util.List;
@@ -35,5 +36,12 @@ public class DownloadInfoTests {
             }
         }
         assert wasJapan;
+    }
+
+    @Test
+    public void testDownloadTeams() throws IOException {
+        Country country = new Country(0, "209", "Япония", "JPN");
+        List<Team> teams = downloadInfo.downloadTeams(country);
+        assert teams.size() == 32;
     }
 }

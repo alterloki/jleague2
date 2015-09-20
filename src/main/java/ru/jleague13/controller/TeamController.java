@@ -30,7 +30,7 @@ public class TeamController {
     @RequestMapping(value="/country/{country_id}/team", method = RequestMethod.PUT)
     public String createTeam(@PathVariable("country_id") int countryId, Model model) {
         teamDao.saveTeam(new Team(countryId));
-        return getCountryTeams(countryId, model);
+        return "ok";
     }
 
     @RequestMapping(value="/country/{country_id}/team", method = RequestMethod.POST)

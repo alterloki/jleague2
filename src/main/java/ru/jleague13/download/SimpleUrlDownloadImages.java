@@ -40,7 +40,11 @@ public class SimpleUrlDownloadImages implements DownloadImages {
     }
 
     @Override
-    public void downloadEmblem(Team team) {
-
+    public void downloadEmblem(Team team) throws IOException {
+        URL url = new URL(urlResolver.getFaTeamEmblem(team));
+        byte[] pictureBytes = ByteStreams.toByteArray(url.openStream());
+        File to = new File(imagesManager.teamEmblemFile(team));
+        Files.createParentDirs(to);
+        Files.write(pictureBytes, to);
     }
 }

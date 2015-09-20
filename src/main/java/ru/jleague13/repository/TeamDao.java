@@ -18,4 +18,6 @@ public interface TeamDao {
     int saveTeam(Team team);
 
     void deleteCountryTeams(int id);
+
+    Team getTeam(int id);
 }

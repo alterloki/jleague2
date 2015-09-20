@@ -13,5 +13,5 @@ public interface DownloadInfo {
 
     List<Country> downloadCountries() throws IOException;
 
-    List<Team> downloadTeams();
+    List<Team> downloadTeams(Country country) throws IOException;
 }

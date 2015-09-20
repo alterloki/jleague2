@@ -1,5 +1,7 @@
 package ru.jleague13.entity;
 
+import com.google.common.base.Objects;
+
 /**
  * @author ashevenkov 10.09.15 23:36.
  */
@@ -9,6 +11,7 @@ public class Team {
     private String shortName;
     private String name;
     private int countryId;
+    private String emblem;
 
     public Team() {
     }
@@ -54,5 +57,28 @@ public class Team {
 
     public void setCountryId(int countryId) {
         this.countryId = countryId;
+    }
+
+    public String getEmblem() {
+        return emblem;
+    }
+
+    public void setEmblem(String emblem) {
+        this.emblem = emblem;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Team team = (Team) o;
+        return Objects.equal(countryId, team.countryId) &&
+                Objects.equal(shortName, team.shortName) &&
+                Objects.equal(name, team.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(shortName, name, countryId);
     }
 }

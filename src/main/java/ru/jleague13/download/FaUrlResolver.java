@@ -23,4 +23,8 @@ public class FaUrlResolver {
     public String getFa13Countries() {
         return FA13_URL + "/team.html";
     }
+
+    public String getFa13Teams(Country country) {
+        return FA13_URL + "/team.html?country=" + country.getFaId();
+    }
 }

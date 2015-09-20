@@ -15,7 +15,7 @@
                     <th>#</th>
                     <th>Индекс</th>
                     <th>Название</th>
-                    <th>Картинка</th>
+                    <th>Эмблема</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -23,7 +23,7 @@
                     <td th:text="${team.id}"></td>
                     <td th:text="${team.shortName}"></td>
                     <td th:text="${team.name}"></td>
-                    <td>Картинка</td>
+                    <td><img src="" th:attr="src=${team.emblem}" width="50" height="50"/></td>
                 </tr>
                 </tbody>
             </table>
