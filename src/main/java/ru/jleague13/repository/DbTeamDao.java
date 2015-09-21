@@ -102,7 +102,7 @@ public class DbTeamDao implements TeamDao {
                         return teamFromRs(rs);
                     }
                     return null;
-                });
+                }, id);
     }
 
     private Team teamFromRs(ResultSet rs) throws SQLException {

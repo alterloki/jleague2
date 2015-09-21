@@ -6,10 +6,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+import ru.jleague13.Jleague2Application;
 import ru.jleague13.entity.Team;
 
 import javax.sql.DataSource;
@@ -21,7 +23,7 @@ import java.util.Set;
  * @author ashevenkov 11.09.15 22:36.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:test-context.xml")
+@SpringApplicationConfiguration(classes = Jleague2Application.class)
 @Transactional
 public class TeamDaoTests {
 
