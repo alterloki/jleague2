@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="20150924-01" author="alterloki">
+        <addColumn tableName="news_item">
+            <column name="user_id" type="int"/>
+            <column name="post_date" type="datetime"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20150924-02" author="alterloki">
+        <dropColumn tableName="news_item" columnName="text"/>
+        <addColumn tableName="news_item">
+            <column name="text" type="blob"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20150924-03" author="alterloki">
+        <comment>
+            Создание таблицы трансфера
+        </comment>
+        <sql>
+            CREATE TABLE transfer
+            (
+            transfer_date date NOT NULL,
+            CONSTRAINT transfer_pkey PRIMARY KEY (transfer_date)
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="20150924-04" author="alterloki">
+        <comment>
+            Создание таблицы игроков трансфера
+        </comment>
+        <sql>
+            CREATE TABLE transfer_player
+            (
+            transfer_date date NOT NULL,
+            id bigint not null,
+            player_id bigint not null,
+            name character varying(255),
+            player_type character varying(2),
+            country character varying(255),
+            seller character varying(255),
+            buyer character varying(255),
+            age int not null,
+            talent int not null,
+            experience int not null,
+            strength int not null,
+            health int not null,
+            price int not null,
+            salary int not null,
+            payed int not null,
+            abilities character varying(255),
+            shooting int not null,
+            handling int not null,
+            reflexes int not null,
+            passing int not null,
+            crossing int not null,
+            dribbling int not null,
+            tackling int not null,
+            heading int not null,
+            speed int not null,
+            stamina int not null,
+            birthtour int not null,
+            CONSTRAINT transfer_player_pkey PRIMARY KEY (id)
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="20150924-05" author="alterloki">
+        <comment>
+            Добавим автоинкремент для таблицы игроков трансфера
+        </comment>
+        <addAutoIncrement
+                columnDataType="int"
+                columnName="id"
+                incrementBy="1"
+                startWith="1"
+                tableName="transfer_player"/>
+    </changeSet>
+
+</databaseChangeLog>
