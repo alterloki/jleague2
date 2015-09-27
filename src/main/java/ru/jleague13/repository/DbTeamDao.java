@@ -36,7 +36,7 @@ public class DbTeamDao implements TeamDao {
         return jdbcTemplate.query(
                 "select t.id, t.short_name, t.name, t.country_id," +
                         "u.login manager_login, u.id manager_id " +
-                        "from team t, users u where t.manager_id = u.id",
+                        "from team t left outer join users u on t.manager_id = u.id",
                 (resultSet, i) -> teamFromRs(resultSet));
     }
 
@@ -45,7 +45,8 @@ public class DbTeamDao implements TeamDao {
         return jdbcTemplate.query(
                 "select t.id, t.short_name, t.name, t.country_id, " +
                         "u.login manager_login, u.id manager_id " +
-                        "from team t, users u where t.country_id = ? and t.manager_id = u.id",
+                        "from team t left outer join users u on t.manager_id = u.id " +
+                        "where t.country_id = ?",
                 (resultSet, i) -> teamFromRs(resultSet), countryId);
     }
 
@@ -65,7 +66,7 @@ public class DbTeamDao implements TeamDao {
                     e.printStackTrace();
                 }
             }
-            jdbcTemplate.update("update team set short_name = ?, name = ?, country_id = ? manager_id = ? where id = ?",
+            jdbcTemplate.update("update team set short_name = ?, name = ?, country_id = ?, manager_id = ? where id = ?",
                     team.getShortName(), team.getName(), team.getCountryId(), team.getManagerId(), team.getId());
             return team.getId();
         } else {
@@ -105,7 +106,7 @@ public class DbTeamDao implements TeamDao {
         return jdbcTemplate.query(
                 "select t.id, t.short_name, t.name, t.country_id," +
                         "u.login manager_login, u.id manager_id " +
-                        "from team t, users u where t.manager_id = u.id and t.id = ?",
+                        "from team t left outer join users u on t.manager_id = u.id where t.id = ?",
                 rs -> {
                     if(rs.next()) {
                         return teamFromRs(rs);
@@ -118,8 +119,8 @@ public class DbTeamDao implements TeamDao {
     public List<Team> getJapanLiveTeams() {
         return jdbcTemplate.query(
                 "select t.id, t.short_name, t.name, t.country_id," +
-                        "u.login manager_login, u.id manager_id from team t, users u where t.country_id = " +
-                        "(select id from country where fa_index = ?) and manager_id > 0 and t.manager_id = u.id",
+                        "u.login manager_login, u.id manager_id from team t left outer join users u on t.manager_id = u.id where t.country_id = " +
+                        "(select id from country where fa_index = ?) and manager_id > 0",
                 (resultSet, i) -> teamFromRs(resultSet), "JPN");
     }
 
