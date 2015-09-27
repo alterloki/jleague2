@@ -85,4 +85,28 @@
                 tableName="transfer_player"/>
     </changeSet>
 
+    <changeSet id="20150924-06" author="alterloki">
+        <comment>
+            Добавим автоинкремент для таблицы пользователей
+        </comment>
+        <addAutoIncrement
+                columnDataType="int"
+                columnName="id"
+                incrementBy="1"
+                startWith="1"
+                tableName="users"/>
+    </changeSet>
+
+    <changeSet id="20150924-07" author="alterloki">
+        <addColumn tableName="users">
+            <column name="fa_id" type="int"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20150924-08" author="alterloki">
+        <addColumn tableName="team">
+            <column name="manager_id" type="int"/>
+        </addColumn>
+    </changeSet>
+
 </databaseChangeLog>
