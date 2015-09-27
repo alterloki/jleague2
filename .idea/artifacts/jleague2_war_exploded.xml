@@ -56,6 +56,8 @@
           <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.9.13" />
           <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-core-asl:1.9.13" />
           <element id="library" level="project" name="Maven: org.jsoup:jsoup:1.8.3" />
+          <element id="library" level="project" name="Maven: nz.ac.waikato.cms.weka:weka-stable:3.6.13" />
+          <element id="library" level="project" name="Maven: net.sf.squirrel-sql.thirdparty-non-maven:java-cup:0.11a" />
         </element>
       </element>
       <element id="directory" name="META-INF">

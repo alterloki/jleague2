@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,14 +34,18 @@ public class DbTeamDao implements TeamDao {
     @Override
     public List<Team> getTeams() {
         return jdbcTemplate.query(
-                "select id, short_name, name, country_id from team",
+                "select t.id, t.short_name, t.name, t.country_id," +
+                        "u.login manager_login, u.id manager_id " +
+                        "from team t, users u where t.manager_id = u.id",
                 (resultSet, i) -> teamFromRs(resultSet));
     }
 
     @Override
     public List<Team> getCountryTeams(int countryId) {
         return jdbcTemplate.query(
-                "select id, short_name, name, country_id from team where country_id = ?",
+                "select t.id, t.short_name, t.name, t.country_id, " +
+                        "u.login manager_login, u.id manager_id " +
+                        "from team t, users u where t.country_id = ? and t.manager_id = u.id",
                 (resultSet, i) -> teamFromRs(resultSet), countryId);
     }
 
@@ -60,17 +65,19 @@ public class DbTeamDao implements TeamDao {
                     e.printStackTrace();
                 }
             }
-            jdbcTemplate.update("update team set short_name = ?, name = ?, country_id = ? where id = ?",
-                    team.getShortName(), team.getName(), team.getCountryId(), team.getId());
+            jdbcTemplate.update("update team set short_name = ?, name = ?, country_id = ? manager_id = ? where id = ?",
+                    team.getShortName(), team.getName(), team.getCountryId(), team.getManagerId(), team.getId());
             return team.getId();
         } else {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps =
-                        connection.prepareStatement("insert into team (short_name, name, country_id) values (?,?,?)", new String[]{"id"});
+                        connection.prepareStatement("insert into team (short_name, name, country_id, manager_id)" +
+                                " values (?,?,?,?)", new String[]{"id"});
                 ps.setString(1, team.getShortName());
                 ps.setString(2, team.getName());
                 ps.setInt(3, team.getCountryId());
+                ps.setInt(4, team.getManagerId());
                 return ps;
             }, keyHolder);
             int id = keyHolder.getKey().intValue();
@@ -96,7 +103,9 @@ public class DbTeamDao implements TeamDao {
     @Override
     public Team getTeam(int id) {
         return jdbcTemplate.query(
-                "select id, short_name, name, country_id from team where id = ?",
+                "select t.id, t.short_name, t.name, t.country_id," +
+                        "u.login manager_login, u.id manager_id " +
+                        "from team t, users u where t.manager_id = u.id and t.id = ?",
                 rs -> {
                     if(rs.next()) {
                         return teamFromRs(rs);
@@ -105,10 +114,21 @@ public class DbTeamDao implements TeamDao {
                 }, id);
     }
 
+    @Override
+    public List<Team> getJapanLiveTeams() {
+        return jdbcTemplate.query(
+                "select t.id, t.short_name, t.name, t.country_id," +
+                        "u.login manager_login, u.id manager_id from team t, users u where t.country_id = " +
+                        "(select id from country where fa_index = ?) and manager_id > 0 and t.manager_id = u.id",
+                (resultSet, i) -> teamFromRs(resultSet), "JPN");
+    }
+
     private Team teamFromRs(ResultSet rs) throws SQLException {
         Team team = new Team(rs.getInt("id"), rs.getString("short_name"),
                 rs.getString("name"), rs.getInt("country_id"));
         team.setEmblem(imagesManager.teamEmblemUrl(team));
+        team.setManagerLogin(rs.getString("manager_login"));
+        team.setManagerId(rs.getInt("manager_id"));
         return team;
     }
 }

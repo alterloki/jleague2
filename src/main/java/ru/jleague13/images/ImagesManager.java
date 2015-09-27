@@ -39,7 +39,7 @@ public class ImagesManager {
     }
 
     private String emblemImageName(Team team) {
-        return "/team/" + team.getId() + "_emblem.jpg";
+        return "/team/" + team.getId() + "_emblem.png";
     }
 
     public void deleteFlagFile(Country country) {

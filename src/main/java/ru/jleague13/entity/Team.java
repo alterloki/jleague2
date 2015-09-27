@@ -12,6 +12,8 @@ public class Team {
     private String name;
     private int countryId;
     private String emblem;
+    private int managerId;
+    private String managerLogin;
 
     public Team() {
     }
@@ -67,18 +69,35 @@ public class Team {
         this.emblem = emblem;
     }
 
+    public int getManagerId() {
+        return managerId;
+    }
+
+    public void setManagerId(int managerId) {
+        this.managerId = managerId;
+    }
+
+    public String getManagerLogin() {
+        return managerLogin;
+    }
+
+    public void setManagerLogin(String managerLogin) {
+        this.managerLogin = managerLogin;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Team team = (Team) o;
         return Objects.equal(countryId, team.countryId) &&
+                Objects.equal(managerId, team.managerId) &&
                 Objects.equal(shortName, team.shortName) &&
                 Objects.equal(name, team.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(shortName, name, countryId);
+        return Objects.hashCode(shortName, name, countryId, managerId);
     }
 }

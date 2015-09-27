@@ -1,5 +1,7 @@
 package ru.jleague13.repository;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -23,6 +25,8 @@ import java.util.List;
  */
 @Repository
 public class DbCountryDao implements CountryDao {
+
+    private Log log = LogFactory.getLog(DbCountryDao.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;

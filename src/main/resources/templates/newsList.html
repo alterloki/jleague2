@@ -12,8 +12,8 @@
             <div class="row">
                 <div class="col-md-8">
                     <div th:each="newsItem : ${news}" class="panel panel-default">
-                        <div class="panel-heading" th:text="${newsItem.title}">Новости</div>
-                        <div class="panel-body" th:text="${newsItem.text}">Привет! Это новость для вас!</div>
+                        <div class="panel-heading" th:shortText="${newsItem.title}">Новости</div>
+                        <div class="panel-body" th:shortText="${newsItem.shortText}">Привет! Это новость для вас!</div>
                     </div>
                 </div>
                 <div class="col-md-4">
@@ -27,6 +27,7 @@
         <div class="col-md-1"></div>
     </div>
 </div>
+<footer th:replace="main::footer"></footer>
 <script src="/js/jquery-2.1.4.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 </body>

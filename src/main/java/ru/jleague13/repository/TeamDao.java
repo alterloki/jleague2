@@ -20,4 +20,7 @@ public interface TeamDao {
     void deleteCountryTeams(int id);
 
     Team getTeam(int id);
+
+    List<Team> getJapanLiveTeams();
+
 }
