@@ -46,7 +46,7 @@ public class DbTransferDao implements TransferDao {
                 " values " +
                 "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 transfer.getPlayers().stream().map(player -> new Object[]{
-                        transfer.getDate(), player.getPlayerId(), player.getName(), player.getPlayerType().toString(),
+                        transfer.getDate(), player.getPlayerId(), player.getName(), player.getPlayerType().name(),
                         player.getCountry(), player.getSeller(), player.getBuyer(), player.getAge(), player.getTalent(),
                         player.getExperience(), player.getStrength(), player.getHealth(), player.getPrice(),
                         player.getSalary(), player.getPayed(), player.getAbilities(), player.getShooting(),
