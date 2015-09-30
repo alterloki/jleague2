@@ -1,0 +1,100 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="main::head"></head>
+<body>
+<nav th:replace="main::teamsnav"></nav>
+<div class="container">
+    <img id="logo" src="/images/jlogo.png"/>
+
+    <div th:replace="main::mainmenu ('transfer')"/>
+
+    <h3>Трансфер</h3>
+
+    <div class="well" th:if="${not #lists.isEmpty(transfers)}">
+        <div class="form-inline">
+            <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1">Дата</span>
+                <select class="form-control" id="transfer-date" th:each="transfer : ${transfers}">
+                    <option th:text="${transfer}"></option>
+                </select>
+            </div>
+            <button class="btn btn-primary" type="submit">Показать</button>
+        </div>
+        <table id="transfer-table" class="table table-bordered table-responsive">
+            <thead>
+            <tr>
+                <th>FA_ID</th>
+                <th>Поз</th>
+                <th>Имя</th>
+                <th>Страна</th>
+                <th>Продавец</th>
+                <th>Вз</th>
+                <th>Тал</th>
+                <th>Сила</th>
+                <th>СВ</th>
+                <th>Зд</th>
+                <th>Цена</th>
+                <th>ЗП</th>
+                <th>ТР</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="player : ${players}">
+                <td th:text="${player.playerId}"></td>
+                <td th:text="${player.playerType}"></td>
+                <td th:text="${player.name}"></td>
+                <td th:text="${player.country}"></td>
+                <td th:text="${player.seller}"></td>
+                <td th:text="${player.age}"></td>
+                <td th:text="${player.talent}"></td>
+                <td th:text="${player.strength}"></td>
+                <td th:text="${player.functions}"></td>
+                <td th:text="${player.health}"></td>
+                <td th:text="${player.price}"></td>
+                <td th:text="${player.salary}"></td>
+                <td th:text="${player.birthtour}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:if="${#lists.isEmpty(transfers)}">
+        <h2>Трансферов нет</h2>
+    </div>
+        <span class="btn btn-default btn-file">
+            Загрузить трансфер <input id="transfer-upload" type="file"/>
+        </span>
+
+
+</div>
+<footer th:replace="main::footer"></footer>
+<script src="/js/jquery-2.1.4.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#transfer-upload").on("change", uploadFile);
+        $("#transfer-table").DataTable();
+    });
+
+    function uploadFile() {
+        var fd = new FormData();
+        fd.append('file', $("#transfer-upload")[0].files[0]);
+        $.ajax({
+            url: "/transfer",
+            type: "POST",
+            data: fd,
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function () {
+                window.location.href = '/transfer';
+            },
+            error: function () {
+
+            }
+        });
+    }
+</script>
+</body>
+</html>

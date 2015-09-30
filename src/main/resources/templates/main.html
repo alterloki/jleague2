@@ -7,6 +7,8 @@
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
     <!-- Optional Bootstrap theme -->
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="/css/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" href="/css/jleague.css"/>
     <style type="text/css">
         #logo {
             margin: 20px;
@@ -88,17 +90,18 @@
         <div class="col-md-10 col-wrapper">
             <img id="logo" src="/images/jlogo.png"/>
 
-            <div th:fragment="mainmenu" class="row">
+            <div th:fragment="mainmenu (pageType)" class="row">
                 <div class="col-md-12">
                     <nav role="navigation" class="navbar navbar-inverse">
                         <div class="container-fluid">
                             <!-- Brand and toggle get grouped for better mobile display -->
                             <div class="navbar-header">
-                                <a href="#" class="navbar-brand">Новости</a>
+
                             </div>
                             <!-- Collection of nav links and other content for toggling -->
                             <ul class="nav navbar-nav">
-                                <li class="active"><a href="#">Почта</a></li>
+                                <li th:attr="class=((${pageType} eq 'news') ? 'active' : '')"><a href="/">Новости</a></li>
+                                <li th:attr="class=((${pageType} eq 'transfer') ? 'active' : '')"><a href="/transfer">Трансфер</a></li>
                                 <li><a href="#">Галлерея</a></li>
                                 <li><a href="#">Messages</a></li>
                             </ul>
@@ -139,5 +142,6 @@
 <script src="/js/jquery-2.1.4.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/jquery.tabledit.min.js"></script>
+<script src="/js/jquery.dataTables.min.js"></script>
 </body>
 </html>

@@ -286,4 +286,26 @@ public class Player {
     public void setBirthtour(int birthtour) {
         this.birthtour = birthtour;
     }
+
+    public String getFunctions() {
+        StringBuilder sb = new StringBuilder();
+        addFunction(sb, this.shooting, "у");
+        addFunction(sb, this.handling, "т");
+        addFunction(sb, this.reflexes, "р");
+        addFunction(sb, this.passing, "п");
+        addFunction(sb, this.cross, "н");
+        addFunction(sb, this.dribbling, "д");
+        addFunction(sb, this.tackling, "о");
+        addFunction(sb, this.heading, "вг");
+        addFunction(sb, this.speed, "с");
+        addFunction(sb, this.stamina, "ф");
+        return sb.toString();
+    }
+
+    private void addFunction(StringBuilder sb, int value, String let) {
+        if(value > 20) {
+            sb.append(let);
+            sb.append(value);
+        }
+    }
 }

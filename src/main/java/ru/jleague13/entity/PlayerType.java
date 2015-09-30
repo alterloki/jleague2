@@ -45,4 +45,8 @@ public enum PlayerType {
         return null;
     }
 
+    @Override
+    public String toString() {
+        return name;
+    }
 }

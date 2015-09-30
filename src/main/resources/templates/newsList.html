@@ -4,28 +4,24 @@
 <body>
 <nav th:replace="main::teamsnav"></nav>
 <div class="container">
+    <img id="logo" src="/images/jlogo.png"/>
+
+    <div th:replace="main::mainmenu ('news')"/>
     <div class="row">
-        <div class="col-md-1"></div>
-        <div class="col-md-10 col-wrapper">
-            <img id="logo" src="/images/jlogo.png"/>
-            <div th:replace="main::mainmenu"/>
-            <div class="row">
-                <div class="col-md-8">
-                    <div th:each="newsItem : ${news}" class="panel panel-default">
-                        <div class="panel-heading" th:shortText="${newsItem.title}">Новости</div>
-                        <div class="panel-body" th:shortText="${newsItem.shortText}">Привет! Это новость для вас!</div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">Виджет 1</div>
-                        <div class="panel-body">А это виджет 1</div>
-                    </div>
-                </div>
+        <div class="col-md-8">
+            <div th:each="newsItem : ${news}" class="panel panel-default">
+                <div class="panel-heading" th:shortText="${newsItem.title}">Новости</div>
+                <div class="panel-body" th:shortText="${newsItem.shortText}">Привет! Это новость для вас!</div>
             </div>
         </div>
-        <div class="col-md-1"></div>
+        <div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">Виджет 1</div>
+                <div class="panel-body">А это виджет 1</div>
+            </div>
+        </div>
     </div>
+
 </div>
 <footer th:replace="main::footer"></footer>
 <script src="/js/jquery-2.1.4.js"></script>
