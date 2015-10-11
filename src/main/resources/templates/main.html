@@ -89,29 +89,20 @@
         <div class="col-md-1"></div>
         <div class="col-md-10 col-wrapper">
             <img id="logo" src="/images/jlogo.png"/>
-
-            <div th:fragment="mainmenu (pageType)" class="row">
-                <div class="col-md-12">
-                    <nav role="navigation" class="navbar navbar-inverse">
-                        <div class="container-fluid">
-                            <!-- Brand and toggle get grouped for better mobile display -->
-                            <div class="navbar-header">
-
-                            </div>
-                            <!-- Collection of nav links and other content for toggling -->
-                            <ul class="nav navbar-nav">
-                                <li th:attr="class=((${pageType} eq 'news') ? 'active' : '')"><a href="/">Новости</a></li>
-                                <li th:attr="class=((${pageType} eq 'transfer') ? 'active' : '')"><a href="/transfer">Трансфер</a></li>
-                                <li><a href="#">Галлерея</a></li>
-                                <li><a href="#">Messages</a></li>
-                            </ul>
-                            <ul class="nav navbar-nav navbar-right">
-                                <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Логин</a></li>
-                            </ul>
-                        </div>
-                    </nav>
+            <nav th:fragment="mainmenu (pageType)" role="navigation" class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <ul class="nav navbar-nav">
+                        <li th:attr="class=((${pageType} eq 'news') ? 'active' : '')"><a href="/">Новости</a></li>
+                        <li th:attr="class=((${pageType} eq 'transfer') ? 'active' : '')"><a
+                                href="/transfer">Трансфер</a></li>
+                        <li><a href="#">Галлерея</a></li>
+                        <li><a href="#">Messages</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Логин</a></li>
+                    </ul>
                 </div>
-            </div>
+            </nav>
             <div class="row">
                 <div class="col-md-8">
                     <div th:each="newsItem : ${news}" class="panel panel-default">

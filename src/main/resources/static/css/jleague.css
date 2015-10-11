@@ -17,3 +17,7 @@
     cursor: inherit;
     display: block;
 }
+
+.transfer-filters {
+    padding-bottom: 20px;
+}
