@@ -1,7 +1,13 @@
 package ru.jleague13.repository;
 
+import com.google.common.io.CharStreams;
+import com.google.common.io.Resources;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
@@ -16,9 +22,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -114,6 +118,32 @@ public class DbTransferDao implements TransferDao {
     public Transfer readTransfer(Reader reader) throws IOException {
         BufferedReader br = new BufferedReader(reader);
         return readTransferList(br);
+    }
+
+    @Override
+    public void saveTransferResult(Player player) {
+        jdbcTemplate.update("update transfer_player set payed = ? where id = ?",
+                player.getPayed(), player.getId());
+    }
+
+    @Override
+    public Map<String, Player> readTransferResult(Reader reader) throws IOException {
+        Map<String, Player> map = new HashMap<>();
+        String str = CharStreams.toString(reader);
+        Document doc = Jsoup.parse(str);
+        Elements select = doc.select("div[id=trans]").select("b");
+        for(int i = 0; i < select.size(); i++) {
+            String t = select.get(i).text();
+            int firstI = t.indexOf('(');
+            String name = t.substring(0, firstI - 1);
+            String[] parts = t.split(" ");
+            int price = Integer.parseInt(parts[parts.length - 2]);
+            Player player = new Player();
+            player.setName(name);
+            player.setPayed(price);
+            map.put(name, player);
+        }
+        return map;
     }
 
     public Transfer readTransferList(BufferedReader reader) throws IOException {

@@ -182,42 +182,46 @@
                 </form>
             </div>
         </div>
-        <table id="transfer-table" class="table table-bordered table-responsive">
-            <thead>
-            <tr>
-                <th>FA_ID</th>
-                <th>Поз</th>
-                <th>Имя</th>
-                <th>Страна</th>
-                <th>Продавец</th>
-                <th>Вз</th>
-                <th>Тал</th>
-                <th>Сила</th>
-                <th>СВ</th>
-                <th>Зд</th>
-                <th>Цена</th>
-                <th>ЗП</th>
-                <th>ТР</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="player : ${players}">
-                <td th:text="${player.playerId}"></td>
-                <td th:text="${player.playerType}"></td>
-                <td th:text="${player.name}"></td>
-                <td th:text="${player.country}"></td>
-                <td th:text="${player.seller}"></td>
-                <td th:text="${player.age}"></td>
-                <td th:text="${player.talent}"></td>
-                <td th:text="${player.strength}"></td>
-                <td th:text="${player.functions}"></td>
-                <td th:text="${player.health}"></td>
-                <td th:text="${player.price}"></td>
-                <td th:text="${player.salary}"></td>
-                <td th:text="${player.birthtour}"></td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="container-fluid">
+            <table id="transfer-table" class="display compact">
+                <thead>
+                <tr>
+                    <th>FA_ID</th>
+                    <th>Поз</th>
+                    <th>Имя</th>
+                    <th>Страна</th>
+                    <th>Продавец</th>
+                    <th>Вз</th>
+                    <th>Тал</th>
+                    <th>Сила</th>
+                    <th>СВ</th>
+                    <th>Зд</th>
+                    <th>ЗП</th>
+                    <th>ТР</th>
+                    <th>Цена</th>
+                    <th>Опл</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="player : ${players}">
+                    <td th:text="${player.playerId}"></td>
+                    <td th:text="${player.playerType}"></td>
+                    <td th:text="${player.name}"></td>
+                    <td th:text="${player.country}"></td>
+                    <td th:text="${player.seller}"></td>
+                    <td th:text="${player.age}"></td>
+                    <td th:text="${player.talent}"></td>
+                    <td th:text="${player.strength}"></td>
+                    <td th:text="${player.functions}"></td>
+                    <td th:text="${player.health}"></td>
+                    <td th:text="${player.salary}"></td>
+                    <td th:text="${player.birthtour}"></td>
+                    <td th:text="${player.price}"></td>
+                    <td th:text="${player.payed}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
         <div class="container">
             <div class="row form-inline">
                 <div class="form-group">
@@ -226,11 +230,12 @@
                 <div class="form-group">
                     <select class="form-control" id="transfer-date">
                         <option th:each="transfer : ${transfers}"
-                                th:text="${#calendars.format(transfer,'dd-MM-yyyy')}"></option>
+                                th:text="${#calendars.format(transfer,'dd-MM-yyyy')}"
+                                th:selected="${currentDate} eq ${transfer}"></option>
                     </select>
                 </div>
 
-                <button class="btn btn-default" type="submit">Показать</button>
+                <button id="show-transfer" class="btn btn-default" type="submit">Показать</button>
 
             </div>
         </div>
@@ -243,6 +248,7 @@
             <b>Вз</b> - возраст<br/>
             <b>Зд</b> - здоровье<br/>
             <b>ЗП</b> - зарплата<br/>
+            <b>Опл</b> - цена, заплаченная за игрока<br/>
             <b>У</b> - удар<br/>
             <b>П</b> - пас<br/>
             <b>Н</b> - навес<br/>
@@ -260,8 +266,11 @@
         <h2>Трансферов нет</h2>
     </div>
     <div class="well">
-    <span class="btn btn-default btn-file">
+        <span class="btn btn-default btn-file">
             Загрузить трансфер <input id="transfer-upload" type="file"/>
+        </span>
+        <span class="btn btn-default btn-file">
+            Загрузить результаты <input id="result-upload" type="file"/>
         </span>
     </div>
 
@@ -274,6 +283,8 @@
 <script>
     $(document).ready(function () {
         $("#transfer-upload").on("change", uploadFile);
+        $("#result-upload").on("change", uploadResultsFile);
+        $("#show-transfer").click("change", showTransfer);
         var table = $("#transfer-table").DataTable();
         var ids = gen(['Strength', 'Salary', 'D', 'U', 'O', 'Talent',
             'T', 'VG', 'Age', 'R', 'S', 'Health', 'P', 'F', 'Price', 'N']);
@@ -320,6 +331,31 @@
 
             }
         });
+    }
+
+    function uploadResultsFile() {
+        var fd = new FormData();
+        fd.append('file', $("#result-upload")[0].files[0]);
+        fd.append('date', $("#transfer-date").find("option:selected").text());
+        $.ajax({
+            url: "/transfer/result",
+            type: "POST",
+            data: fd,
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function () {
+                window.location.href = '/transfer';
+            },
+            error: function () {
+
+            }
+        });
+    }
+
+    function showTransfer() {
+        window.location.href = '/transfer/' + $("#transfer-date").find("option:selected").text();
     }
 </script>
 </body>

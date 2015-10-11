@@ -22,6 +22,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * @author ashevenkov 26.09.15 22:56.
@@ -65,6 +66,17 @@ public class TransferDaoTests {
         assert testPlayer != null;
         assert testPlayer.getName().equals("Адам Мёрфи");
         assert testPlayer.getPrice() == 2239;
+    }
+
+    @Test
+    public void testReadResult() throws IOException {
+        Resource resource = new ClassPathResource("02_09_transfer_result");
+        InputStream resourceInputStream = resource.getInputStream();
+        Map<String, Player> result = transferDao.readTransferResult(new InputStreamReader(
+                resourceInputStream, "cp1251"));
+        assert result.size() == 691;
+        Player player = result.get("Салвадор Агра");
+        assert player.getPayed() == 3132;
     }
 
     @Test

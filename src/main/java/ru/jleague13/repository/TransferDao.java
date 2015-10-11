@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.Reader;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ashevenkov 26.09.15 0:39.
@@ -22,5 +23,9 @@ public interface TransferDao {
     boolean haveTransfer(Date date);
 
     Transfer readTransfer(Reader reader) throws IOException;
+
+    void saveTransferResult(Player player);
+
+    Map<String, Player> readTransferResult(Reader reader) throws IOException;
 
 }
