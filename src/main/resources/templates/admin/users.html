@@ -1,0 +1,53 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="main::head"></head>
+<body>
+<nav th:replace="main::adminnav"></nav>
+<div class="container">
+    <div class="row">
+        <div class="page-header">
+            <h2>Пользователи</h2>
+        </div>
+        <div class="container jumbotron">
+            <table class="table table-bordered table-responsive" id="teams-table">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Логин</th>
+                    <th>Имя</th>
+                    <th>FA_ID</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.id}"></td>
+                    <td th:text="${user.login}"></td>
+                    <td th:text="${user.name}"></td>
+                    <td th:text="${user.fa_id}"></td>
+                    <td><a href="admin/user.html" th:href="@{/admin/country/{country_id}/team(country_id=${country.id})}">Редактировать</a></td>
+                </tr>
+                </tbody>
+            </table>
+            <button id="add-user" type="button" class="btn btn-success">Добавить</button>
+        </div>
+    </div>
+</div>
+<footer th:replace="main::footer"></footer>
+<script src="/js/jquery-2.1.4.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tabledit.js"></script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $('#add-user').click(function () {
+            $.ajax({
+                url: '/admin/users',
+                type: 'PUT',
+                success: function(result) {
+                    window.location.href='/admin/users';
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

@@ -11,6 +11,7 @@ public class User {
     private String login;
     private String name;
     private int faId;
+    private String password;
 
     public User(int id, String login, String userName, int faId) {
         this.id = id;
@@ -23,6 +24,14 @@ public class User {
         this.id = id;
         this.login = login;
         this.faId = faId;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public int getId() {

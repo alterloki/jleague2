@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="main::head"></head>
+<body>
+<nav th:replace="main::adminnav"></nav>
+<div class="container">
+    <div class="row">
+        <div class="page-header">
+            <h2>Пишем новость</h2>
+        </div>
+        <div class="container jumbotron">
+
+            <button id="add-news" type="button" class="btn btn-success">Добавить</button>
+        </div>
+    </div>
+</div>
+<footer th:replace="main::footer"></footer>
+<script src="/js/jquery-2.1.4.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tabledit.js"></script>
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $('#add-news').click(function () {
+            $.ajax({
+                url: '/admin/news',
+                type: 'PUT',
+                success: function(result) {
+                    window.location.href='/admin/news';
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

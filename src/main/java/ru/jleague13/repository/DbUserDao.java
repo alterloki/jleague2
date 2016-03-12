@@ -10,6 +10,7 @@ import ru.jleague13.entity.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * @author ashevenkov 27.09.15 17:57.
@@ -19,6 +20,12 @@ public class DbUserDao implements UserDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+
+    @Override
+    public List<User> getAllUsers() {
+        return jdbcTemplate.query("select id, fa_id, login, name from users",
+                (rs, i) -> userFromResultSet(rs));
+    }
 
     @Override
     public User getUser(int userId) {
@@ -39,17 +46,18 @@ public class DbUserDao implements UserDao {
     @Override
     public int saveUser(User user) {
         if(user.getId() > 0) {
-            jdbcTemplate.update("update users set login = ?, name = ?, fa_id = ? where id = ?",
-                    user.getLogin(), user.getName(), user.getFaId(), user.getId());
+            jdbcTemplate.update("update users set login = ?, name = ?, fa_id = ?, password = ? where id = ?",
+                    user.getLogin(), user.getName(), user.getFaId(), user.getPassword(), user.getId());
             return user.getId();
         } else {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps =
-                        connection.prepareStatement("insert into users (login, name, fa_id) values (?,?,?)", new String[]{"id"});
+                        connection.prepareStatement("insert into users (login, name, fa_id, password) values (?,?,?,?)", new String[]{"id"});
                 ps.setString(1, user.getLogin());
                 ps.setString(2, user.getName());
                 ps.setInt(3, user.getFaId());
+                ps.setString(4, user.getPassword());
                 return ps;
             }, keyHolder);
             int id = keyHolder.getKey().intValue();

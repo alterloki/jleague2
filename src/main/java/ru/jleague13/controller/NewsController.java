@@ -12,7 +12,7 @@ import ru.jleague13.repository.TeamDao;
  * @author ashevenkov 06.09.15 21:40.
  */
 @Controller
-@RequestMapping("/news")
+@RequestMapping("new/news")
 public class NewsController {
 
     public static final int PAGE_NEWS_COUNT = 5;

@@ -12,7 +12,7 @@ import ru.jleague13.repository.TeamDao;
  * @author ashevenkov 15.09.15 0:41.
  */
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("new/admin")
 public class TeamController {
 
     @Autowired

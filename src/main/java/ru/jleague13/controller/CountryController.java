@@ -20,7 +20,7 @@ import java.io.IOException;
  * @author ashevenkov 15.09.15 0:41.
  */
 @Controller
-@RequestMapping("/admin/country")
+@RequestMapping("new/admin/country")
 public class CountryController {
 
     private Log log = LogFactory.getLog(CountryController.class);
