@@ -22,7 +22,7 @@
     $(document).ready(function () {
         $('#add-news').click(function () {
             $.ajax({
-                url: '/admin/news',
+                url: '/new/admin/news',
                 type: 'PUT',
                 success: function(result) {
                     window.location.href='/admin/news';

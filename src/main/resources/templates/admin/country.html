@@ -28,7 +28,7 @@
                     <td th:text="${country.name}"></td>
                     <td><img src="" th:attr="src=${country.picture}"/></td>
                     <td>
-                        <a href="admin/teams.html" th:href="@{/admin/country/{country_id}/team(country_id=${country.id})}">Команды</a>
+                        <a href="new/admin/teams.html" th:href="@{new/admin/country/{country_id}/team(country_id=${country.id})}">Команды</a>
                     </td>
                 </tr>
                 </tbody>
@@ -46,7 +46,7 @@
 <script>
     $(document).ready(function () {
         $('#countries-table').Tabledit({
-            url: '/admin/country',
+            url: '/new/admin/country',
             columns: {
                 identifier: [0, 'id'],
                 editable: [[1, 'faId'], [2, 'faIndex'], [3, 'name']]
@@ -54,19 +54,19 @@
         });
         $('#add-country').click(function () {
             $.ajax({
-                url: '/admin/country',
+                url: '/new/admin/country',
                 type: 'PUT',
                 success: function(result) {
-                    window.location.href='/admin/country';
+                    window.location.href='/new/admin/country';
                 }
             });
         });
         $('#update-countries').click(function () {
             $.ajax({
-                url: '/admin/country/download',
+                url: '/new/admin/country/download',
                 type: 'POST',
                 success: function(result) {
-                    window.location.href='/admin/country';
+                    window.location.href='/new/admin/country';
                 }
             });
             $("#update-countries").remove();

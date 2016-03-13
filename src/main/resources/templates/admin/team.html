@@ -38,7 +38,7 @@
 <script th:inline="javascript">
     $(document).ready(function () {
         $('#teams-table').Tabledit({
-            url: '/admin/country/[[${country.id}]]/team',
+            url: '/new/admin/country/[[${country.id}]]/team',
             columns: {
                 identifier: [0, 'id'],
                 editable: [[1, 'shortName'], [2, 'name']]
@@ -46,10 +46,10 @@
         });
         $('#add-team').click(function () {
             $.ajax({
-                url: '/admin/country/[[${country.id}]]/team',
+                url: '/new/admin/country/[[${country.id}]]/team',
                 type: 'PUT',
                 success: function(result) {
-                    window.location.href='/admin/country/[[${country.id}]]/team';
+                    window.location.href='/new/admin/country/[[${country.id}]]/team';
                 }
             });
         });
