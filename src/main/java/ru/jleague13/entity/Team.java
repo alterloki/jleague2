@@ -12,8 +12,8 @@ public class Team {
     private String name;
     private int countryId;
     private String emblem;
-    private int managerId;
-    private String managerLogin;
+    private int managerId = 0;
+    private String managerLogin = "";
 
     public Team() {
     }

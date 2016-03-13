@@ -1,5 +1,7 @@
 package ru.jleague13.repository;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -23,6 +25,8 @@ import java.util.List;
  */
 @Repository
 public class DbTeamDao implements TeamDao {
+
+    private Log log = LogFactory.getLog(DbTeamDao.class);
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -60,11 +64,13 @@ public class DbTeamDao implements TeamDao {
         if(team.getId() > 0) {
             Team oldTeam = getTeam(team.getId());
             if(team.getShortName() != null && !team.getShortName().equals(oldTeam.getShortName())) {
-                try {
+                /*try {
                     downloadImages.downloadEmblem(team);
+
                 } catch (IOException e) {
                     e.printStackTrace();
-                }
+                }*/
+                log.info("Download emblem old for " + team);
             }
             jdbcTemplate.update("update team set short_name = ?, name = ?, country_id = ?, manager_id = ? where id = ?",
                     team.getShortName(), team.getName(), team.getCountryId(), team.getManagerId(), team.getId());
@@ -83,11 +89,12 @@ public class DbTeamDao implements TeamDao {
             }, keyHolder);
             int id = keyHolder.getKey().intValue();
             team.setId(id);
-            try {
+            log.info("Download emblem new for " + team.getShortName());
+            /*try {
                 downloadImages.downloadEmblem(team);
             } catch (IOException e) {
                 e.printStackTrace();
-            }
+            }*/
             return id;
         }
     }

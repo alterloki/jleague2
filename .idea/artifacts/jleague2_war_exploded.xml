@@ -22,7 +22,6 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:4.1.7.RELEASE" />
           <element id="library" level="project" name="Maven: org.apache.tomcat:tomcat-jdbc:8.0.23" />
           <element id="library" level="project" name="Maven: org.apache.tomcat:tomcat-juli:8.0.23" />
-          <element id="library" level="project" name="Maven: org.springframework:spring-tx:4.1.7.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-security:1.2.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-beans:4.1.7.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-context:4.1.7.RELEASE" />
@@ -52,6 +51,7 @@
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:4.1.7.RELEASE" />
           <element id="library" level="project" name="Maven: com.google.guava:guava:18.0" />
           <element id="library" level="project" name="Maven: org.hsqldb:hsqldb:2.3.3" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-tx:4.1.7.RELEASE" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:5.1.36" />
           <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-mapper-asl:1.9.13" />
           <element id="library" level="project" name="Maven: org.codehaus.jackson:jackson-core-asl:1.9.13" />

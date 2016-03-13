@@ -2,6 +2,7 @@ package ru.jleague13.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import ru.jleague13.download.DownloadInfo;
 import ru.jleague13.entity.Country;
 import ru.jleague13.entity.Team;
@@ -28,6 +29,7 @@ public class InformationManager {
     @Autowired
     private TeamDao teamDao;
 
+    @Transactional
     public void updateCountries() throws IOException {
         Map<String, Country> countryMap =
                 downloadInfo.downloadCountries().stream().
@@ -84,6 +86,9 @@ public class InformationManager {
 
     private void updateTeam(Team currentTeam, Team team) {
         if(!team.equals(currentTeam)) {
+            if(currentTeam.getId() > 0) {
+                team.setId(currentTeam.getId());
+            }
             teamDao.saveTeam(team);
         }
     }
