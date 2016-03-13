@@ -64,12 +64,12 @@ public class DbTeamDao implements TeamDao {
         if(team.getId() > 0) {
             Team oldTeam = getTeam(team.getId());
             if(team.getShortName() != null && !team.getShortName().equals(oldTeam.getShortName())) {
-                /*try {
+                try {
                     downloadImages.downloadEmblem(team);
 
                 } catch (IOException e) {
                     e.printStackTrace();
-                }*/
+                }
                 log.info("Download emblem old for " + team);
             }
             jdbcTemplate.update("update team set short_name = ?, name = ?, country_id = ?, manager_id = ? where id = ?",
@@ -90,11 +90,11 @@ public class DbTeamDao implements TeamDao {
             int id = keyHolder.getKey().intValue();
             team.setId(id);
             log.info("Download emblem new for " + team.getShortName());
-            /*try {
+            try {
                 downloadImages.downloadEmblem(team);
             } catch (IOException e) {
                 e.printStackTrace();
-            }*/
+            }
             return id;
         }
     }
