@@ -28,7 +28,7 @@
                     <td th:text="${country.name}"></td>
                     <td><img src="" th:attr="src=${country.picture}"/></td>
                     <td>
-                        <a href="new/admin/teams.html" th:href="@{new/admin/country/{country_id}/team(country_id=${country.id})}">Команды</a>
+                        <a href="/new/admin/teams.html" th:href="@{/new/admin/country/{country_id}/team(country_id=${country.id})}">Команды</a>
                     </td>
                 </tr>
                 </tbody>
