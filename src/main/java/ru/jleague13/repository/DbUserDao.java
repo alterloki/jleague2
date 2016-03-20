@@ -20,16 +20,28 @@ public class DbUserDao implements UserDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
+    private static String FIELDS = "id, fa_id, login, name, password, registered, admin, email";
 
     @Override
     public List<User> getAllUsers() {
-        return jdbcTemplate.query("select id, fa_id, login, name from users",
+        return jdbcTemplate.query("select " + FIELDS + " from users",
                 (rs, i) -> userFromResultSet(rs));
     }
 
     @Override
+    public List<User> getRegisteredUsers() {
+        return jdbcTemplate.query("select " + FIELDS + " from users where registered = 1",
+                (rs, i) -> userFromResultSet(rs));
+    }
+
+    @Override
+    public void deleteUser(int userId) {
+        jdbcTemplate.update("delete from users where id = ?", userId);
+    }
+
+    @Override
     public User getUser(int userId) {
-        return jdbcTemplate.query("select id, fa_id, login, name from users where id = ?",
+        return jdbcTemplate.query("select " + FIELDS + " from users where id = ?",
                 rs -> {
                     if(rs.next()) {
                         return userFromResultSet(rs);
@@ -40,24 +52,34 @@ public class DbUserDao implements UserDao {
 
     private User userFromResultSet(ResultSet rs) throws SQLException {
         return new User(rs.getInt("id"), rs.getString("login"),
-                rs.getString("name"), rs.getInt("fa_id"));
+                rs.getString("name"), rs.getInt("fa_id"), rs.getString("password"),
+                rs.getInt("registered") == 1, rs.getInt("admin") == 1, rs.getString("email"));
     }
 
     @Override
     public int saveUser(User user) {
         if(user.getId() > 0) {
-            jdbcTemplate.update("update users set login = ?, name = ?, fa_id = ?, password = ? where id = ?",
-                    user.getLogin(), user.getName(), user.getFaId(), user.getPassword(), user.getId());
+            jdbcTemplate.update("update users set " +
+                            "login = ?, name = ?, fa_id = ?, password = ?, " +
+                            "admin = ?, registered = ?, email = ? where id = ?",
+                    user.getLogin(), user.getName(), user.getFaId(), user.getPassword(),
+                    user.isAdmin() ? 1 : 0, user.isRegistered() ? 1 : 0, user.getEmail(),
+                    user.getId());
             return user.getId();
         } else {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps =
-                        connection.prepareStatement("insert into users (login, name, fa_id, password) values (?,?,?,?)", new String[]{"id"});
+                        connection.prepareStatement("insert into users " +
+                                "(login, name, fa_id, password, admin, registered, email)" +
+                                " values (?,?,?,?,?,?,?)", new String[]{"id"});
                 ps.setString(1, user.getLogin());
                 ps.setString(2, user.getName());
                 ps.setInt(3, user.getFaId());
                 ps.setString(4, user.getPassword());
+                ps.setInt(5, user.isAdmin() ? 1 : 0);
+                ps.setInt(6, user.isRegistered() ? 1 : 0);
+                ps.setString(7, user.getEmail());
                 return ps;
             }, keyHolder);
             int id = keyHolder.getKey().intValue();
@@ -68,7 +90,7 @@ public class DbUserDao implements UserDao {
 
     @Override
     public User getUserByFaId(int faId) {
-        return jdbcTemplate.query("select id, fa_id, login, name from users where fa_id = ?",
+        return jdbcTemplate.query("select " + FIELDS + " from users where fa_id = ?",
                 rs -> {
                     if(rs.next()) {
                         return userFromResultSet(rs);

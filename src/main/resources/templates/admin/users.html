@@ -8,6 +8,10 @@
         <div class="page-header">
             <h2>Пользователи</h2>
         </div>
+        <ul class="nav nav-tabs">
+            <li role="presentation" th:attr="class=((${filter} eq 'registered') ? 'active' : '')"><a href="/new/admin/users">Зарегистрированные</a></li>
+            <li role="presentation" th:attr="class=((${filter} eq 'all') ? 'active' : '')"><a href="/new/admin/users/all">Все</a></li>
+        </ul>
         <div class="container jumbotron">
             <table class="table table-bordered table-responsive" id="teams-table">
                 <thead>
@@ -16,6 +20,7 @@
                     <th>Логин</th>
                     <th>Имя</th>
                     <th>FA_ID</th>
+                    <th>Действия</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -23,8 +28,11 @@
                     <td th:text="${user.id}"></td>
                     <td th:text="${user.login}"></td>
                     <td th:text="${user.name}"></td>
-                    <td th:text="${user.fa_id}"></td>
-                    <td><a href="/new/admin/user.html" th:href="@{/new/admin/country/{country_id}/team(country_id=${country.id})}">Редактировать</a></td>
+                    <td th:text="${user.faId}"></td>
+                    <td>
+                        <a href="/new/admin/user.html" th:href="@{/new/admin/user/{user_id}(user_id=${user.id})}">Редактировать</a>
+                        <a th:id="'remove-user-' + ${user.id}" href="#">Удалить</a>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -40,13 +48,23 @@
     $(document).ready(function () {
         $('#add-user').click(function () {
             $.ajax({
-                url: '/new/admin/users',
+                url: '/new/admin/user',
                 type: 'PUT',
                 success: function(result) {
-                    window.location.href='/admin/users';
+                    location.reload();
                 }
             });
         });
+        $("a[id^='remove-user-']").click(function() {
+            userId = this.id.substring(12);
+            $.ajax({
+               url: '/new/admin/user/' + userId,
+                type: 'DELETE',
+                success: function(result) {
+                    location.reload();
+                }
+            });
+        })
     });
 </script>
 </body>

@@ -19,4 +19,7 @@ public interface UserDao {
 
     List<User> getAllUsers();
 
+    List<User> getRegisteredUsers();
+
+    void deleteUser(int userId);
 }

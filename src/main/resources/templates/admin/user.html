@@ -9,23 +9,52 @@
             <h2>Пользователь</h2>
         </div>
         <div class="container jumbotron">
-            <form class="form-horizontal">
+            <form action="#" th:action="@{/new/admin/user}" th:object="${user}"
+                  class="form-horizontal" method="post">
+                <input type="hidden" th:field="*{id}"/>
                 <div class="form-group">
-                    <label for="inputEmail" class="col-xs-2 control-label">Адрес email:</label>
+                    <label th:for="${#ids.next('login')}" class="col-xs-2 control-label">Логин:</label>
                     <div class="col-xs-10">
-                        <input type="email" class="form-control" id="inputEmail" placeholder="Введите email">
+                        <input type="text" class="form-control" th:field="*{login}"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="inputPassword" class="col-xs-2 control-label">Пароль:</label>
+                    <label th:for="${#ids.next('name')}" class="col-xs-2 control-label">Имя:</label>
                     <div class="col-xs-10">
-                        <input type="password" class="form-control" id="inputPassword" placeholder="Введите пароль">
+                        <input type="text" class="form-control" th:field="*{name}"/>
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-xs-offset-2 col-xs-10">
+                    <label th:for="${#ids.next('email')}" class="col-xs-2 control-label">Адрес email:</label>
+                    <div class="col-xs-10">
+                        <input type="email" class="form-control" th:field="*{email}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label th:for="${#ids.next('faId')}" class="col-xs-2 control-label">FA_ID:</label>
+                    <div class="col-xs-10">
+                        <input type="text" class="form-control" th:field="*{faId}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label th:for="${#ids.next('password')}" class="col-xs-2 control-label">Пароль:</label>
+                    <div class="col-xs-10">
+                        <input type="password" class="form-control" th:field="*{password}"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label th:for="${#ids.next('registered')}" class="col-xs-2 control-label">Зарегестрирован:</label>
+                    <div class="col-xs-10">
                         <div class="checkbox">
-                            <label><input type="checkbox"> Запомнить</label>
+                            <input type="checkbox" th:field="*{registered}"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-2 control-label">Админ:</label>
+                    <div class="col-xs-10">
+                        <div class="checkbox">
+                            <input type="checkbox" th:field="*{admin}"/>
                         </div>
                     </div>
                 </div>

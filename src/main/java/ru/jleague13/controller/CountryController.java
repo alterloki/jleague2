@@ -27,18 +27,6 @@ public class CountryController {
 
     @Autowired
     private CountryDao countryDao;
-    @Autowired
-    private InformationManager informationController;
-    @Autowired
-    private ProgressDao progressDao;
-
-    @RequestMapping(method = RequestMethod.GET)
-    public String adminMain(Model model) {
-        model.addAttribute("countries", countryDao.getCountries());
-        boolean progress = progressDao.getProgress(ProgressType.COUNTRY_DOWNLOAD);
-        model.addAttribute("progress", progress);
-        return "admin/country";
-    }
 
     @RequestMapping(method = RequestMethod.PUT)
     public String createCountry() {
@@ -52,18 +40,6 @@ public class CountryController {
     Country updateCountry(@ModelAttribute Country country) {
         countryDao.saveCountry(country);
         return country;
-    }
-
-    @RequestMapping(value = "/download", method = RequestMethod.POST)
-    public String downloadAndUpdate(@ModelAttribute Country country) {
-        try {
-            progressDao.startProgress(ProgressType.COUNTRY_DOWNLOAD);
-            informationController.updateCountries();
-            progressDao.finishProgress(ProgressType.COUNTRY_DOWNLOAD);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "ok";
     }
 
     @RequestMapping(method = RequestMethod.POST, params = "action=delete")

@@ -10,8 +10,23 @@ public class User {
     private int id;
     private String login;
     private String name;
+    private String email;
     private int faId;
     private String password;
+    private boolean registered;
+    private boolean admin;
+
+    public User(int id, String login, String name, int faId, String password,
+                boolean registered, boolean admin, String email) {
+        this.id = id;
+        this.login = login;
+        this.name = name;
+        this.faId = faId;
+        this.password = password;
+        this.registered = registered;
+        this.admin = admin;
+        this.email = email;
+    }
 
     public User(int id, String login, String userName, int faId) {
         this.id = id;
@@ -24,6 +39,17 @@ public class User {
         this.id = id;
         this.login = login;
         this.faId = faId;
+    }
+
+    public User() {
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -66,6 +92,22 @@ public class User {
         this.faId = faId;
     }
 
+    public boolean isRegistered() {
+        return registered;
+    }
+
+    public void setRegistered(boolean registered) {
+        this.registered = registered;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -79,5 +121,19 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hashCode(login, name, faId);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", faId=" + faId +
+                ", password='" + password + '\'' +
+                ", registered=" + registered +
+                ", admin=" + admin +
+                '}';
     }
 }
