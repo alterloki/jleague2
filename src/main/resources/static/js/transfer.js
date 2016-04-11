@@ -45,8 +45,8 @@ $.fn.dataTable.ext.search.push(
             filter(data, "Talent", 6) &&
             filter(data, "Age", 5) &&
             filter(data, "Health", 9) &&
-            filter(data, "Price", 10) &&
-            filter(data, "Salary", 11) &&
+            filter(data, "Price", 12) &&
+            filter(data, "Salary", 10) &&
             filterSV(data, "у", "U") &&
             filterSV(data, "т", "T") &&
             filterSV(data, "р", "R") &&
