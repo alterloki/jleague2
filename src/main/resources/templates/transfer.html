@@ -177,7 +177,13 @@
                         </div>
                     </div>
                     <div class="row">
+                        <label class="control-label col-xs-4" for="inputPayed">Опл:</label>
 
+                        <div class="input-group col-xs-8" id="inputPayed">
+                            <input id="minPayed" type="text" class="form-control" placeholder="от"/>
+                            <span class="input-group-addon"> - </span>
+                            <input id="maxPayed" type="text" class="form-control" placeholder="до"/>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -287,7 +293,7 @@
         $("#show-transfer").click("change", showTransfer);
         var table = $("#transfer-table").DataTable();
         var ids = gen(['Strength', 'Salary', 'D', 'U', 'O', 'Talent',
-            'T', 'VG', 'Age', 'R', 'S', 'Health', 'P', 'F', 'Price', 'N']);
+            'T', 'VG', 'Age', 'R', 'S', 'Health', 'P', 'F', 'Price', 'N', 'Payed']);
         $(ids).keyup(function () {
             table.draw();
         });
