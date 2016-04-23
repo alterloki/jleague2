@@ -27,4 +27,8 @@ public class FaUrlResolver {
     public String getFa13Teams(Country country) {
         return FA13_URL + "/team.html?country=" + country.getFaId();
     }
+
+    public String getAllZip() {
+        return FA13_URL + "build/all13.zip";
+    }
 }

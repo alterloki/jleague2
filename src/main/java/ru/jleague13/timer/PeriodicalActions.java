@@ -6,7 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ru.jleague13.controller.InformationManager;
-import ru.jleague13.service.AllService;
+
+import java.io.IOException;
 
 /**
  * @author ashevenkov 23.04.16 13:44.
@@ -14,12 +15,17 @@ import ru.jleague13.service.AllService;
 @Component
 public class PeriodicalActions {
 
+    private Log log = LogFactory.getLog(PeriodicalActions.class);
+
     @Autowired
     private InformationManager informationManager;
 
-
     @Scheduled(cron="0 0 6 * * ?")
     public void loadAllZip() {
-        informationManager.updateTodayAll();
+        try {
+            informationManager.updateTodayAll();
+        } catch (IOException e) {
+            log.error("Problem updating all13.zip", e);
+        }
     }
 }

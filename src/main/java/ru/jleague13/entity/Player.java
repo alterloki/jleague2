@@ -33,6 +33,7 @@ public class Player {
     private int speed;
     private int stamina;
     private int birthtour;
+    private String clubName;
 
     public Player() {
     }
@@ -307,5 +308,9 @@ public class Player {
             sb.append(let);
             sb.append(value);
         }
+    }
+
+    public void setClubName(String clubName) {
+        this.clubName = clubName;
     }
 }

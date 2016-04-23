@@ -41,7 +41,7 @@ public class CountriesController {
         return "admin/countries";
     }
 
-    @RequestMapping(value = "new/admin/countries/download", method = RequestMethod.POST)
+    @RequestMapping(value = "/download", method = RequestMethod.POST)
     public String downloadAndUpdate(@ModelAttribute Country country) {
         try {
             progressDao.startProgress(ProgressType.COUNTRY_DOWNLOAD);

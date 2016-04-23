@@ -15,6 +15,9 @@ public class User {
     private String password;
     private boolean registered;
     private boolean admin;
+    private int icq;
+    private String town;
+    private String country;
 
     public User(int id, String login, String name, int faId, String password,
                 boolean registered, boolean admin, String email) {
@@ -42,6 +45,35 @@ public class User {
     }
 
     public User() {
+    }
+
+    public User(int id, String login, String name,
+                int faId, String password, boolean registered,
+                boolean admin, String email,
+                String town, String country, int icq) {
+        this.id = id;
+        this.login = login;
+        this.name = name;
+        this.faId = faId;
+        this.password = password;
+        this.registered = registered;
+        this.admin = admin;
+        this.email = email;
+        this.town = town;
+        this.country = country;
+        this.icq = icq;
+    }
+
+    public int getIcq() {
+        return icq;
+    }
+
+    public String getTown() {
+        return town;
+    }
+
+    public String getCountry() {
+        return country;
     }
 
     public String getEmail() {

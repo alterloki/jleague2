@@ -31,6 +31,7 @@ public class TeamController {
 
     @RequestMapping(value="/teams", method = RequestMethod.GET)
     public String getTeams(Model model) {
+        model.addAttribute("japanTeams", teamDao.getJapanLiveTeams());
         model.addAttribute("countries", countryDao.getCountries());
         model.addAttribute("topTeams", teamDao.getTopTeams(10));
         return "/teams";

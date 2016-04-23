@@ -36,7 +36,7 @@ public class DbTeamDao implements TeamDao {
     private DownloadImages downloadImages;
 
     private static String FULL_FIELDS = "t.id, t.short_name, t.name, t.country_id," +
-                                        "u.login manager_login, u.id manager_id, t.div";
+                                        "u.login manager_login, u.id manager_id, t.division";
 
     @Override
     public List<Team> getTeamsBySubstr() {
@@ -73,7 +73,7 @@ public class DbTeamDao implements TeamDao {
                 }
                 log.info("Download emblem old for " + team);
             }
-            jdbcTemplate.update("update team set short_name = ?, name = ?, country_id = ?, manager_id = ?, div = ?" +
+            jdbcTemplate.update("update team set short_name = ?, name = ?, country_id = ?, manager_id = ?, division = ? " +
                             " where id = ?",
                     team.getShortName(), team.getName(), team.getCountryId(), team.getManagerId(), team.getDiv(), team.getId());
             return team.getId();
@@ -81,7 +81,7 @@ public class DbTeamDao implements TeamDao {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps =
-                        connection.prepareStatement("insert into team (short_name, name, country_id, manager_id, div)" +
+                        connection.prepareStatement("insert into team (short_name, name, country_id, manager_id, division)" +
                                 " values (?,?,?,?,?)", new String[]{"id"});
                 ps.setString(1, team.getShortName());
                 ps.setString(2, team.getName());
@@ -159,7 +159,7 @@ public class DbTeamDao implements TeamDao {
         team.setEmblem(imagesManager.teamEmblemUrl(team));
         team.setManagerLogin(rs.getString("manager_login"));
         team.setManagerId(rs.getInt("manager_id"));
-        team.setDiv(rs.getInt("div"));
+        team.setDiv(rs.getInt("division"));
         return team;
     }
 }

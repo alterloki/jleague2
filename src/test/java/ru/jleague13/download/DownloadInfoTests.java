@@ -1,12 +1,12 @@
 package ru.jleague13.download;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.jleague13.Jleague2Application;
+import ru.jleague13.all.AllZip;
 import ru.jleague13.entity.Country;
 import ru.jleague13.entity.Team;
 
@@ -44,4 +44,5 @@ public class DownloadInfoTests {
         List<Team> teams = downloadInfo.downloadTeams(country);
         assert teams.size() == 32;
     }
+
 }

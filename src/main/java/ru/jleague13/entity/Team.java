@@ -2,6 +2,9 @@ package ru.jleague13.entity;
 
 import com.google.common.base.Objects;
 
+import java.util.List;
+import java.util.Set;
+
 /**
  * @author ashevenkov 10.09.15 23:36.
  */
@@ -16,7 +19,7 @@ public class Team {
     private String managerLogin = "";
     private int div;
 
-    public Team() {
+    public  Team() {
     }
 
     public Team(int id, String shortName, String name, int countryId) {
@@ -28,6 +31,21 @@ public class Team {
 
     public Team(int countryId) {
         this.countryId = countryId;
+    }
+
+    public Team(String name, String id, String town, int countryId,
+                String stadium, int managerId, String managerLogin, int games, int stadiumCapacity,
+                int stadiumState, int boom, int teamFinance, int managerFinance, int rating,
+                int sportbase, int sportbaseState, boolean sportschool, int sportschoolState,
+                int coach, int goalkeepersCoach, int defendersCoach, int midfieldersCoach,
+                int forwardsCoach, int fitnessCoach, int moraleCoach, int doctorQualification,
+                int doctorPlayers, int scout, int homeTop, int awayTop, int homeBottom,
+                int awayBottom, List<String> competitions, List<Player> players) {
+        this.name = name;
+        this.shortName = id;
+        this.countryId = countryId;
+        this.managerId = managerId;
+        this.managerLogin = managerLogin;
     }
 
     public String getShortName() {

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jleague13.download.DownloadInfo;
+import ru.jleague13.all.AllZip;
 import ru.jleague13.entity.Country;
 import ru.jleague13.entity.Team;
 import ru.jleague13.repository.AllDao;
@@ -13,10 +14,8 @@ import ru.jleague13.repository.CountryDao;
 import ru.jleague13.repository.TeamDao;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -35,11 +34,6 @@ public class InformationManager {
     private TeamDao teamDao;
     @Autowired
     private AllDao allDao;
-
-    @Transactional
-    public void updateDay() throws IOException {
-
-    }
 
     @Transactional
     public void updateCountries() throws IOException {
@@ -105,9 +99,9 @@ public class InformationManager {
         }
     }
 
-    public void updateTodayAll() {
+    public void updateTodayAll() throws IOException {
         log.info("Started all.zip reload.");
-
+        AllZip allZip = downloadInfo.downloadAll();
         log.info("Finished all.zip reload.");
     }
 

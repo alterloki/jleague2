@@ -57,16 +57,16 @@
                 url: '/new/admin/country',
                 type: 'PUT',
                 success: function(result) {
-                    window.location.href='/new/admin/country';
+                    window.location.href='/new/admin/countries';
                 }
             });
         });
         $('#update-countries').click(function () {
             $.ajax({
-                url: '/new/admin/country/download',
+                url: '/new/admin/countries/download',
                 type: 'POST',
                 success: function(result) {
-                    window.location.href='/new/admin/country';
+                    window.location.href='/new/admin/countries';
                 }
             });
             $("#update-countries").remove();
