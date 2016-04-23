@@ -1,11 +1,14 @@
 package ru.jleague13.controller;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jleague13.download.DownloadInfo;
 import ru.jleague13.entity.Country;
 import ru.jleague13.entity.Team;
+import ru.jleague13.repository.AllDao;
 import ru.jleague13.repository.CountryDao;
 import ru.jleague13.repository.TeamDao;
 
@@ -22,12 +25,21 @@ import java.util.stream.Collectors;
 @Component
 public class InformationManager {
 
+    private Log log = LogFactory.getLog(InformationManager.class);
+
     @Autowired
     private DownloadInfo downloadInfo;
     @Autowired
     private CountryDao countryDao;
     @Autowired
     private TeamDao teamDao;
+    @Autowired
+    private AllDao allDao;
+
+    @Transactional
+    public void updateDay() throws IOException {
+
+    }
 
     @Transactional
     public void updateCountries() throws IOException {
@@ -91,6 +103,12 @@ public class InformationManager {
             }
             teamDao.saveTeam(team);
         }
+    }
+
+    public void updateTodayAll() {
+        log.info("Started all.zip reload.");
+
+        log.info("Finished all.zip reload.");
     }
 
 }

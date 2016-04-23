@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="main::head"></head>
+<body>
+<nav th:replace="main::teamsnav"></nav>
+<div class="container">
+    <img id="logo" src="/images/jlogo.png"/>
+
+    <div th:replace="main::mainmenu ('transfer')"/>
+    <h3>Команды</h3>
+
+    <div class="well">
+        <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">Поиск</span>
+            <input id="team-name" type="text" class="form-control" placeholder="Название" aria-describedby="basic-addon1"/>
+        </div>
+    </div>
+
+    <div class="well">
+        <table class="table table-bordered table-responsive" id="teams-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Название</th>
+                <th>Менеджер</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="team : ${topTeams}">
+                <td th:text="${team.shortName}"></td>
+                <td th:text="${team.name}">
+                    <a href="/team" th:href="@{/team/{team_id}(team_id=${team.id})}" th:text="${team.name}"></a>
+                </td>
+                <td th:text="${team.managerLogin}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="well">
+        <table class="table table-bordered table-responsive" id="countries-table">
+            <thead>
+            <tr>
+                <th>ФА 13 Index</th>
+                <th>Название</th>
+                <th>Флаг</th>
+                <th>Команды</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="country : ${countries}">
+                <td th:text="${country.faId}"></td>
+                <td th:text="${country.name}"></td>
+                <td><img src="" th:attr="src=${country.picture}"/></td>
+                <td>
+                    <a href="/teams/country.html" th:href="@{/teams/country/{country_id}(country_id=${country.id})}">Команды</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+<footer th:replace="main::footer"></footer>
+<script src="/js/jquery-2.1.4.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.dataTables.min.js"></script>
+<script src="/js/transfer.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#team-name').keyup(function() {
+            $.ajax({
+                url: '/teams/sub/' + $('#team-name').val(),
+                type: 'GET',
+                success: function(result) {
+                    $('#teams-table').replaceWith(result);
+                }
+            });
+        });
+    });
+
+
+</script>
+</body>
+</html>

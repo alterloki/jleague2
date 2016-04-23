@@ -1,54 +1,53 @@
 package ru.jleague13.controller;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import ru.jleague13.entity.Team;
 import ru.jleague13.repository.CountryDao;
 import ru.jleague13.repository.TeamDao;
 
+import java.util.List;
+
 /**
- * @author ashevenkov 15.09.15 0:41.
+ * @author ashevenkov 17.04.16 15:01.
  */
 @Controller
-@RequestMapping("new/admin")
 public class TeamController {
+
+    private Log log = LogFactory.getLog(TeamController.class);
 
     @Autowired
     private TeamDao teamDao;
     @Autowired
     private CountryDao countryDao;
 
-    @RequestMapping(value="/country/{country_id}/team", method = RequestMethod.GET)
-    public String getCountryTeams(@PathVariable("country_id") int countryId, Model model) {
-        model.addAttribute("country", countryDao.getCountry(countryId));
-        model.addAttribute("teams", teamDao.getCountryTeams(countryId));
-        return "admin/team";
+    @RequestMapping(value="/teams", method = RequestMethod.GET)
+    public String getTeams(Model model) {
+        model.addAttribute("countries", countryDao.getCountries());
+        model.addAttribute("topTeams", teamDao.getTopTeams(10));
+        return "/teams";
     }
 
-    @RequestMapping(value="/country/{country_id}/team", method = RequestMethod.PUT)
-    public String createTeam(@PathVariable("country_id") int countryId, Model model) {
-        teamDao.saveTeam(new Team(countryId));
-        return "ok";
+    @RequestMapping(value="/teams/sub/{substr}", method = RequestMethod.GET)
+    public String getTeamsBySubstring(@PathVariable("substr") String substr, Model model) {
+        if(substr.length() == 0) {
+            model.addAttribute("teams", teamDao.getTopTeams(10));
+        } else {
+            model.addAttribute("teams", teamDao.getTeamsBySubstr(substr, 10));
+        }
+        return "/teamslist";
     }
 
-    @RequestMapping(value="/country/{country_id}/team", method = RequestMethod.POST)
-    public @ResponseBody Team saveOrUpdateTeam(@ModelAttribute Team team) {
-        teamDao.saveTeam(team);
-        return team;
+    @RequestMapping(value="/teams/sub/", method = RequestMethod.GET)
+    public String getTeamsByESubstring(Model model) {
+        return getTeamsBySubstring("", model);
     }
-
-    @RequestMapping(value="/country/{country_id}/team", method = RequestMethod.POST, params="action=delete")
-    public @ResponseBody Team deleteTeam(@ModelAttribute Team team) {
-        teamDao.deleteTeam(team.getId());
-        return team;
-    }
-
-    @RequestMapping(value="/country/{country_id}/team", method = RequestMethod.POST, params="action=restore")
-    public @ResponseBody Team restoreTeam(@ModelAttribute Team team) {
-        //TODO implement undelete?
-        return team;
-    }
-
 }

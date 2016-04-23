@@ -1,0 +1,18 @@
+<table class="table table-bordered table-responsive" id="teams-table" xmlns:th="http://www.thymeleaf.org">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Название</th>
+        <th>Менеджер</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="team : ${teams}">
+        <td th:text="${team.shortName}"></td>
+        <td th:text="${team.name}">
+            <a href="/team" th:href="@{/team/{team_id}(team_id=${team.id})}" th:text="${team.name}"></a>
+        </td>
+        <td th:text="${team.managerLogin}"></td>
+    </tr>
+    </tbody>
+</table>

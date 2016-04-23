@@ -9,7 +9,7 @@ import java.util.List;
  */
 public interface TeamDao {
 
-    List<Team> getTeams();
+    List<Team> getTeamsBySubstr();
 
     List<Team> getCountryTeams(int countryId);
 
@@ -19,8 +19,13 @@ public interface TeamDao {
 
     void deleteCountryTeams(int id);
 
+    void addView(int teamId);
+
     Team getTeam(int id);
 
     List<Team> getJapanLiveTeams();
 
+    List<Team> getTeamsBySubstr(String substring, int count);
+
+    List<Team> getTopTeams(int number);
 }

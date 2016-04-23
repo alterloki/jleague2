@@ -35,21 +35,22 @@ public class DbTeamDao implements TeamDao {
     @Autowired
     private DownloadImages downloadImages;
 
+    private static String FULL_FIELDS = "t.id, t.short_name, t.name, t.country_id," +
+                                        "u.login manager_login, u.id manager_id, t.div";
+
     @Override
-    public List<Team> getTeams() {
+    public List<Team> getTeamsBySubstr() {
         return jdbcTemplate.query(
-                "select t.id, t.short_name, t.name, t.country_id," +
-                        "u.login manager_login, u.id manager_id " +
-                        "from team t left outer join users u on t.manager_id = u.id",
+                "select  " + FULL_FIELDS +
+                        " from team t left outer join users u on t.manager_id = u.id",
                 (resultSet, i) -> teamFromRs(resultSet));
     }
 
     @Override
     public List<Team> getCountryTeams(int countryId) {
         return jdbcTemplate.query(
-                "select t.id, t.short_name, t.name, t.country_id, " +
-                        "u.login manager_login, u.id manager_id " +
-                        "from team t left outer join users u on t.manager_id = u.id " +
+                "select " + FULL_FIELDS +
+                        " from team t left outer join users u on t.manager_id = u.id " +
                         "where t.country_id = ?",
                 (resultSet, i) -> teamFromRs(resultSet), countryId);
     }
@@ -72,19 +73,21 @@ public class DbTeamDao implements TeamDao {
                 }
                 log.info("Download emblem old for " + team);
             }
-            jdbcTemplate.update("update team set short_name = ?, name = ?, country_id = ?, manager_id = ? where id = ?",
-                    team.getShortName(), team.getName(), team.getCountryId(), team.getManagerId(), team.getId());
+            jdbcTemplate.update("update team set short_name = ?, name = ?, country_id = ?, manager_id = ?, div = ?" +
+                            " where id = ?",
+                    team.getShortName(), team.getName(), team.getCountryId(), team.getManagerId(), team.getDiv(), team.getId());
             return team.getId();
         } else {
             KeyHolder keyHolder = new GeneratedKeyHolder();
             jdbcTemplate.update(connection -> {
                 PreparedStatement ps =
-                        connection.prepareStatement("insert into team (short_name, name, country_id, manager_id)" +
-                                " values (?,?,?,?)", new String[]{"id"});
+                        connection.prepareStatement("insert into team (short_name, name, country_id, manager_id, div)" +
+                                " values (?,?,?,?,?)", new String[]{"id"});
                 ps.setString(1, team.getShortName());
                 ps.setString(2, team.getName());
                 ps.setInt(3, team.getCountryId());
                 ps.setInt(4, team.getManagerId());
+                ps.setInt(5, team.getDiv());
                 return ps;
             }, keyHolder);
             int id = keyHolder.getKey().intValue();
@@ -109,11 +112,15 @@ public class DbTeamDao implements TeamDao {
     }
 
     @Override
+    public void addView(int teamId) {
+        jdbcTemplate.update("update team set views = (select views from team where id = ?) + 1 where id = ?",
+                teamId, teamId);
+    }
+
+    @Override
     public Team getTeam(int id) {
         return jdbcTemplate.query(
-                "select t.id, t.short_name, t.name, t.country_id," +
-                        "u.login manager_login, u.id manager_id " +
-                        "from team t left outer join users u on t.manager_id = u.id where t.id = ?",
+                "select " + FULL_FIELDS +" from team t left outer join users u on t.manager_id = u.id where t.id = ?",
                 rs -> {
                     if(rs.next()) {
                         return teamFromRs(rs);
@@ -125,10 +132,25 @@ public class DbTeamDao implements TeamDao {
     @Override
     public List<Team> getJapanLiveTeams() {
         return jdbcTemplate.query(
-                "select t.id, t.short_name, t.name, t.country_id," +
-                        "u.login manager_login, u.id manager_id from team t left outer join users u on t.manager_id = u.id where t.country_id = " +
+                "select " + FULL_FIELDS + " from team t left outer join users u on t.manager_id = u.id where t.country_id = " +
                         "(select id from country where fa_index = ?) and manager_id > 0",
                 (resultSet, i) -> teamFromRs(resultSet), "JPN");
+    }
+
+    @Override
+    public List<Team> getTeamsBySubstr(String substring, int count) {
+        return jdbcTemplate.query(
+                "select * from (select " + FULL_FIELDS + " from team t left outer join users u on t.manager_id = u.id where " +
+                        "lower(t.name) like concat('%',?,'%') order by t.views desc, t.name) v1 where v1.manager_id > 0 limit ?",
+                (resultSet, i) -> teamFromRs(resultSet), substring.toLowerCase(), count);
+    }
+
+    @Override
+    public List<Team> getTopTeams(int number) {
+        return jdbcTemplate.query(
+                "select * from (select " + FULL_FIELDS + " from team t left outer join users u " +
+                        "on t.manager_id = u.id order by t.views desc, t.name) v1 where v1.manager_id > 0 limit ?",
+                (resultSet, i) -> teamFromRs(resultSet), number);
     }
 
     private Team teamFromRs(ResultSet rs) throws SQLException {
@@ -137,6 +159,7 @@ public class DbTeamDao implements TeamDao {
         team.setEmblem(imagesManager.teamEmblemUrl(team));
         team.setManagerLogin(rs.getString("manager_login"));
         team.setManagerId(rs.getInt("manager_id"));
+        team.setDiv(rs.getInt("div"));
         return team;
     }
 }

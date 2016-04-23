@@ -2,22 +2,18 @@ package ru.jleague13.repository;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jleague13.Jleague2Application;
 import ru.jleague13.entity.Team;
 
 import javax.sql.DataSource;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @author ashevenkov 11.09.15 22:36.
@@ -53,7 +49,7 @@ public class TeamDaoTests {
 
     @Test
     public void testGetTeams() {
-        List<Team> teams = teamDao.getTeams();
+        List<Team> teams = teamDao.getTeamsBySubstr();
         assert teams.size() == 3;
         boolean aWas = false;
         for (Team team : teams) {
@@ -68,7 +64,7 @@ public class TeamDaoTests {
 
     @Test
     public void testGetDelete() {
-        List<Team> teams = teamDao.getTeams();
+        List<Team> teams = teamDao.getTeamsBySubstr();
         int bId = 0;
         boolean bWas = false;
         for (Team team : teams) {
@@ -79,7 +75,7 @@ public class TeamDaoTests {
         }
         assert bWas;
         teamDao.deleteTeam(bId);
-        teams = teamDao.getTeams();
+        teams = teamDao.getTeamsBySubstr();
         assert teams.size() == 2;
         assert teams.get(0).getName().equals("Android") || teams.get(0).getName().equals("Cereal");
         assert teams.get(1).getName().equals("Android") || teams.get(1).getName().equals("Cereal");
@@ -87,7 +83,7 @@ public class TeamDaoTests {
 
     @Test
     public void testUpdate() {
-        List<Team> teams = teamDao.getTeams();
+        List<Team> teams = teamDao.getTeamsBySubstr();
         assert teams.size() == 3;
         Team team = null;
         for (Team t : teams) {
@@ -100,7 +96,7 @@ public class TeamDaoTests {
         team.setName("Elastic");
         team.setCountryId(3);
         teamDao.saveTeam(team);
-        teams = teamDao.getTeams();
+        teams = teamDao.getTeamsBySubstr();
         assert teams.size() == 3;
         team = null;
         for (Team t : teams) {
@@ -117,7 +113,7 @@ public class TeamDaoTests {
     public void testSaveNew() {
         Team team = new Team(0, "D", "Dumbldore", 2);
         teamDao.saveTeam(team);
-        List<Team> teams = teamDao.getTeams();
+        List<Team> teams = teamDao.getTeamsBySubstr();
         assert teams.size() == 4;
         boolean wasD = false;
         for (Team t : teams) {

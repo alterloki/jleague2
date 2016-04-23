@@ -14,6 +14,7 @@ public class Team {
     private String emblem;
     private int managerId = 0;
     private String managerLogin = "";
+    private int div;
 
     public Team() {
     }
@@ -83,6 +84,14 @@ public class Team {
 
     public void setManagerLogin(String managerLogin) {
         this.managerLogin = managerLogin;
+    }
+
+    public int getDiv() {
+        return div;
+    }
+
+    public void setDiv(int div) {
+        this.div = div;
     }
 
     @Override
