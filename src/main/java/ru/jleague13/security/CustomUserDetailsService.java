@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jleague13.entity.User;
 import ru.jleague13.repository.UserDao;
-import sun.plugin.util.UserProfile;
 
 import java.util.ArrayList;
 import java.util.List;
