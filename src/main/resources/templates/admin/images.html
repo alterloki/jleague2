@@ -1,0 +1,14 @@
+<div class="panel pane-default">
+    <div class="panel-body">
+        <table class="table table-bordered" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+               xmlns:th="http://www.thymeleaf.org">
+            <tr th:each="image : ${images}">
+                <td th:text="${image.id}">1</td>
+                <td th:text="${image.name.length() > 20} ? ${image.name.substring(0, 20) + '...'} : ${image.name}">1.jpg</td>
+                <td><img src="/images/upload/1.jpg" th:attr="src=${image.getPath()},alt=${image.name}"
+                         alt="1.jpg" class="img-thumbnail center-block" style="height:140px;"></td>
+                <td><a th:attr="id=${'delete-photo-' + image.id}" id="delete-photo-1" href="#">Удалить</a></td>
+            </tr>
+        </table>
+    </div>
+</div>

@@ -12,11 +12,11 @@ import java.io.InputStreamReader;
  * @author ashevenkov 10.09.15 21:58.
  */
 @Controller
-@RequestMapping("/admin")
+@RequestMapping("/new/admin")
 public class AdminController {
 
     @RequestMapping(method = RequestMethod.GET)
-    public void admin() throws IOException {
-
+    public String admin() throws IOException {
+        return "admin/news";
     }
 }

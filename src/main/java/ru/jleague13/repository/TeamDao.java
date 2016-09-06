@@ -25,6 +25,8 @@ public interface TeamDao {
 
     List<Team> getJapanLiveTeams();
 
+    List<Team> getAllTeams();
+
     List<Team> getTeamsBySubstr(String substring, int count);
 
     List<Team> getTopTeams(int number);

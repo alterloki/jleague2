@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import ru.jleague13.entity.Abilities;
 import ru.jleague13.entity.Player;
 import ru.jleague13.entity.PlayerType;
 import ru.jleague13.entity.Transfer;
@@ -44,19 +45,21 @@ public class DbTransferDao implements TransferDao {
             jdbcTemplate.update("insert into transfer (transfer_date) values (?)", transfer.getDate());
         }
         jdbcTemplate.batchUpdate("insert into transfer_player " +
-                "(transfer_date, player_id, name, player_type, country, seller, buyer, age, talent," +
-                "experience, strength, health, price, salary, payed, abilities, shooting, handling," +
-                "reflexes, passing, crossing, dribbling, tackling, heading, speed, stamina, birthtour)" +
-                " values " +
-                "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                        "(transfer_date, player_id, name, player_type, country, seller, buyer, age, talent," +
+                        "experience, strength, health, price, salary, payed, abilities, shooting, handling," +
+                        "reflexes, passing, crossing, dribbling, tackling, heading, speed, stamina, birthtour)" +
+                        " values " +
+                        "(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 transfer.getPlayers().stream().map(player -> new Object[]{
                         transfer.getDate(), player.getPlayerId(), player.getName(), player.getPlayerType().name(),
                         player.getCountry(), player.getSeller(), player.getBuyer(), player.getAge(), player.getTalent(),
                         player.getExperience(), player.getStrength(), player.getHealth(), player.getPrice(),
-                        player.getSalary(), player.getPayed(), player.getAbilities(), player.getShooting(),
-                        player.getHandling(), player.getReflexes(), player.getPassing(), player.getCross(),
-                        player.getDribbling(), player.getTackling(), player.getHeading(), player.getSpeed(),
-                        player.getStamina(), player.getBirthtour()
+                        player.getSalary(), player.getPayed(), player.getAbilitiesString(), player.getAbilities().getShooting(),
+                        player.getAbilities().getHandling(), player.getAbilities().getReflexes(),
+                        player.getAbilities().getPassing(), player.getAbilities().getCross(),
+                        player.getAbilities().getDribbling(), player.getAbilities().getTackling(),
+                        player.getAbilities().getHeading(), player.getAbilities().getSpeed(),
+                        player.getAbilities().getStamina(), player.getBirthtour()
                 }).collect(Collectors.toList()));
     }
 
@@ -91,17 +94,19 @@ public class DbTransferDao implements TransferDao {
                         player.setPrice(rs.getInt("price"));
                         player.setSalary(rs.getInt("salary"));
                         player.setPayed(rs.getInt("payed"));
-                        player.setAbilities(rs.getString("abilities"));
-                        player.setShooting(rs.getInt("shooting"));
-                        player.setHandling(rs.getInt("handling"));
-                        player.setReflexes(rs.getInt("reflexes"));
-                        player.setPassing(rs.getInt("passing"));
-                        player.setCross(rs.getInt("crossing"));
-                        player.setDribbling(rs.getInt("dribbling"));
-                        player.setTackling(rs.getInt("tackling"));
-                        player.setHeading(rs.getInt("heading"));
-                        player.setSpeed(rs.getInt("speed"));
-                        player.setStamina(rs.getInt("stamina"));
+                        player.setAbilitiesString(rs.getString("abilities"));
+                        Abilities abilities = new Abilities();
+                        abilities.setShooting(rs.getInt("shooting"));
+                        abilities.setHandling(rs.getInt("handling"));
+                        abilities.setReflexes(rs.getInt("reflexes"));
+                        abilities.setPassing(rs.getInt("passing"));
+                        abilities.setCross(rs.getInt("crossing"));
+                        abilities.setDribbling(rs.getInt("dribbling"));
+                        abilities.setTackling(rs.getInt("tackling"));
+                        abilities.setHeading(rs.getInt("heading"));
+                        abilities.setSpeed(rs.getInt("speed"));
+                        abilities.setStamina(rs.getInt("stamina"));
+                        player.setAbilities(abilities);
                         player.setBirthtour(rs.getInt("birthtour"));
                         return player;
                     }, date));
@@ -203,18 +208,20 @@ public class DbTransferDao implements TransferDao {
         transferPlayer.setSalary(salary);
         transferPlayer.setStrength(strength);
         transferPlayer.setHealth(health);
-        transferPlayer.setAbilities(abilities);
+        transferPlayer.setAbilitiesString(abilities);
         transferPlayer.setPrice(price);
-        transferPlayer.setShooting(Integer.valueOf(parsedData[pos++]));
-        transferPlayer.setHandling(Integer.valueOf(parsedData[pos++]));
-        transferPlayer.setReflexes(Integer.valueOf(parsedData[pos++]));
-        transferPlayer.setPassing(Integer.valueOf(parsedData[pos++]));
-        transferPlayer.setCross(Integer.valueOf(parsedData[pos++]));
-        transferPlayer.setDribbling(Integer.valueOf(parsedData[pos++]));
-        transferPlayer.setTackling(Integer.valueOf(parsedData[pos++]));
-        transferPlayer.setHeading(Integer.valueOf(parsedData[pos++]));
-        transferPlayer.setSpeed(Integer.valueOf(parsedData[pos++]));
-        transferPlayer.setStamina(Integer.valueOf(parsedData[pos++]));
+        Abilities abs = new Abilities();
+        abs.setShooting(Integer.valueOf(parsedData[pos++]));
+        abs.setHandling(Integer.valueOf(parsedData[pos++]));
+        abs.setReflexes(Integer.valueOf(parsedData[pos++]));
+        abs.setPassing(Integer.valueOf(parsedData[pos++]));
+        abs.setCross(Integer.valueOf(parsedData[pos++]));
+        abs.setDribbling(Integer.valueOf(parsedData[pos++]));
+        abs.setTackling(Integer.valueOf(parsedData[pos++]));
+        abs.setHeading(Integer.valueOf(parsedData[pos++]));
+        abs.setSpeed(Integer.valueOf(parsedData[pos++]));
+        abs.setStamina(Integer.valueOf(parsedData[pos++]));
+        transferPlayer.setAbilities(abs);
         transferPlayer.setBirthtour(Integer.valueOf(parsedData[pos]));
         return transferPlayer;
     }

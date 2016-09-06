@@ -1,5 +1,7 @@
 package ru.jleague13.security;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,32 +22,32 @@ import java.util.List;
 @Service("customUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 
+    private Log log = LogFactory.getLog(CustomUserDetailsService.class);
+
     @Autowired
     private UserDao userService;
 
     @Transactional(readOnly=true)
     public UserDetails loadUserByUsername(String ssoId)
             throws UsernameNotFoundException {
-        /*User user = userService.(ssoId);
-        System.out.println("User : "+user);
-        if(user==null){
-            System.out.println("User not found");
+        log.info("Finding user by ssoid = " + ssoId);
+        User user = userService.getUserByLogin(ssoId);
+        log.info("User = " + user);
+        if(user == null){
             throw new UsernameNotFoundException("Username not found");
         }
-        return new org.springframework.security.core.userdetails.User(user.getSsoId(), user.getPassword(),
-                user.getState().equals("Active"), true, true, true, getGrantedAuthorities(user));*/
-        return null;
+        return new org.springframework.security.core.userdetails.User(user.getLogin(), user.getPassword(),
+                true, true, true, true, getGrantedAuthorities(user));
     }
 
 
     private List<GrantedAuthority> getGrantedAuthorities(User user){
+        log.info("Get granted authorities!");
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-
-        /*for(UserProfile userProfile : user.getUserProfiles()){
-            System.out.println("UserProfile : "+userProfile);
-            authorities.add(new SimpleGrantedAuthority("ROLE_"+userProfile.getType()));
-        }*/
-        System.out.print("authorities :"+authorities);
+        if(user.isAdmin()) {
+            log.info(user.getLogin() + " is Admin");
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        }
         return authorities;
     }
 

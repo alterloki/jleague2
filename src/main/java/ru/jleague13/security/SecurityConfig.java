@@ -15,14 +15,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 /**
  * @author ashevenkov 20.03.16 16:54.
  */
-//@Configuration
-//@EnableWebSecurity
+@Configuration
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private UserDetailsService userDetailsService;
+    @Autowired
+    private UserDetailsService customUserDetailsService;
 
+    @Autowired
     public void configureGlobalSecurity(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService);
+        auth.userDetailsService(customUserDetailsService);
         auth.authenticationProvider(authenticationProvider());
     }
 
@@ -36,19 +38,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-        authenticationProvider.setUserDetailsService(userDetailsService);
+        authenticationProvider.setUserDetailsService(customUserDetailsService);
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         return authenticationProvider;
     }
 
-    @Override
+    /*@Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/admin/**").access("hasRole('ADMIN')")
-                .and().formLogin().loginPage("/login")
-                .usernameParameter("ssoId").passwordParameter("password")
-                .and().csrf()
+                .antMatchers("/new/admin*//**").access("hasRole('ADMIN')")
+                .and().formLogin().loginPage("/new/login").defaultSuccessUrl("/new/admin").failureUrl("/new/login-error")
+                .usernameParameter("username").passwordParameter("password").loginProcessingUrl("/login-process")
+                //.and().csrf()
                 .and().exceptionHandling().accessDeniedPage("/Access_Denied");
+    }*/
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .and()
+                .formLogin().loginPage("/new/login").permitAll().usernameParameter("j_username")
+                .passwordParameter("j_password").loginProcessingUrl("/j_spring_security_check").failureUrl("/new/login-error")
+                .and().authorizeRequests().antMatchers("/new/admin/**").access("hasRole('ADMIN')")
+                .and().logout().logoutUrl("/j_spring_security_logout").logoutSuccessUrl("/")
+                .and().csrf().disable();
     }
 }

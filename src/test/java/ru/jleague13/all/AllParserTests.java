@@ -4,6 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -23,7 +24,7 @@ import java.util.Map;
  * @author ashevenkov 23.04.16 16:40.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Jleague2Application.class)
+@SpringBootTest
 public class AllParserTests {
 
     @Autowired
@@ -33,7 +34,7 @@ public class AllParserTests {
     public void testParseAllFromFile() throws Exception {
         Resource resource = new ClassPathResource("all13.zip");
         BufferedReader br = new BufferedReader(new InputStreamReader(resource.getInputStream()));
-        AllZip allZip = new AllParser().readAll(br, loadCountryMap(), loadUserMap());
+        AllZip allZip = new AllParser(loadCountryMap()).readAll(br);
         //System.out.println(allZip.getTeams().size());
     }
 

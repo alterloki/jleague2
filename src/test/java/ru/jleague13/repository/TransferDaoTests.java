@@ -6,12 +6,14 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.SpringApplicationConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import ru.jleague13.Jleague2Application;
+import ru.jleague13.entity.Abilities;
 import ru.jleague13.entity.Player;
 import ru.jleague13.entity.PlayerType;
 import ru.jleague13.entity.Transfer;
@@ -28,7 +30,7 @@ import java.util.Map;
  * @author ashevenkov 26.09.15 22:56.
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Jleague2Application.class)
+@SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
 public class TransferDaoTests {
 
@@ -84,7 +86,7 @@ public class TransferDaoTests {
         Date date = new SimpleDateFormat("dd.MM.yyy").parse("01.09.2015");
         Transfer transfer = new Transfer(date, Arrays.asList(
                 new Player(0, 12, "Alex", PlayerType.CF, "Russia", "Akita", "Gifu", 25, 90, 100, 70, 100, 2233, 235,
-                        4567, "УСФ", 50, 20, 30, 20, 60, 33, 40, 22, 100, 33, 3)));
+                        4567, "УСФ", 3, new Abilities(50, 20, 30, 20, 60, 33, 40, 22, 100, 33))));
         transferDao.saveTransfer(transfer);
         Transfer loaded = transferDao.loadTransfer(date);
         assert loaded.getDate().getTime() == date.getTime();
@@ -104,17 +106,18 @@ public class TransferDaoTests {
         assert player.getPrice() == 2233;
         assert player.getSalary() == 235;
         assert player.getPayed() == 4567;
-        assert player.getAbilities().equals("УСФ");
-        assert player.getShooting() == 50;
-        assert player.getHandling() == 20;
-        assert player.getReflexes() == 30;
-        assert player.getPassing() == 20;
-        assert player.getCross() == 60;
-        assert player.getDribbling() == 33;
-        assert player.getTackling() == 40;
-        assert player.getHeading() == 22;
-        assert player.getSpeed() == 100;
-        assert player.getStamina() == 33;
+        assert player.getAbilitiesString().equals("УСФ");
+        Abilities abs = player.getAbilities();
+        assert abs.getShooting() == 50;
+        assert abs.getHandling() == 20;
+        assert abs.getReflexes() == 30;
+        assert abs.getPassing() == 20;
+        assert abs.getCross() == 60;
+        assert abs.getDribbling() == 33;
+        assert abs.getTackling() == 40;
+        assert abs.getHeading() == 22;
+        assert abs.getSpeed() == 100;
+        assert abs.getStamina() == 33;
         assert player.getBirthtour() == 3;
     }
 }

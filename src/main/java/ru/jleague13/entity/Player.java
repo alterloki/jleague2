@@ -8,10 +8,9 @@ public class Player {
     private int id;
     private int playerId;
     private String name;
+
     private PlayerType playerType;
     private String country;
-    private String seller;
-    private String buyer;
     private int age;
     private int talent;
     private int experience;
@@ -21,17 +20,12 @@ public class Player {
     private int salary;
     private int payed;
 
-    private String abilities;
-    private int shooting;
-    private int handling;
-    private int reflexes;
-    private int passing;
-    private int cross;
-    private int dribbling;
-    private int tackling;
-    private int heading;
-    private int speed;
-    private int stamina;
+    private String seller;
+    private String buyer;
+
+    private Abilities abilities;
+
+    private String abilitiesString;
     private int birthtour;
     private String clubName;
 
@@ -40,9 +34,8 @@ public class Player {
 
     public Player(int id, int playerId, String name, PlayerType playerType, String country,
                   String seller, String buyer, int age, int talent, int experience, int strength,
-                  int health, int price, int salary, int payed, String abilities, int shooting,
-                  int handling, int reflexes, int passing, int cross, int dribbling, int tackling,
-                  int heading, int speed, int stamina, int birthtour) {
+                  int health, int price, int salary, int payed, String abilitiesString, int birthtour,
+                  Abilities abilities) {
         this.id = id;
         this.playerId = playerId;
         this.name = name;
@@ -58,18 +51,9 @@ public class Player {
         this.price = price;
         this.salary = salary;
         this.payed = payed;
-        this.abilities = abilities;
-        this.shooting = shooting;
-        this.handling = handling;
-        this.reflexes = reflexes;
-        this.passing = passing;
-        this.cross = cross;
-        this.dribbling = dribbling;
-        this.tackling = tackling;
-        this.heading = heading;
-        this.speed = speed;
-        this.stamina = stamina;
         this.birthtour = birthtour;
+        this.abilities = abilities;
+        this.abilitiesString = abilitiesString;
     }
 
     public int getId() {
@@ -192,92 +176,12 @@ public class Player {
         this.payed = payed;
     }
 
-    public String getAbilities() {
-        return abilities;
+    public String getAbilitiesString() {
+        return abilitiesString;
     }
 
-    public void setAbilities(String abilities) {
-        this.abilities = abilities;
-    }
-
-    public int getShooting() {
-        return shooting;
-    }
-
-    public void setShooting(int shooting) {
-        this.shooting = shooting;
-    }
-
-    public int getHandling() {
-        return handling;
-    }
-
-    public void setHandling(int handling) {
-        this.handling = handling;
-    }
-
-    public int getReflexes() {
-        return reflexes;
-    }
-
-    public void setReflexes(int reflexes) {
-        this.reflexes = reflexes;
-    }
-
-    public int getPassing() {
-        return passing;
-    }
-
-    public void setPassing(int passing) {
-        this.passing = passing;
-    }
-
-    public int getCross() {
-        return cross;
-    }
-
-    public void setCross(int cross) {
-        this.cross = cross;
-    }
-
-    public int getDribbling() {
-        return dribbling;
-    }
-
-    public void setDribbling(int dribbling) {
-        this.dribbling = dribbling;
-    }
-
-    public int getTackling() {
-        return tackling;
-    }
-
-    public void setTackling(int tackling) {
-        this.tackling = tackling;
-    }
-
-    public int getHeading() {
-        return heading;
-    }
-
-    public void setHeading(int heading) {
-        this.heading = heading;
-    }
-
-    public int getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
-    public int getStamina() {
-        return stamina;
-    }
-
-    public void setStamina(int stamina) {
-        this.stamina = stamina;
+    public void setAbilitiesString(String abilities) {
+        this.abilitiesString = abilities;
     }
 
     public int getBirthtour() {
@@ -290,16 +194,16 @@ public class Player {
 
     public String getFunctions() {
         StringBuilder sb = new StringBuilder();
-        addFunction(sb, this.shooting, "у");
-        addFunction(sb, this.handling, "т");
-        addFunction(sb, this.reflexes, "р");
-        addFunction(sb, this.passing, "п");
-        addFunction(sb, this.cross, "н");
-        addFunction(sb, this.dribbling, "д");
-        addFunction(sb, this.tackling, "о");
-        addFunction(sb, this.heading, "вг");
-        addFunction(sb, this.speed, "с");
-        addFunction(sb, this.stamina, "ф");
+        addFunction(sb, this.abilities.getShooting(), "у");
+        addFunction(sb, this.abilities.getHandling(), "т");
+        addFunction(sb, this.abilities.getReflexes(), "р");
+        addFunction(sb, this.abilities.getPassing(), "п");
+        addFunction(sb, this.abilities.getCross(), "н");
+        addFunction(sb, this.abilities.getDribbling(), "д");
+        addFunction(sb, this.abilities.getTackling(), "о");
+        addFunction(sb, this.abilities.getHeading(), "вг");
+        addFunction(sb, this.abilities.getSpeed(), "с");
+        addFunction(sb, this.abilities.getStamina(), "ф");
         return sb.toString();
     }
 
@@ -312,5 +216,17 @@ public class Player {
 
     public void setClubName(String clubName) {
         this.clubName = clubName;
+    }
+
+    public Abilities getAbilities() {
+        return abilities;
+    }
+
+    public void setAbilities(Abilities abilities) {
+        this.abilities = abilities;
+    }
+
+    public String getClubName() {
+        return clubName;
     }
 }

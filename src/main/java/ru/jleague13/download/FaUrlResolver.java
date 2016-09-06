@@ -10,7 +10,7 @@ import ru.jleague13.entity.Team;
 @Component
 public class FaUrlResolver {
 
-    public static final String FA13_URL = "http://fa13.info";
+    public static final String FA13_URL = "http://old.fa13.info";
 
     public String getFaCountryFlag(Country country) {
         return FA13_URL + "/image/flag_s/flag_s_" + country.getFaIndex() + ".gif";

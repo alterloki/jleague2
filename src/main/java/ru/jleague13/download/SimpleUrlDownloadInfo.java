@@ -7,20 +7,17 @@ import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.yaml.snakeyaml.reader.ReaderException;
 import ru.jleague13.all.AllParser;
 import ru.jleague13.all.AllZip;
 import ru.jleague13.entity.*;
 import ru.jleague13.repository.CountryDao;
+import ru.jleague13.repository.TeamDao;
 import ru.jleague13.repository.UserDao;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.zip.ZipInputStream;
 
@@ -38,6 +35,8 @@ public class SimpleUrlDownloadInfo implements DownloadInfo {
     private UserDao userDao;
     @Autowired
     private CountryDao countryDao;
+    @Autowired
+    private TeamDao teamDao;
 
     @Override
     public List<Country> downloadCountries() throws IOException {
@@ -61,17 +60,20 @@ public class SimpleUrlDownloadInfo implements DownloadInfo {
         for (int i = 0; i < select.size(); i++) {
             String shortName = select.get(i).select("a[href^=team]").attr("href").substring(15);
             String name = select.get(i).select("a[href^=team]").select("b").text();
+            //TODO fix
             Team team = new Team(0, shortName, name, country.getId());
             String managerLogin = select.get(i).select("a[href^=profile]").text();
             String managerIdString = select.get(i).select("a[href^=profile]").attr("href").substring(16);
             if (managerIdString.length() > 0) {
                 int managerId = Integer.parseInt(managerIdString);
                 User user = userDao.getUserByFaId(managerId);
-                team.setManagerLogin(managerLogin);
+                team.setManagerId(managerId);
                 if (user != null) {
                     team.setManagerId(user.getId());
                 } else {
-                    int userId = userDao.saveUser(new User(0, "", managerLogin, managerId));
+                    //TODO fix
+                    int userId = userDao.saveUser(new User(0, managerLogin, "", managerId, 0, "", "",
+                            0, "", "", false, false));
                     team.setManagerId(userId);
                 }
             }
@@ -84,15 +86,28 @@ public class SimpleUrlDownloadInfo implements DownloadInfo {
     public AllZip downloadAll() throws IOException {
         ZipInputStream allStream = new ZipInputStream(new URL(faUrlResolver.getAllZip()).openStream());
         BufferedReader reader = new BufferedReader(new InputStreamReader(allStream, "Cp1251"));
-        AllZip all = new AllParser().readAll(reader, loadCountryMap(), loadUserMap());
+        AllZip all = new AllParser(loadCountryMap()).readAll(reader);
         reader.close();
         allStream.close();
         return all;
     }
 
+    private Map<String, Team> loadTeams() {
+        List<Team> allTeams = teamDao.getAllTeams();
+        Map<String, Team> result = new HashMap<>();
+        for (Team team : allTeams) {
+            result.put(team.getShortName(), team);
+        }
+        return result;
+    }
+
     private Map<Integer, User> loadUserMap() {
-        //todo implement
-        return new HashMap<>();
+        List<User> allUsers = userDao.getAllUsers();
+        Map<Integer, User> result = new HashMap<>();
+        for (User user : allUsers) {
+            result.put(user.getFaId(), user);
+        }
+        return result;
     }
 
     private Map<String, Country> loadCountryMap() {
@@ -103,6 +118,5 @@ public class SimpleUrlDownloadInfo implements DownloadInfo {
         }
         return result;
     }
-
 
 }

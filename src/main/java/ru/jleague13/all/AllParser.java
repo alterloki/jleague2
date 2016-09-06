@@ -2,7 +2,6 @@ package ru.jleague13.all;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.yaml.snakeyaml.reader.ReaderException;
 import ru.jleague13.entity.*;
 
 import java.io.BufferedReader;
@@ -16,11 +15,15 @@ import java.util.*;
  */
 public class AllParser {
 
-    private Log log = LogFactory.getLog(AllParser.class);
+    private static final Log log = LogFactory.getLog(AllParser.class);
+    private final Map<String, Country> countryMap;
 
-    public AllZip readAll(BufferedReader reader, Map<String, Country> countries,
-                          Map<Integer, User> oldUserMap) throws IOException {
-        Map<Integer, User> newUserMap = new HashMap<>();
+    public AllParser(Map<String, Country> countryMap) {
+        this.countryMap = countryMap;
+    }
+
+
+    public AllZip readAll(BufferedReader reader) throws IOException {
 
         String s = reader.readLine();
         if (s.compareTo("format=4") != 0) {
@@ -29,7 +32,7 @@ public class AllParser {
         }
         s = reader.readLine();
         SimpleDateFormat dateParser = new SimpleDateFormat("/dd.MM.yyyy/");
-        Date date = null;
+        Date date;
         try {
             date = dateParser.parse(s);
         } catch (ParseException e) {
@@ -51,19 +54,18 @@ public class AllParser {
         s = reader.readLine().replace('/', ' ').trim();
         int bankRate = Integer.valueOf(s);
 
+        Map<Integer, FaUser> users = new HashMap<>();
         Map<String, Team> teams = new HashMap<>();
-        Team current = readTeam(reader, countries, oldUserMap, newUserMap);
+        Team current = readTeam(reader, users);
 
         while (current != null) {
             teams.put(current.getShortName(), current);
-            current = readTeam(reader, countries, oldUserMap, oldUserMap);
+            current = readTeam(reader, users);
         }
         return new AllZip(date, competitions, bankRate, teams);
-
     }
 
-    private Team readTeam(BufferedReader reader, Map<String, Country> countries,
-                          Map<Integer, User> oldUserMap, Map<Integer, User> newUserMap) throws IOException {
+    private Team readTeam(BufferedReader reader, Map<Integer, FaUser> users) throws IOException {
         String s = reader.readLine();
         if (s == null || s.trim().isEmpty()) {
             return null;
@@ -86,7 +88,7 @@ public class AllParser {
         parsedData = s.split("/");
         int[] cntArr = new int[0];
         cntArr[0] = 1;
-        User user = parseUserData(parsedData, cntArr, oldUserMap, newUserMap);
+
         cnt = cntArr[0];
         int games = Integer.valueOf(parsedData[cnt++]);
 
@@ -120,6 +122,9 @@ public class AllParser {
         int doctorPlayers = Integer.valueOf(parsedData[cnt++]);
         int scout = Integer.valueOf(parsedData[cnt++]);
 
+        FaUser user = parseUserData(parsedData, cntArr, managerFinance);
+        users.put(user.getFaId(), user);
+
         s = reader.readLine();
         parsedData = s.split("/");
         cnt = 1;
@@ -149,6 +154,14 @@ public class AllParser {
         List<String> competitions = new ArrayList<>();
         Collections.addAll(competitions, parsedData);
 
+        TeamInfo teamInfo = new TeamInfo(0, town, games, stadiumCapacity, boom, teamFinance, stadium, stadiumState,
+                    rating, sportbase, sportbaseState, sportschool, sportschoolState, coach, goalkeepersCoach,
+                    defendersCoach, midfieldersCoach, forwardsCoach, fitnessCoach, moraleCoach,
+                    doctorQualification, doctorPlayers, scout, homeTop, awayTop, homeBottom, awayBottom,
+                    competitions);
+        Team team = new Team(0, id, name, countryMap.get(country).getId(), 0,
+                calculateDiv(competitions), teamInfo);
+
         List<Player> players = new ArrayList<>(15);
         Player current = readPlayer(reader);
         while (current != null) {
@@ -162,12 +175,14 @@ public class AllParser {
                 player.setCountry(nationalTeam);
             }
         }
-        updateUsers(newUserMap);
-        return new Team(name, id, town, countries.get(country).getId(), stadium, user.getId(),
-                user.getLogin(), games, stadiumCapacity, stadiumState, boom, teamFinance, managerFinance,
-                rating, sportbase, sportbaseState, sportschool, sportschoolState, coach, goalkeepersCoach, defendersCoach, midfieldersCoach, forwardsCoach, fitnessCoach, moraleCoach,
-                doctorQualification, doctorPlayers, scout, homeTop, awayTop, homeBottom, awayBottom, competitions, players);
+        team.setPlayers(players);
+        return new Team();
 
+    }
+
+    private int calculateDiv(List<String> competitions) {
+        //todo implement
+        return 0;
     }
 
     private void updateUsers(Map<Integer, User> newUserMap) {
@@ -175,8 +190,7 @@ public class AllParser {
 
     }
 
-    private User parseUserData(String[] parsedData, int[] cnt,
-                               Map<Integer, User> oldUserMap, Map<Integer, User> newUserMap) {
+    private FaUser parseUserData(String[] parsedData, int[] cnt, int managerFinance) {
         int managerId = Integer.valueOf(parsedData[cnt[0]++]);
         String managerName = parsedData[cnt[0]++];
         String managerTown = parsedData[cnt[0]++];
@@ -191,20 +205,7 @@ public class AllParser {
                 uin = 0;
             }
         }
-        User oldUser = oldUserMap.get(managerId);
-        int id = 0;
-        User newUser = new User(id, "", managerName, managerId, "", false, false,
-                managerEmail, managerTown, managerCountry, uin);
-        if (oldUser != null) {
-            newUser.setId(oldUser.getId());
-            newUser.setLogin(oldUser.getLogin());
-            newUser.setPassword(oldUser.getPassword());
-            newUser.setRegistered(oldUser.isRegistered());
-            newUser.setAdmin(oldUser.isAdmin());
-        }
-        newUserMap.put(managerId, newUser);
-
-        return newUser;
+        return new FaUser(0, managerName, managerEmail, managerId, uin, managerTown, managerCountry, managerFinance);
     }
 
     public static Player readPlayer(BufferedReader reader) throws IOException {
@@ -273,7 +274,8 @@ public class AllParser {
         int id = Integer.valueOf(parsedData[cnt++]);
 
         return new Player(0, id, name, position, nationality, "", "", age, talent, experience, strength, health,
-                price, salary, 0, "", shooting, handling, reflexes, passing, crossing, dribbling, tackling,
-                heading, speed, stamina, birthtour);
+                price, salary, 0, "", birthtour,
+                new Abilities(shooting, handling, reflexes, passing, crossing, dribbling,
+                        tackling, heading, speed, stamina));
     }
 }

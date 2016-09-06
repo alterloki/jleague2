@@ -22,4 +22,6 @@ public interface UserDao {
     List<User> getRegisteredUsers();
 
     void deleteUser(int userId);
+
+    User getUserByLogin(String login);
 }

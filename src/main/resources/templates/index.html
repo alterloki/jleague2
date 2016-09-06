@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{main-layout}">
+<head>
+    <title>Логин</title>
+</head>
+<body>
+<nav layout:fragment="mainmenu" th:remove="tag">
+</nav>
+<div layout:fragment="content" class="container">
+    <h1>Spring MVC - jQuery File Upload</h1>
+    <div style="width:500px;padding:20px">
+
+        <input id="fileupload" type="file" name="files[]" data-url="/new/admin/file/upload" multiple>
+
+        <div id="dropzone">Drop files here</div>
+
+        <div class="progress" id="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
+        </div>
+
+        <table class="table" id="uploaded-files">
+            <tr>
+                <th>File Name</th>
+                <th>File Size</th>
+                <th>File Type</th>
+                <th>Download</th>
+            </tr>
+        </table>
+
+    </div>
+</div>
+<script src="/js/jquery-2.1.4.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tabledit.min.js"></script>
+<script src="/js/jquery.dataTables.min.js"></script>
+<div layout:fragment="script-after" th:remove="tag">
+    <script src="/js/myuploadfunction.js"></script>
+    <script src="/js/jquery-ui.js"></script>
+    <script src="/js/jquery.fileupload.js"></script>
+    <script src="/js/jquery.iframe-transport.js"></script>
+</div>
+</body>
+</html>

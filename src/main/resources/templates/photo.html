@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{main-layout}">
+<head>
+    <title>Новости</title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
+    <!-- Optional Bootstrap theme -->
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="/css/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" href="/css/jleague.css"/>
+</head>
+<body>
+<nav layout:fragment="mainmenu" th:remove="tag">
+    <div th:replace="main::mainmenu ('photo')"/>
+</nav>
+<div class="container">
+<div class="col-md-1"></div>
+<div layout:fragment="content" class="col-md-8">
+    <div class="container-fluid clearfix" style="padding:0; overflow:hidden">
+        <div id="ib-main-wrapper" class="ib-main-wrapper kinetic-active" tabindex="0"
+             style="height: 308px; cursor: move;">
+            <div class="ib-main"><a href="#" class="ib-image"><img src="images/grid/thumbs/1.jpg"
+                                                                   data-largesrc="images/grid/large/1.jpg"
+                                                                   alt="image01"><span>Crabbed Age and Youth</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/2.jpg" data-largesrc="images/grid/large/2.jpg"
+                                                  alt="image02"><span>Cannot live together</span></a> <a href="#"
+                                                                                                         class="ib-content">
+                    <div class="ib-teaser">
+                        <h2>Welcome <span>Parallax707</span></h2>
+                    </div>
+                    <div class="ib-content-full">
+                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
+                            there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the
+                            Semantics, a large language ocean.</p>
+                    </div>
+                </a> <a href="#" class="ib-image"><img src="images/grid/thumbs/3.jpg"
+                                                       data-largesrc="images/grid/large/3.jpg" alt="image03"><span>Youth is full of pleasance</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/4.jpg" data-largesrc="images/grid/large/4.jpg"
+                                                  alt="image04"><span>Crabbed Age and Youth</span></a> <a href="#"
+                                                                                                          class="ib-image"><img
+                        src="images/grid/thumbs/5.jpg" data-largesrc="images/grid/large/5.jpg" alt="image05"><span>Cannot live together</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/6.jpg" data-largesrc="images/grid/large/6.jpg"
+                                                  alt="image06"><span>Youth is full of pleasance</span></a> <a href="#"
+                                                                                                               class="ib-image"><img
+                        src="images/grid/thumbs/7.jpg" data-largesrc="images/grid/large/7.jpg" alt="image01"><span>Crabbed Age and Youth</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/8.jpg" data-largesrc="images/grid/large/8.jpg"
+                                                  alt="image02"><span>Cannot live together</span></a> <a href="#"
+                                                                                                         class="ib-image"><img
+                        src="images/grid/thumbs/9.jpg" data-largesrc="images/grid/large/9.jpg" alt="image03"><span>Youth is full of pleasance</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/10.jpg"
+                                                  data-largesrc="images/grid/large/10.jpg" alt="image01"><span>Crabbed Age and Youth</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/11.jpg"
+                                                  data-largesrc="images/grid/large/11.jpg" alt="image02"><span>Cannot live together</span></a>
+                <a href="#" class="ib-content">
+                    <div class="ib-teaser">
+                        <h2>Parallax<span>Effect</span></h2>
+                    </div>
+                    <div class="ib-content-full">
+                        <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia,
+                            there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the
+                            Semantics, a large language ocean.</p>
+                    </div>
+                </a> <a href="#" class="ib-image"><img src="images/grid/thumbs/12.jpg"
+                                                       data-largesrc="images/grid/large/12.jpg" alt="image03"><span>Youth is full of pleasance</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/13.jpg"
+                                                  data-largesrc="images/grid/large/13.jpg" alt="image01"><span>Crabbed Age and Youth</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/14.jpg"
+                                                  data-largesrc="images/grid/large/14.jpg" alt="image02"><span>Cannot live together</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/15.jpg"
+                                                  data-largesrc="images/grid/large/15.jpg" alt="image03"><span>Youth is full of pleasance</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/16.jpg"
+                                                  data-largesrc="images/grid/large/16.jpg" alt="image01"><span>Crabbed Age and Youth</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/17.jpg"
+                                                  data-largesrc="images/grid/large/17.jpg" alt="image02"><span>Cannot live together</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/18.jpg"
+                                                  data-largesrc="images/grid/large/18.jpg" alt="image03"><span>Youth is full of pleasance</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/19.jpg"
+                                                  data-largesrc="images/grid/large/19.jpg" alt="image01"><span>Crabbed Age and Youth</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/20.jpg"
+                                                  data-largesrc="images/grid/large/20.jpg" alt="image02"><span>Cannot live together</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/21.jpg"
+                                                  data-largesrc="images/grid/large/21.jpg" alt="image03"><span>Youth is full of pleasance</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/22.jpg"
+                                                  data-largesrc="images/grid/large/22.jpg" alt="image01"><span>Crabbed Age and Youth</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/23.jpg"
+                                                  data-largesrc="images/grid/large/23.jpg" alt="image02"><span>Cannot live together</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/24.jpg"
+                                                  data-largesrc="images/grid/large/24.jpg" alt="image03"><span>Youth is full of pleasance</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/25.jpg"
+                                                  data-largesrc="images/grid/large/25.jpg" alt="image01"><span>Crabbed Age and Youth</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/26.jpg"
+                                                  data-largesrc="images/grid/large/26.jpg" alt="image02"><span>Cannot live together</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/27.jpg"
+                                                  data-largesrc="images/grid/large/27.jpg" alt="image03"><span>Youth is full of pleasance</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/1.jpg" data-largesrc="images/grid/large/1.jpg"
+                                                  alt="image01"><span>Crabbed Age and Youth</span></a> <a href="#"
+                                                                                                          class="ib-image"><img
+                        src="images/grid/thumbs/2.jpg" data-largesrc="images/grid/large/2.jpg" alt="image02"><span>Cannot live together</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/3.jpg" data-largesrc="images/grid/large/3.jpg"
+                                                  alt="image03"><span>Youth is full of pleasance</span></a> <a href="#"
+                                                                                                               class="ib-image"><img
+                        src="images/grid/thumbs/4.jpg" data-largesrc="images/grid/large/4.jpg" alt="image01"><span>Crabbed Age and Youth</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/5.jpg" data-largesrc="images/grid/large/5.jpg"
+                                                  alt="image02"><span>Cannot live together</span></a> <a href="#"
+                                                                                                         class="ib-image"><img
+                        src="images/grid/thumbs/6.jpg" data-largesrc="images/grid/large/6.jpg" alt="image03"><span>Youth is full of pleasance</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/7.jpg" data-largesrc="images/grid/large/7.jpg"
+                                                  alt="image01"><span>Crabbed Age and Youth</span></a> <a href="#"
+                                                                                                          class="ib-image"><img
+                        src="images/grid/thumbs/8.jpg" data-largesrc="images/grid/large/8.jpg" alt="image02"><span>Cannot live together</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/9.jpg" data-largesrc="images/grid/large/9.jpg"
+                                                  alt="image03"><span>Youth is full of pleasance</span></a> <a href="#"
+                                                                                                               class="ib-image"><img
+                        src="images/grid/thumbs/10.jpg" data-largesrc="images/grid/large/10.jpg" alt="image01"><span>Crabbed Age and Youth</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/11.jpg"
+                                                  data-largesrc="images/grid/large/11.jpg" alt="image02"><span>Cannot live together</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/12.jpg"
+                                                  data-largesrc="images/grid/large/12.jpg" alt="image03"><span>Youth is full of pleasance</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/13.jpg"
+                                                  data-largesrc="images/grid/large/13.jpg" alt="image01"><span>Crabbed Age and Youth</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/14.jpg"
+                                                  data-largesrc="images/grid/large/14.jpg" alt="image02"><span>Cannot live together</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/15.jpg"
+                                                  data-largesrc="images/grid/large/15.jpg" alt="image03"><span>Youth is full of pleasance</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/16.jpg"
+                                                  data-largesrc="images/grid/large/16.jpg" alt="image01"><span>Crabbed Age and Youth</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/17.jpg"
+                                                  data-largesrc="images/grid/large/17.jpg" alt="image02"><span>Cannot live together</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/18.jpg"
+                                                  data-largesrc="images/grid/large/18.jpg" alt="image03"><span>Youth is full of pleasance</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/19.jpg"
+                                                  data-largesrc="images/grid/large/19.jpg" alt="image01"><span>Crabbed Age and Youth</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/20.jpg"
+                                                  data-largesrc="images/grid/large/20.jpg" alt="image02"><span>Cannot live together</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/21.jpg"
+                                                  data-largesrc="images/grid/large/21.jpg" alt="image03"><span>Youth is full of pleasance</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/22.jpg"
+                                                  data-largesrc="images/grid/large/22.jpg" alt="image01"><span>Crabbed Age and Youth</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/23.jpg"
+                                                  data-largesrc="images/grid/large/23.jpg" alt="image02"><span>Cannot live together</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/24.jpg"
+                                                  data-largesrc="images/grid/large/24.jpg" alt="image03"><span>Youth is full of pleasance</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/25.jpg"
+                                                  data-largesrc="images/grid/large/25.jpg" alt="image02"><span>Cannot live together</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/26.jpg"
+                                                  data-largesrc="images/grid/large/26.jpg" alt="image03"><span>Youth is full of pleasance</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/27.jpg"
+                                                  data-largesrc="images/grid/large/27.jpg" alt="image01"><span>Crabbed Age and Youth</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/1.jpg" data-largesrc="images/grid/large/1.jpg"
+                                                  alt="image02"><span>Cannot live together</span></a> <a href="#"
+                                                                                                         class="ib-image"><img
+                        src="images/grid/thumbs/2.jpg" data-largesrc="images/grid/large/2.jpg" alt="image03"><span>Youth is full of pleasance</span></a>
+                <a href="#" class="ib-image"><img src="images/grid/thumbs/3.jpg" data-largesrc="images/grid/large/3.jpg"
+                                                  alt="image01"><span>Crabbed Age and Youth</span></a> <a href="#"
+                                                                                                          class="ib-image"><img
+                        src="images/grid/thumbs/4.jpg" data-largesrc="images/grid/large/4.jpg" alt="image02"><span>Cannot live together</span></a>
+
+                <div class="clr"></div>
+            </div>
+
+        </div>
+        <div id="ib-img-preview" class="ib-preview"
+             style="width: 1440px; height: 308px; left: 630px; top: 0px; display: none;"><img
+                src="images/grid/large/3.jpg" alt="" class="ib-preview-img"
+                style="display: block; width: 1440px; height: 956.25px; left: 0px; top: -324.125px;"> <span
+                class="ib-preview-descr" style="display: none;">Youth is full of pleasance</span>
+
+            <div class="ib-nav" style="display: none;"><span class="ib-nav-prev">Previous</span> <span
+                    class="ib-nav-next">Next</span></div>
+            <span class="ib-close" style="display: none;">Close Preview</span>
+
+            <div class="ib-loading-large" style="display:none;">Loading...</div>
+        </div>
+
+    </div>
+</div>
+</div>
+<div class="col-md-1"></div>
+<script src="/js/jquery-2.1.4.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tabledit.min.js"></script>
+<script src="/js/jquery.dataTables.min.js"></script>
+</body>
+</html>

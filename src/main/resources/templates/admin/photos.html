@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{main-layout}">
+<head>
+    <title>Новости</title>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
+    <!-- Optional Bootstrap theme -->
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="/css/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" href="/css/jleague.css"/>
+</head>
+<body>
+<nav layout:fragment="mainmenu" th:remove="tag">
+    <div th:replace="main::adminnav ('photo')"/>
+</nav>
+<div class="container">
+    <div class="col-md-1"></div>
+    <div layout:fragment="content" class="col-md-8">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <input id="fileupload" type="file" name="files[]" data-url="/new/admin/image/upload" multiple>
+
+                <div class="progress" id="progress">
+                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0"
+                         aria-valuemax="100"
+                         style="width: 0%;"></div>
+                </div>
+            </div>
+        </div>
+        <div id="photos"></div>
+    </div>
+</div>
+<div class="col-md-1"></div>
+<script src="/js/jquery-2.1.4.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tabledit.min.js"></script>
+<script src="/js/jquery.dataTables.min.js"></script>
+<div layout:fragment="script-after" th:remove="tag">
+    <script>
+        function updatePhotos() {
+            $.ajax({
+                url: '/new/admin/photos',
+                success: function (data) {
+                    $('#photos').html(data);
+                    $('a[id^="delete-photo-"]').click(function() {
+                        var cur_id = $(this).attr('id').substr(13);
+                        $.ajax({
+                            url: '/new/admin/images/' + cur_id,
+                            method: 'DELETE',
+                            success: function(data) {
+                                updatePhotos();
+                            }
+                        });
+                    })
+                }
+            });
+        }
+        $(document).ready(function () {
+            $('#fileupload').fileupload({
+                progressall: function (e, data) {
+                    var progress = parseInt(data.loaded / data.total * 100, 10);
+                    $('#progress .progress-bar').css(
+                            'width',
+                            progress + '%'
+                    );
+                },
+
+                done: function () {
+                    updatePhotos();
+                }
+            });
+            updatePhotos();
+        });
+    </script>
+    <script src="/js/jquery-ui.js"></script>
+    <script src="/js/jquery.fileupload.js"></script>
+    <script src="/js/jquery.iframe-transport.js"></script>
+</div>
+</body>
+</html>

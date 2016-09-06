@@ -40,6 +40,17 @@ public class DbUserDao implements UserDao {
     }
 
     @Override
+    public User getUserByLogin(String login) {
+        return jdbcTemplate.query("select " + FIELDS + " from users where login = ?",
+                rs -> {
+                    if(rs.next()) {
+                        return userFromResultSet(rs);
+                    }
+                    return null;
+                }, login);
+    }
+
+    @Override
     public User getUser(int userId) {
         return jdbcTemplate.query("select " + FIELDS + " from users where id = ?",
                 rs -> {
@@ -51,9 +62,10 @@ public class DbUserDao implements UserDao {
     }
 
     private User userFromResultSet(ResultSet rs) throws SQLException {
-        return new User(rs.getInt("id"), rs.getString("login"),
-                rs.getString("name"), rs.getInt("fa_id"), rs.getString("password"),
-                rs.getInt("registered") == 1, rs.getInt("admin") == 1, rs.getString("email"));
+        return new User(rs.getInt("id"), rs.getString("name"), rs.getString("email"),
+                rs.getInt("fa_id"), 0, "", "", 0,
+                rs.getString("login"), rs.getString("password"),
+                rs.getInt("registered") == 1, rs.getInt("admin") == 1);
     }
 
     @Override

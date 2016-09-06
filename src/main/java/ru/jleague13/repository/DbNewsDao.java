@@ -99,10 +99,10 @@ public class DbNewsDao implements NewsDao {
     }
 
     private User userFromRs(ResultSet rs) throws SQLException {
+        //TODO fix (load from table
         return new User(rs.getInt("user_id"),
-                rs.getString("login"),
-                rs.getString("user_name"),
-                rs.getInt("user_fa_id"));
+                rs.getString("user_name"), "",
+                rs.getInt("user_fa_id"), 0, "", "", 0, rs.getString("login"), "", false, false);
     }
 
 }

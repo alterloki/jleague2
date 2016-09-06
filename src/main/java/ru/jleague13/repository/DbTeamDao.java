@@ -138,6 +138,13 @@ public class DbTeamDao implements TeamDao {
     }
 
     @Override
+    public List<Team> getAllTeams() {
+        return jdbcTemplate.query(
+                "select " + FULL_FIELDS + " from team t left outer join users u on t.manager_id = u.id",
+                (resultSet, i) -> teamFromRs(resultSet), "JPN");
+    }
+
+    @Override
     public List<Team> getTeamsBySubstr(String substring, int count) {
         return jdbcTemplate.query(
                 "select * from (select " + FULL_FIELDS + " from team t left outer join users u on t.manager_id = u.id where " +
@@ -157,9 +164,9 @@ public class DbTeamDao implements TeamDao {
         Team team = new Team(rs.getInt("id"), rs.getString("short_name"),
                 rs.getString("name"), rs.getInt("country_id"));
         team.setEmblem(imagesManager.teamEmblemUrl(team));
-        team.setManagerLogin(rs.getString("manager_login"));
         team.setManagerId(rs.getInt("manager_id"));
         team.setDiv(rs.getInt("division"));
+        team.setManagerLogin(rs.getString("manager_login"));
         return team;
     }
 }

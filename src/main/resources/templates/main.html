@@ -69,16 +69,17 @@
         </div>
     </div>
 </nav>
-<nav th:fragment="adminnav" id="admin-nav" class="navbar navbar-static-top navbar-inverse"
+<nav th:fragment="adminnav (pageType)" id="admin-nav" class="navbar navbar-static-top navbar-inverse"
      role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
             <a href="/admin" class="navbar-brand">Японский админ</a>
         </div>
         <ul class="nav navbar-nav">
-            <li><a href="/new/admin">Новости</a></li>
-            <li><a href="/new/admin/countries">Страны</a></li>
-            <li><a href="/new/admin/users">Пользователи</a></li>
+            <li th:attr="class=((${pageType} eq 'news') ? 'active' : '')"><a href="/new/admin">Новости</a></li>
+            <li th:attr="class=((${pageType} eq 'news') ? 'active' : '')"><a href="/new/admin/photo">Фото</a></li>
+            <li th:attr="class=((${pageType} eq 'countries') ? 'active' : '')"><a href="/new/admin/countries">Страны</a></li>
+            <li th:attr="class=((${pageType} eq 'users') ? 'active' : '')"><a href="/new/admin/users">Пользователи</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Логин</a></li>
@@ -103,7 +104,8 @@
                         <li><a href="/poleznoe">Интересно</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Логин</a></li>
+                        <li th:if="${#authentication.name == 'anonymousUser'}"><a href="/new/login"><span class="glyphicon glyphicon-log-in"></span> Вход</a></li>
+                        <li th:if="${#authentication.name != 'anonymousUser'}"><a href="/j_spring_security_logout" th:text="'Выход: ' + ${#authentication.name}"><span class="glyphicon glyphicon-log-in"></span>Выход: Login</a></li>
                     </ul>
                 </div>
             </nav>

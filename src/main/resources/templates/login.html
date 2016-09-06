@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{main-layout}">
+<head>
+    <title>Логин</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
+    <!-- Optional Bootstrap theme -->
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="/css/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" href="/css/jleague.css"/>
+</head>
+<body>
+<nav layout:fragment="mainmenu" th:remove="tag">
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10 col-wrapper">
+            <img id="logo" src="/images/jlogo.png"/>
+            <div layout:fragment="mainframe" class="container">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-5">
+                        <h1 class="text-center login-title">Вход для посвящённых</h1>
+
+                        <h1 th:if="${loginError == true}" class="text-center login-error">Введён неверный логин или пароль</h1>
+
+                        <div class="account-wall">
+                            <img class="profile-img"
+                                 src="/images/flag.jpg"
+                                 alt="">
+
+                            <form action="/j_spring_security_check" class="form-signin" method="post">
+                                <input id="j_username" name="j_username" type="text" class="form-control" placeholder="Логин" required autofocus>
+                                <input id="j_password" name="j_password" type="password" class="form-control" placeholder="Пароль" required>
+                                <button class="btn btn-lg btn-primary btn-block" type="submit">
+                                    Войти
+                                </button>
+                                <label class="checkbox pull-left">
+                                    <input type="checkbox" value="remember-me">
+                                    Запомнить меня
+                                </label>
+                            </form>
+                        </div>
+                        <a href="#" class="text-center new-account">Как зарегестрироваться? </a>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+</div>
+<script src="js/jquery-2.1.4.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.tabledit.min.js"></script>
+<script src="js/jquery.dataTables.min.js"></script>
+</body>
+</html>

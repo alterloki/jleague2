@@ -1,30 +1,22 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="main::head"></head>
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{main-layout}">
+<head>
+    <title>Новости</title>
+</head>
 <body>
-<nav th:replace="main::teamsnav"></nav>
-<div class="container">
-    <img id="logo" src="/images/jlogo.png"/>
-
+<nav layout:fragment="mainmenu" th:remove="tag">
     <div th:replace="main::mainmenu ('news')"/>
-    <div class="row">
-        <div class="col-md-8">
-            <div th:each="newsItem : ${news}" class="panel panel-default">
-                <div class="panel-heading" th:shortText="${newsItem.title}">Новости</div>
-                <div class="panel-body" th:shortText="${newsItem.shortText}">Привет! Это новость для вас!</div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">Виджет 1</div>
-                <div class="panel-body">А это виджет 1</div>
-            </div>
-        </div>
+</nav>
+<div layout:fragment="content" class="col-md-8">
+    <div class="panel panel-default">
+        <div class="panel-heading">Новости</div>
+        <div class="panel-body">Привет! Это новость для вас!</div>
     </div>
-
+    <div class="panel panel-default">
+        <div class="panel-heading">Новости</div>
+        <div class="panel-body">Привет! Это другая новость для вас!</div>
+    </div>
 </div>
-<footer th:replace="main::footer"></footer>
-<script src="/js/jquery-2.1.4.js"></script>
-<script src="/js/bootstrap.min.js"></script>
 </body>
 </html>
