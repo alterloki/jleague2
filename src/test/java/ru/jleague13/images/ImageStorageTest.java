@@ -37,13 +37,12 @@ public class ImageStorageTest {
         List<String> pager = imagesStorage.pager(0, 0).indexes;
         assert toString(pager).equals("ERROR");
         pager = imagesStorage.pager(9, 10).indexes;
-        System.out.println(pager);
         assert toString(pager).equals("1 2 3 >");
         pager = imagesStorage.pager(30, 10).indexes;
         assert toString(pager).equals("< 2 3 4 5 6 >");
-        pager = imagesStorage.pager(1000, 10).indexes;
-        assert toString(pager).equals("< 2 3 4 5 6 >");
-
+        pager = imagesStorage.pager(90, 10).indexes;
+        System.out.println(pager);
+        assert toString(pager).equals("< 8 9 10");
     }
 
     private String toString(List<String> list) {
