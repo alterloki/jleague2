@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import ru.jleague13.entity.Player;
-import ru.jleague13.entity.PlayerType;
-import ru.jleague13.entity.Team;
-import ru.jleague13.entity.Transfer;
+import ru.jleague13.entity.*;
 import ru.jleague13.repository.TeamDao;
 import ru.jleague13.repository.TransferDao;
 
@@ -25,10 +22,7 @@ import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author ashevenkov 27.09.15 19:53.
@@ -106,5 +100,31 @@ public class TransferController {
             }
         }
         return "ok";
+    }
+
+    @RequestMapping(value="/transfer/check", method = RequestMethod.POST)
+    public String transferCheck(@RequestParam("file") MultipartFile transferFile,
+                                       @RequestParam("date")
+                                       @DateTimeFormat(pattern = "dd-MM-yyyy") Date transferDate,
+                                Model model) throws IOException {
+        if(transferDao.haveTransfer(transferDate)) {
+            Transfer transfer = transferDao.loadTransfer(transferDate);
+            Map<String, Player> playersMap = toMap(transfer);
+            List<TransferQueryPlayer> queryPlayers = transferDao.readTransferQuery(
+                    new InputStreamReader(transferFile.getInputStream(), "cp1251"));
+            for (TransferQueryPlayer queryPlayer : queryPlayers) {
+                queryPlayer.setPlayer(playersMap.get(queryPlayer.getPlayerName()));
+            }
+            model.addAttribute("queryPlayers", queryPlayers);
+        }
+        return "transfer-check";
+    }
+
+    private Map<String, Player> toMap(Transfer transfer) {
+        Map<String, Player> result = new HashMap<>();
+        for (Player player : transfer.getPlayers()) {
+            result.put(player.getName(), player);
+        }
+        return result;
     }
 }

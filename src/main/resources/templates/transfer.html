@@ -9,7 +9,7 @@
     <div th:replace="main::mainmenu ('transfer')"/>
     <h3>Трансфер</h3>
 
-    <div class="well" th:if="${not #lists.isEmpty(transfers)}">
+    <div id="transfer-main" class="well" th:if="${not #lists.isEmpty(transfers)}">
         <div class="container-fluid">
             <div class="row">
                 <form class="form-horizontal col-xs-2 col-wrapper">
@@ -266,6 +266,8 @@
             <b>Т</b> - вратарская техника<br/>
             <b>Р</b> - реакция<br/>
             <b>В</b> - воздух<br/>
+            <b>Ставка</b> - Предложено за игрока<br/>
+            <b>Замена</b> - Номер игрока, предложенного на замену<br/>
         </div>
     </div>
     <div th:if="${#lists.isEmpty(transfers)}">
@@ -277,6 +279,9 @@
         </span>
         <span class="btn btn-default btn-file">
             Загрузить результаты <input id="result-upload" type="file"/>
+        </span>
+        <span class="btn btn-default btn-file">
+            Проверить заявку <input id="transfer-check" type="file"/>
         </span>
     </div>
 
@@ -291,6 +296,7 @@
         $("#transfer-upload").on("change", uploadFile);
         $("#result-upload").on("change", uploadResultsFile);
         $("#show-transfer").click("change", showTransfer);
+        $("#transfer-check").on("change", checkTransfer);
         var table = $("#transfer-table").DataTable();
         var ids = gen(['Strength', 'Salary', 'D', 'U', 'O', 'Talent',
             'T', 'VG', 'Age', 'R', 'S', 'Health', 'P', 'F', 'Price', 'N', 'Payed']);
@@ -332,6 +338,27 @@
             cache: false,
             success: function () {
                 window.location.href = '/transfer';
+            },
+            error: function () {
+
+            }
+        });
+    }
+
+    function checkTransfer() {
+        var fd = new FormData();
+        fd.append('file', $("#transfer-check")[0].files[0]);
+        fd.append('date', $("#transfer-date").find("option:selected").text());
+        $.ajax({
+            url: "/transfer/check",
+            type: "POST",
+            data: fd,
+            enctype: 'multipart/form-data',
+            processData: false,
+            contentType: false,
+            cache: false,
+            success: function (data) {
+                $('#transfer-main').html(data);
             },
             error: function () {
 

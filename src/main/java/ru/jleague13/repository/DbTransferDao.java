@@ -13,10 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
-import ru.jleague13.entity.Abilities;
-import ru.jleague13.entity.Player;
-import ru.jleague13.entity.PlayerType;
-import ru.jleague13.entity.Transfer;
+import ru.jleague13.entity.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -149,6 +146,27 @@ public class DbTransferDao implements TransferDao {
             map.put(name, player);
         }
         return map;
+    }
+
+    @Override
+    public List<TransferQueryPlayer> readTransferQuery(Reader reader) throws IOException {
+        BufferedReader br = new BufferedReader(reader);
+        for(int i = 0; i < 5; i++) {
+            br.readLine();
+        }
+        List<String> pure = new ArrayList<>();
+        String line = br.readLine();
+        while(line != null && !line.startsWith("*")) {
+            pure.add(line);
+            line = br.readLine();
+        }
+        List<TransferQueryPlayer> result = new ArrayList<>();
+        for(int i = 0; i < pure.size() - 2; i++) {
+            String[] parts = pure.get(i).split("/");
+            result.add(new TransferQueryPlayer(parts[1],
+                    Integer.parseInt(parts[4]), Integer.parseInt(parts[3])));
+        }
+        return result;
     }
 
     public Transfer readTransferList(BufferedReader reader) throws IOException {

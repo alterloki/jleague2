@@ -2,6 +2,7 @@ package ru.jleague13.repository;
 
 import ru.jleague13.entity.Player;
 import ru.jleague13.entity.Transfer;
+import ru.jleague13.entity.TransferQueryPlayer;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -27,5 +28,7 @@ public interface TransferDao {
     void saveTransferResult(Player player);
 
     Map<String, Player> readTransferResult(Reader reader) throws IOException;
+
+    List<TransferQueryPlayer> readTransferQuery(Reader reader) throws IOException;
 
 }

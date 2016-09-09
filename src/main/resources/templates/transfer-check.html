@@ -1,0 +1,38 @@
+<div class="container-fluid" xmlns:th="http://www.thymeleaf.org">
+    <table id="transfer-table" class="table table-bordered table-responsive">
+        <thead>
+        <tr>
+            <th>Поз</th>
+            <th>Имя</th>
+            <th>Вз</th>
+            <th>Тал</th>
+            <th>Сила</th>
+            <th>СВ</th>
+            <th>Зд</th>
+            <th>ЗП</th>
+            <th>ТР</th>
+            <th>Цена</th>
+            <th>Ставка</th>
+            <th>Опл</th>
+            <th>Замена</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="queryPlayer : ${queryPlayers}">
+            <td th:text="${queryPlayer.getPlayer().playerType}"></td>
+            <td th:text="${queryPlayer.getPlayer().name}"></td>
+            <td th:text="${queryPlayer.getPlayer().age}"></td>
+            <td th:text="${queryPlayer.getPlayer().talent}"></td>
+            <td th:text="${queryPlayer.getPlayer().strength}"></td>
+            <td th:text="${queryPlayer.getPlayer().functions}"></td>
+            <td th:text="${queryPlayer.getPlayer().health}"></td>
+            <td th:text="${queryPlayer.getPlayer().salary}"></td>
+            <td th:text="${queryPlayer.getPlayer().birthtour}"></td>
+            <td th:text="${queryPlayer.getPlayer().price}"></td>
+            <td th:text="${queryPlayer.getPlayer().payed}"></td>
+            <td th:text="${queryPlayer.getPrice()}"></td>
+            <td th:text="${queryPlayer.getReplacement()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
