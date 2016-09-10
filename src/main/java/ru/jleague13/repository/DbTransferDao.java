@@ -1,19 +1,16 @@
 package ru.jleague13.repository;
 
 import com.google.common.io.CharStreams;
-import com.google.common.io.Resources;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementSetter;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import ru.jleague13.entity.*;
+import ru.jleague13.util.HelperUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -108,7 +105,7 @@ public class DbTransferDao implements TransferDao {
                         return player;
                     }, date));
         }
-        return null;
+        return new Transfer(date, new ArrayList<>());
     }
 
     @Override
@@ -124,26 +121,22 @@ public class DbTransferDao implements TransferDao {
 
     @Override
     public void saveTransferResult(Player player) {
-        jdbcTemplate.update("update transfer_player set payed = ? where id = ?",
-                player.getPayed(), player.getId());
+        jdbcTemplate.update("update transfer_player set payed = ?, buyer = ? where id = ?",
+                player.getPayed(), player.getBuyer(), player.getId());
     }
 
     @Override
-    public Map<String, Player> readTransferResult(Reader reader) throws IOException {
+    public Map<String, Player> readTransferResult(Reader reader, Date transferDate) throws IOException {
+        Transfer transfer = loadTransfer(transferDate);
+        Map<String, Player> allPlayersMap = HelperUtils.toMap(transfer);
         Map<String, Player> map = new HashMap<>();
         String str = CharStreams.toString(reader);
         Document doc = Jsoup.parse(str);
         Elements select = doc.select("div[id=trans]").select("b");
         for(int i = 0; i < select.size(); i++) {
             String t = select.get(i).text();
-            int firstI = t.indexOf('(');
-            String name = t.substring(0, firstI - 1);
-            String[] parts = t.split(" ");
-            int price = Integer.parseInt(parts[parts.length - 2]);
-            Player player = new Player();
-            player.setName(name);
-            player.setPayed(price);
-            map.put(name, player);
+            Player player = extractPlayer(t, allPlayersMap);
+            map.put(player.getName(), player);
         }
         return map;
     }
@@ -167,6 +160,25 @@ public class DbTransferDao implements TransferDao {
                     Integer.parseInt(parts[4]), Integer.parseInt(parts[3])));
         }
         return result;
+    }
+
+    @Override
+    public Player extractPlayer(String str, Map<String, Player> playerMap) {
+        int firstI = str.indexOf('(');
+        String name = str.substring(0, firstI - 1);
+        String seller = playerMap.get(name).getSeller();
+        str = str.replace(seller, "");
+        String[] parts = str.split(" ");
+        int price = Integer.parseInt(parts[parts.length - 2]);
+        String withoutNums = str.replaceAll("[0-9]*", "");
+        int firstTo = withoutNums.indexOf(')');
+        int secondI = withoutNums.indexOf('(', firstI + 1);
+        String buyer = withoutNums.substring(firstTo + 1, secondI).trim();
+        Player player = new Player();
+        player.setName(name);
+        player.setPayed(price);
+        player.setBuyer(buyer);
+        return player;
     }
 
     public Transfer readTransferList(BufferedReader reader) throws IOException {

@@ -27,8 +27,9 @@ public interface TransferDao {
 
     void saveTransferResult(Player player);
 
-    Map<String, Player> readTransferResult(Reader reader) throws IOException;
+    Map<String, Player> readTransferResult(Reader reader, Date transferDate) throws IOException;
 
     List<TransferQueryPlayer> readTransferQuery(Reader reader) throws IOException;
 
+    Player extractPlayer(String str, Map<String, Player> playerMap);
 }

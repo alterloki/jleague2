@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.jleague13.entity.*;
 import ru.jleague13.repository.TeamDao;
 import ru.jleague13.repository.TransferDao;
+import ru.jleague13.util.HelperUtils;
 
 import javax.websocket.server.PathParam;
 import java.io.IOException;
@@ -87,7 +88,7 @@ public class TransferController {
                                  @RequestParam("date")
                                  @DateTimeFormat(pattern = "dd-MM-yyyy") Date transferDate) throws IOException {
         Map<String, Player> resultMap = transferDao.readTransferResult(
-                new InputStreamReader(uploadfile.getInputStream(), "cp1251"));
+                new InputStreamReader(uploadfile.getInputStream(), "cp1251"), transferDate);
         if(transferDao.haveTransfer(transferDate)) {
             Transfer transfer = transferDao.loadTransfer(transferDate);
             List<Player> players = transfer.getPlayers();
@@ -95,6 +96,7 @@ public class TransferController {
                 Player withPrice = resultMap.get(player.getName());
                 if(withPrice != null) {
                     player.setPayed(withPrice.getPayed());
+                    player.setBuyer(withPrice.getBuyer());
                     transferDao.saveTransferResult(player);
                 }
             }
@@ -109,7 +111,7 @@ public class TransferController {
                                 Model model) throws IOException {
         if(transferDao.haveTransfer(transferDate)) {
             Transfer transfer = transferDao.loadTransfer(transferDate);
-            Map<String, Player> playersMap = toMap(transfer);
+            Map<String, Player> playersMap = HelperUtils.toMap(transfer);
             List<TransferQueryPlayer> queryPlayers = transferDao.readTransferQuery(
                     new InputStreamReader(transferFile.getInputStream(), "cp1251"));
             for (TransferQueryPlayer queryPlayer : queryPlayers) {
@@ -120,11 +122,4 @@ public class TransferController {
         return "transfer-check";
     }
 
-    private Map<String, Player> toMap(Transfer transfer) {
-        Map<String, Player> result = new HashMap<>();
-        for (Player player : transfer.getPlayers()) {
-            result.put(player.getName(), player);
-        }
-        return result;
-    }
 }

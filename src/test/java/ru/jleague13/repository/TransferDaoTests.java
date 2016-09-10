@@ -5,14 +5,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import ru.jleague13.Jleague2Application;
 import ru.jleague13.entity.Abilities;
 import ru.jleague13.entity.Player;
 import ru.jleague13.entity.PlayerType;
@@ -24,6 +22,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -75,7 +74,7 @@ public class TransferDaoTests {
         Resource resource = new ClassPathResource("02_09_transfer_result");
         InputStream resourceInputStream = resource.getInputStream();
         Map<String, Player> result = transferDao.readTransferResult(new InputStreamReader(
-                resourceInputStream, "cp1251"));
+                resourceInputStream, "cp1251"), new Date());
         assert result.size() == 691;
         Player player = result.get("Салвадор Агра");
         assert player.getPayed() == 3132;
@@ -119,5 +118,28 @@ public class TransferDaoTests {
         assert abs.getSpeed() == 100;
         assert abs.getStamina() == 33;
         assert player.getBirthtour() == 3;
+    }
+
+    @Test
+    public void testParseTransfer() {
+        Map<String, Player> map = new HashMap<>();
+        Player p1 = new Player();
+        p1.setName("Томмасо Морозини");
+        p1.setSeller("Специя");
+        map.put(p1.getName(), p1);
+        Player p2 = new Player();
+        p2.setName("Петар Томич");
+        p2.setSeller("Лелле");
+        map.put(p2.getName(), p2);
+        String str = "Томмасо Морозини (14) Специя Нанси 177 (811)";
+        Player player = transferDao.extractPlayer(str, map);
+        assert player.getPayed() == 177;
+        assert player.getName().equals("Томмасо Морозини");
+        assert player.getBuyer().equals("Нанси");
+        str = "Петар Томич (25) Лелле Сентрал Коуст Маринерс 128 (191)";
+        player = transferDao.extractPlayer(str, map);
+        assert player.getPayed() == 128;
+        assert player.getName().equals("Петар Томич");
+        assert player.getBuyer().equals("Сентрал Коуст Маринерс");
     }
 }

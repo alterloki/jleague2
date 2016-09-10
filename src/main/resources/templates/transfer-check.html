@@ -15,6 +15,7 @@
             <th>Ставка</th>
             <th>Опл</th>
             <th>Замена</th>
+            <th>Покупатель</th>
         </tr>
         </thead>
         <tbody>
@@ -32,6 +33,7 @@
             <td th:text="${queryPlayer.getPrice()}"></td>
             <td th:text="${queryPlayer.getPlayer().payed}"></td>
             <td th:text="${queryPlayer.getReplacement()}"></td>
+            <td th:text="${queryPlayer.getPlayer().buyer}"></td>
         </tr>
         </tbody>
     </table>
