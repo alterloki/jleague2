@@ -166,8 +166,11 @@ public class DbTransferDao implements TransferDao {
     public Player extractPlayer(String str, Map<String, Player> playerMap) {
         int firstI = str.indexOf('(');
         String name = str.substring(0, firstI - 1);
-        String seller = playerMap.get(name).getSeller();
-        str = str.replace(seller, "");
+        Player oldPlayer = playerMap.get(name);
+        if(oldPlayer != null) {
+            String seller = oldPlayer.getSeller();
+            str = str.replace(seller, "");
+        }
         String[] parts = str.split(" ");
         int price = Integer.parseInt(parts[parts.length - 2]);
         String withoutNums = str.replaceAll("[0-9]*", "");
