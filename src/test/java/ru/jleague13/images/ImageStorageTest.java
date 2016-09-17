@@ -19,9 +19,10 @@ import java.util.List;
 @SpringBootTest
 public class ImageStorageTest {
 
-    private ImagesStorage imagesStorage = createImagesStorage();
+    private ImagesStorage imagesStorage100 = createImagesStorage100();
+    private ImagesStorage imagesStorage18 = createImagesStorage18();
 
-    private ImagesStorage createImagesStorage() {
+    private ImagesStorage createImagesStorage100() {
         ImagesStorage imagesStorage = new ImagesStorage();
         imagesStorage.setMetaInfoDao(new DbImagesMetaInfoDao() {
             @Override
@@ -32,17 +33,29 @@ public class ImageStorageTest {
         return imagesStorage;
     }
 
+    private ImagesStorage createImagesStorage18() {
+        ImagesStorage imagesStorage = new ImagesStorage();
+        imagesStorage.setMetaInfoDao(new DbImagesMetaInfoDao() {
+            @Override
+            public int getImageCount() {
+                return 18;
+            }
+        });
+        return imagesStorage;
+    }
+
     @Test
     public void testPager() {
-        List<String> pager = imagesStorage.pager(0, 0).indexes;
+        List<String> pager = imagesStorage100.pager(0, 0).indexes;
         assert toString(pager).equals("ERROR");
-        pager = imagesStorage.pager(9, 10).indexes;
+        pager = imagesStorage100.pager(9, 10).indexes;
         assert toString(pager).equals("1 2 3 >");
-        pager = imagesStorage.pager(30, 10).indexes;
+        pager = imagesStorage100.pager(30, 10).indexes;
         assert toString(pager).equals("< 2 3 4 5 6 >");
-        pager = imagesStorage.pager(90, 10).indexes;
-        System.out.println(pager);
+        pager = imagesStorage100.pager(90, 10).indexes;
         assert toString(pager).equals("< 8 9 10");
+        pager = imagesStorage18.pager(0, 10).indexes;
+        assert toString(pager).equals("1 2 >");
     }
 
     private String toString(List<String> list) {

@@ -88,11 +88,11 @@ public class ImagesStorage {
             result.add(Integer.toString(page - 1));
         }
         result.add(Integer.toString(page));
-        if(page < pages - 2) {
+        if(page <= pages - 1) {
             result.add(Integer.toString(page + 1));
             result.add(">");
         }
-        if(page < pages - 1) {
+        if(page <= pages - 2) {
             result.add(result.size() - 1, Integer.toString(page + 2));
         }
         return new Pager(Integer.toString(page), result);

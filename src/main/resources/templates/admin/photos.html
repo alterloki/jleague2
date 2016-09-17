@@ -1,80 +1,32 @@
-<!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
-      layout:decorate="~{main-layout}">
-<head>
-    <title>Новости</title>
-    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
-    <!-- Optional Bootstrap theme -->
-    <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
-    <link rel="stylesheet" href="/css/jquery.dataTables.min.css"/>
-    <link rel="stylesheet" href="/css/jleague.css"/>
-</head>
-<body>
-<nav layout:fragment="mainmenu" th:remove="tag">
-    <div th:replace="main::adminnav ('photo')"/>
-</nav>
-<div class="container">
-    <div class="col-md-1"></div>
-    <div layout:fragment="content" class="col-md-8">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <input id="fileupload" type="file" name="files[]" data-url="/new/admin/image/upload" multiple>
+<div class="panel pane-default" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+     xmlns:th="http://www.thymeleaf.org">
+    <div class="panel-body">
 
-                <div class="progress" id="progress">
-                    <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0"
-                         aria-valuemax="100"
-                         style="width: 0%;"></div>
-                </div>
-            </div>
-        </div>
-        <div id="photos"></div>
+            <table class="table table-bordered">
+                <tr th:each="image : ${images}">
+                    <td th:text="${image.id}">1</td>
+                    <td th:text="${image.name.length() > 20} ? ${image.name.substring(0, 20) + '...'} : ${image.name}">
+                        1.jpg
+                    </td>
+                    <td><img src="/images/upload/1.jpg" th:attr="src=${image.getPath()},alt=${image.name}"
+                             alt="1.jpg" class="img-thumbnail center-block" style="height:140px;"></td>
+                    <td><a th:attr="id=${'delete-photo-' + image.id}" id="delete-photo-1" href="#">Удалить</a></td>
+                </tr>
+            </table>
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li th:each="index : ${pager.indexes}" th:class="${index == pager.active ? 'active' : ''}">
+                        <a th:if="${index eq '<'}" th:href="${pager.indexLink(index)}" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                        <a th:if="${index != '<' and index != '>'}" th:text="${index}" th:href="${pager.indexLink(index)}" href="#">1</a>
+                        <a th:if="${index eq '>'}" href="#" aria-label="Next" th:href="${pager.indexLink(index)}">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+
     </div>
 </div>
-<div class="col-md-1"></div>
-<script src="/js/jquery-2.1.4.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/jquery.tabledit.min.js"></script>
-<script src="/js/jquery.dataTables.min.js"></script>
-<div layout:fragment="script-after" th:remove="tag">
-    <script>
-        function updatePhotos() {
-            $.ajax({
-                url: '/new/admin/photos',
-                success: function (data) {
-                    $('#photos').html(data);
-                    $('a[id^="delete-photo-"]').click(function() {
-                        var cur_id = $(this).attr('id').substr(13);
-                        $.ajax({
-                            url: '/new/admin/images/' + cur_id,
-                            method: 'DELETE',
-                            success: function(data) {
-                                updatePhotos();
-                            }
-                        });
-                    })
-                }
-            });
-        }
-        $(document).ready(function () {
-            $('#fileupload').fileupload({
-                progressall: function (e, data) {
-                    var progress = parseInt(data.loaded / data.total * 100, 10);
-                    $('#progress .progress-bar').css(
-                            'width',
-                            progress + '%'
-                    );
-                },
-
-                done: function () {
-                    updatePhotos();
-                }
-            });
-            updatePhotos();
-        });
-    </script>
-    <script src="/js/jquery-ui.js"></script>
-    <script src="/js/jquery.fileupload.js"></script>
-    <script src="/js/jquery.iframe-transport.js"></script>
-</div>
-</body>
-</html>

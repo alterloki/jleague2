@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Японская Лига FA13</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
@@ -79,16 +80,9 @@
         <div class="col-md-1"></div>
     </div>
 </div>
-<footer class="footer navbar-inverse">
-    <div class="container">
-        <div class="row">
-            <div id="footer-content">
-                <p class="text-muted">Developed by <a href="mailto:alterloki@yandex.ru">@alterloki</a></p>
-            </div>
-        </div>
-    </div>
-</footer>
+<footer th:replace="main::footer"></footer>
 <script src="/js/jquery-2.1.4.js"></script>
+<script src="/js/jleague13.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/jquery.tabledit.min.js"></script>
 <script src="/js/jquery.dataTables.min.js"></script>

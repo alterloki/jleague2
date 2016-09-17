@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Японская Лига FA13 Админ</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" href="/css/jquery.dataTables.min.css"/>
+    <link rel="stylesheet" href="/css/jleague.css"/>
+</head>
+<body>
+<nav layout:fragment="adminmenu">
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="page-header">
+            <h2 layout:fragment="main-title">Пишем новость</h2>
+        </div>
+        <div layout:fragment="main-content" class="container jumbotron">
+            <button id="add-news" type="button" class="btn btn-success">Добавить</button>
+        </div>
+    </div>
+</div>
+<footer th:replace="main::footer"></footer>
+<script src="/js/jquery-2.1.4.js"></script>
+<script src="/js/jleague13.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jquery.tabledit.min.js"></script>
+<script src="/js/jquery.dataTables.min.js"></script>
+<div layout:fragment="script-after"></div>
+</body>
+</html>

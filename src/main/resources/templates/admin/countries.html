@@ -1,78 +1,81 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="main::head"></head>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{admin-layout}">
+<head>
+    <title>Страны</title>
+</head>
 <body>
-<nav th:replace="main::adminnav('countries')"></nav>
-<div class="container">
-    <div class="row">
-        <div class="page-header">
-            <h2>Страны</h2>
-        </div>
-        <div class="container jumbotron">
-            <table class="table table-bordered table-responsive" id="countries-table">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>ФА 13 ID</th>
-                    <th>ФА 13 Index</th>
-                    <th>Название</th>
-                    <th>Флаг</th>
-                    <th>Команды</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="country : ${countries}">
-                    <td th:text="${country.id}"></td>
-                    <td th:text="${country.faId}"></td>
-                    <td th:text="${country.faIndex}"></td>
-                    <td th:text="${country.name}"></td>
-                    <td><img src="" th:attr="src=${country.picture}"/></td>
-                    <td>
-                        <a href="/new/admin/teams.html" th:href="@{/new/admin/country/{country_id}/team(country_id=${country.id})}">Команды</a>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <button id="add-country" type="button" class="btn btn-success">Добавить</button>
-            <button th:if="${not progress}" id="update-countries" type="button" class="btn btn-success"><span class="glyphicon glyphicon-download-alt"></span>  Загрузить</button>
-            <button th:if="${progress}" class="btn btn-warning" disabled="disabled"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Загружаем...</button>
-        </div>
-    </div>
+<nav layout:fragment="adminmenu" th:remove="tag">
+    <div th:replace="main::adminnav('countries')"/>
+</nav>
+<h2 layout:fragment="main-title">Страны</h2>
+
+<div layout:fragment="main-content" class="container jumbotron">
+    <table class="table table-bordered table-responsive" id="countries-table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>ФА 13 ID</th>
+            <th>ФА 13 Index</th>
+            <th>Название</th>
+            <th>Флаг</th>
+            <th>Команды</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="country : ${countries}">
+            <td th:text="${country.id}"></td>
+            <td th:text="${country.faId}"></td>
+            <td th:text="${country.faIndex}"></td>
+            <td th:text="${country.name}"></td>
+            <td><img src="" th:attr="src=${country.picture}"/></td>
+            <td>
+                <a href="/new/admin/teams.html"
+                   th:href="@{/new/admin/country/{country_id}/team(country_id=${country.id})}">Команды</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <button id="add-country" type="button" class="btn btn-success">Добавить</button>
+    <button th:if="${not progress}" id="update-countries" type="button" class="btn btn-success"><span
+            class="glyphicon glyphicon-download-alt"></span> Загрузить
+    </button>
+    <button th:if="${progress}" class="btn btn-warning" disabled="disabled"><span
+            class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Загружаем...
+    </button>
 </div>
-<footer th:replace="main::footer"></footer>
-<script src="/js/jquery-2.1.4.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/jquery.tabledit.js"></script>
-<script>
-    $(document).ready(function () {
-        $('#countries-table').Tabledit({
-            url: '/new/admin/country',
-            columns: {
-                identifier: [0, 'id'],
-                editable: [[1, 'faId'], [2, 'faIndex'], [3, 'name']]
-            }
-        });
-        $('#add-country').click(function () {
-            $.ajax({
+<div layout:fragment="script-after" th:remove="tag">
+    <script>
+        $(document).ready(function () {
+            $('#countries-table').Tabledit({
                 url: '/new/admin/country',
-                type: 'PUT',
-                success: function(result) {
-                    window.location.href='/new/admin/countries';
+                columns: {
+                    identifier: [0, 'id'],
+                    editable: [[1, 'faId'], [2, 'faIndex'], [3, 'name']]
                 }
             });
-        });
-        $('#update-countries').click(function () {
-            $.ajax({
-                url: '/new/admin/countries/download',
-                type: 'POST',
-                success: function(result) {
-                    window.location.href='/new/admin/countries';
-                }
+            $('#add-country').click(function () {
+                $.ajax({
+                    url: '/new/admin/country',
+                    type: 'PUT',
+                    success: function (result) {
+                        window.location.href = '/new/admin/countries';
+                    }
+                });
             });
-            $("#update-countries").remove();
-            $("#add-country").after(' <button class="btn btn-warning" disabled="disabled"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Загружаем...</button>');
+            $('#update-countries').click(function () {
+                $.ajax({
+                    url: '/new/admin/countries/download',
+                    type: 'POST',
+                    success: function (result) {
+                        window.location.href = '/new/admin/countries';
+                    }
+                });
+                $("#update-countries").remove();
+                $("#add-country").after(' <button class="btn btn-warning" disabled="disabled"><span class="glyphicon glyphicon-refresh glyphicon-refresh-animate"></span> Загружаем...</button>');
+            });
         });
-    });
-</script>
+    </script>
+</div>
 </body>
 </html>

@@ -5,44 +5,9 @@
     <title>Японская Лига FA13</title>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"/>
-    <!-- Optional Bootstrap theme -->
     <link rel="stylesheet" href="/css/bootstrap-theme.min.css"/>
     <link rel="stylesheet" href="/css/jquery.dataTables.min.css"/>
     <link rel="stylesheet" href="/css/jleague.css"/>
-    <style type="text/css">
-        #logo {
-            margin: 20px;
-        }
-
-        body {
-            background: url(/images/girl.jpg) no-repeat top right #d6d8d7;
-            background-attachment: fixed;
-            margin-bottom: 60px;
-        }
-
-        html {
-            position: relative;
-            min-height: 100%;
-        }
-
-        .footer {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 60px;
-        }
-
-        .text-muted {
-            margin: 20px 0;
-        }
-
-        .nav-emblem {
-            width: 25px;
-            height: 25px;
-            float: left;
-            margin: 0 0 0 0;
-        }
-    </style>
 </head>
 <body>
 <nav th:fragment="teamsnav" id="teams-nav" class="navbar navbar-default navbar-inverse navbar-static-top"
@@ -73,11 +38,12 @@
      role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
-            <a href="/admin" class="navbar-brand">Японский админ</a>
+            <a href="/new/admin" class="navbar-brand">Японский админ</a>
         </div>
         <ul class="nav navbar-nav">
+            <li><a href="/">Сайт</a></li>
             <li th:attr="class=((${pageType} eq 'news') ? 'active' : '')"><a href="/new/admin">Новости</a></li>
-            <li th:attr="class=((${pageType} eq 'photo') ? 'active' : '')"><a href="/new/admin/images">Фото</a></li>
+            <li th:attr="class=((${pageType} eq 'images') ? 'active' : '')"><a href="/new/admin/images">Фото</a></li>
             <li th:attr="class=((${pageType} eq 'countries') ? 'active' : '')"><a href="/new/admin/countries">Страны</a></li>
             <li th:attr="class=((${pageType} eq 'users') ? 'active' : '')"><a href="/new/admin/users">Пользователи</a></li>
         </ul>

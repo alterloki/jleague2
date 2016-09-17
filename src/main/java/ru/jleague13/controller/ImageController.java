@@ -54,22 +54,24 @@ public class ImageController {
 
     @RequestMapping(value="/new/admin/images", method = RequestMethod.GET)
     public String getAdminImages() {
-        return "admin/photos";
+        return "admin/images";
     }
 
     @RequestMapping(value="/new/admin/photos", method = RequestMethod.GET)
     public String getAdminImagesTable(Model model, HttpServletRequest request) {
-        Integer count = (Integer) request.getAttribute("count");
-        if(count == null) {
-            count = 10;
+        String countS = request.getParameter("count");
+        int count = 10;
+        if(countS != null) {
+            count = Integer.parseInt(countS);
         }
-        Integer skip = (Integer) request.getAttribute("skip");
-        if(skip == null) {
-            skip = 0;
+        String skipS = request.getParameter("skip");
+        int skip = 0;
+        if(skipS != null) {
+            skip = Integer.parseInt(skipS);
         }
         model.addAttribute("images", imagesStorage.loadInfos(skip, count));
         model.addAttribute("pager", imagesStorage.pager(skip, count));
-        return "admin/images";
+        return "admin/photos";
     }
 
     @RequestMapping(value="/new/images")
