@@ -1,21 +1,21 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="main::head"></head>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{main-layout}">
+<head>
+    <title>Команды</title>
+</head>
 <body>
-<nav th:replace="main::teamsnav"></nav>
-<div class="container">
-    <img id="logo" src="/images/jlogo.png"/>
-
-    <div th:replace="main::mainmenu ('teams')"/>
-    <h3>Команды</h3>
-
+<nav layout:fragment="mainmenu" th:remove="tag">
+    <div th:replace="main::mainmenu('teams')"/>
+</nav>
+<div layout:fragment="mainframe">
     <div class="well">
         <div class="input-group">
             <span class="input-group-addon" id="basic-addon1">Поиск</span>
-            <input id="team-name" type="text" class="form-control" placeholder="Название" aria-describedby="basic-addon1"/>
+            <input id="team-name" type="text" class="form-control" placeholder="Название"
+                   aria-describedby="basic-addon1"/>
         </div>
     </div>
-
     <div class="well">
         <table class="table table-bordered table-responsive" id="teams-table">
             <thead>
@@ -28,7 +28,7 @@
             <tbody>
             <tr th:each="team : ${topTeams}">
                 <td th:text="${team.shortName}"></td>
-                <td th:text="${team.name}">
+                <td>
                     <a href="/team" th:href="@{/team/{team_id}(team_id=${team.id})}" th:text="${team.name}"></a>
                 </td>
                 <td th:text="${team.managerLogin}"></td>
@@ -36,7 +36,6 @@
             </tbody>
         </table>
     </div>
-
     <div class="well">
         <table class="table table-bordered table-responsive" id="countries-table">
             <thead>
@@ -59,27 +58,21 @@
             </tbody>
         </table>
     </div>
-
 </div>
-<footer th:replace="main::footer"></footer>
-<script src="/js/jquery-2.1.4.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/jquery.dataTables.min.js"></script>
-<script src="/js/transfer.js"></script>
-<script>
-    $(document).ready(function () {
-        $('#team-name').keyup(function() {
-            $.ajax({
-                url: '/teams/sub/' + $('#team-name').val(),
-                type: 'GET',
-                success: function(result) {
-                    $('#teams-table').replaceWith(result);
-                }
+<div layout:fragment="script-after" th:remove="tag">
+    <script>
+        $(document).ready(function () {
+            $('#team-name').keyup(function () {
+                $.ajax({
+                    url: '/teams/sub/' + $('#team-name').val(),
+                    type: 'GET',
+                    success: function (result) {
+                        $('#teams-table').replaceWith(result);
+                    }
+                });
             });
         });
-    });
-
-
-</script>
+    </script>
+</div>
 </body>
 </html>

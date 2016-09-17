@@ -1,74 +1,78 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="main::head"></head>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{admin-layout}">
+<head>
+    <title>Пользователь</title>
+</head>
 <body>
-<nav th:replace="main::adminnav"></nav>
-<div class="container">
-    <div class="row">
-        <div class="page-header">
-            <h2>Пользователь</h2>
+<nav layout:fragment="adminmenu" th:remove="tag">
+    <div th:replace="main::adminnav('users')"/>
+</nav>
+<h2 layout:fragment="main-title">Пользователь</h2>
+<div layout:fragment="main-content" class="container jumbotron">
+    <form action="#" th:action="@{/new/admin/user}" th:object="${user}"
+          class="form-horizontal" method="post">
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="form-group">
+            <label th:for="${#ids.next('login')}" class="col-xs-2 control-label">Логин:</label>
+
+            <div class="col-xs-10">
+                <input type="text" class="form-control" th:field="*{login}"/>
+            </div>
         </div>
-        <div class="container jumbotron">
-            <form action="#" th:action="@{/new/admin/user}" th:object="${user}"
-                  class="form-horizontal" method="post">
-                <input type="hidden" th:field="*{id}"/>
-                <div class="form-group">
-                    <label th:for="${#ids.next('login')}" class="col-xs-2 control-label">Логин:</label>
-                    <div class="col-xs-10">
-                        <input type="text" class="form-control" th:field="*{login}"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label th:for="${#ids.next('name')}" class="col-xs-2 control-label">Имя:</label>
-                    <div class="col-xs-10">
-                        <input type="text" class="form-control" th:field="*{name}"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label th:for="${#ids.next('email')}" class="col-xs-2 control-label">Адрес email:</label>
-                    <div class="col-xs-10">
-                        <input type="email" class="form-control" th:field="*{email}"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label th:for="${#ids.next('faId')}" class="col-xs-2 control-label">FA_ID:</label>
-                    <div class="col-xs-10">
-                        <input type="text" class="form-control" th:field="*{faId}"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label th:for="${#ids.next('password')}" class="col-xs-2 control-label">Пароль:</label>
-                    <div class="col-xs-10">
-                        <input type="password" class="form-control" th:field="*{password}"/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label th:for="${#ids.next('registered')}" class="col-xs-2 control-label">Зарегестрирован:</label>
-                    <div class="col-xs-10">
-                        <div class="checkbox">
-                            <input type="checkbox" th:field="*{registered}"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-xs-2 control-label">Админ:</label>
-                    <div class="col-xs-10">
-                        <div class="checkbox">
-                            <input type="checkbox" th:field="*{admin}"/>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-xs-offset-2 col-xs-10">
-                        <button type="submit" class="btn btn-default">Сохранить</button>
-                    </div>
-                </div>
-            </form>
+        <div class="form-group">
+            <label th:for="${#ids.next('name')}" class="col-xs-2 control-label">Имя:</label>
+
+            <div class="col-xs-10">
+                <input type="text" class="form-control" th:field="*{name}"/>
+            </div>
         </div>
-    </div>
+        <div class="form-group">
+            <label th:for="${#ids.next('email')}" class="col-xs-2 control-label">Адрес email:</label>
+
+            <div class="col-xs-10">
+                <input type="email" class="form-control" th:field="*{email}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label th:for="${#ids.next('faId')}" class="col-xs-2 control-label">FA_ID:</label>
+
+            <div class="col-xs-10">
+                <input type="text" class="form-control" th:field="*{faId}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label th:for="${#ids.next('password')}" class="col-xs-2 control-label">Пароль:</label>
+
+            <div class="col-xs-10">
+                <input type="password" class="form-control" th:field="*{password}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label th:for="${#ids.next('registered')}" class="col-xs-2 control-label">Зарегестрирован:</label>
+
+            <div class="col-xs-10">
+                <div class="checkbox">
+                    <input type="checkbox" th:field="*{registered}"/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-xs-2 control-label">Админ:</label>
+
+            <div class="col-xs-10">
+                <div class="checkbox">
+                    <input type="checkbox" th:field="*{admin}"/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-offset-2 col-xs-10">
+                <button type="submit" class="btn btn-default">Сохранить</button>
+            </div>
+        </div>
+    </form>
 </div>
-<footer th:replace="main::footer"></footer>
-<script src="/js/jquery-2.1.4.js"></script>
-<script src="/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -1,14 +1,14 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="main::head"></head>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{main-layout}">
+<head>
+    <title>Трансфер</title>
+</head>
 <body>
-<nav th:replace="main::teamsnav"></nav>
-<div class="container">
-    <img id="logo" src="/images/jlogo.png"/>
-
-    <div th:replace="main::mainmenu ('transfer')"/>
-    <h3>Трансфер</h3>
-
+<nav layout:fragment="mainmenu" th:remove="tag">
+    <div th:replace="main::mainmenu('transfer')"/>
+</nav>
+<div layout:fragment="mainframe" th:remove="tag">
     <div id="transfer-main" class="well" th:if="${not #lists.isEmpty(transfers)}">
         <div class="container-fluid">
             <div class="row">
@@ -284,112 +284,109 @@
             Проверить заявку <input id="transfer-check" type="file"/>
         </span>
     </div>
-
 </div>
-<footer th:replace="main::footer"></footer>
-<script src="/js/jquery-2.1.4.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/jquery.dataTables.min.js"></script>
-<script src="/js/transfer.js"></script>
-<script>
-    $(document).ready(function () {
-        $("#transfer-upload").on("change", uploadFile);
-        $("#result-upload").on("change", uploadResultsFile);
-        $("#show-transfer").click("change", showTransfer);
-        $("#transfer-check").on("change", checkTransfer);
-        var table = $("#transfer-table").DataTable();
-        var ids = gen(['Strength', 'Salary', 'D', 'U', 'O', 'Talent',
-            'T', 'VG', 'Age', 'R', 'S', 'Health', 'P', 'F', 'Price', 'N', 'Payed']);
-        $(ids).keyup(function () {
-            table.draw();
+<div layout:fragment="script-after" th:remove="tag">
+    <script src="/js/transfer.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#transfer-upload").on("change", uploadFile);
+            $("#result-upload").on("change", uploadResultsFile);
+            $("#show-transfer").click("change", showTransfer);
+            $("#transfer-check").on("change", checkTransfer);
+            var table = $("#transfer-table").DataTable();
+            var ids = gen(['Strength', 'Salary', 'D', 'U', 'O', 'Talent',
+                'T', 'VG', 'Age', 'R', 'S', 'Health', 'P', 'F', 'Price', 'N', 'Payed']);
+            $(ids).keyup(function () {
+                table.draw();
+            });
+            $('#position').change(function () {
+                table.draw();
+            })
         });
-        $('#position').change(function () {
-            table.draw();
-        })
-    });
 
-    function gen(arr) {
-        var result = '';
-        var i;
-        for (i in arr) {
-            var s = arr[i];
-            if (result.length > 0) {
+        function gen(arr) {
+            var result = '';
+            var i;
+            for (i in arr) {
+                var s = arr[i];
+                if (result.length > 0) {
+                    result += ', ';
+                }
+                result += '#min';
+                result += s;
                 result += ', ';
+                result += '#max';
+                result += s;
             }
-            result += '#min';
-            result += s;
-            result += ', ';
-            result += '#max';
-            result += s;
+            return result;
         }
-        return result;
-    }
 
-    function uploadFile() {
-        var fd = new FormData();
-        fd.append('file', $("#transfer-upload")[0].files[0]);
-        $.ajax({
-            url: "/transfer",
-            type: "POST",
-            data: fd,
-            enctype: 'multipart/form-data',
-            processData: false,
-            contentType: false,
-            cache: false,
-            success: function () {
-                window.location.href = '/transfer';
-            },
-            error: function () {
+        function uploadFile() {
+            var fd = new FormData();
+            fd.append('file', $("#transfer-upload")[0].files[0]);
+            $.ajax({
+                url: "/transfer",
+                type: "POST",
+                data: fd,
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function () {
+                    window.location.href = '/transfer';
+                },
+                error: function () {
 
-            }
-        });
-    }
+                }
+            });
+        }
 
-    function checkTransfer() {
-        var fd = new FormData();
-        fd.append('file', $("#transfer-check")[0].files[0]);
-        fd.append('date', $("#transfer-date").find("option:selected").text());
-        $.ajax({
-            url: "/transfer/check",
-            type: "POST",
-            data: fd,
-            enctype: 'multipart/form-data',
-            processData: false,
-            contentType: false,
-            cache: false,
-            success: function (data) {
-                $('#transfer-main').html(data);
-            },
-            error: function () {
+        function checkTransfer() {
+            var fd = new FormData();
+            fd.append('file', $("#transfer-check")[0].files[0]);
+            fd.append('date', $("#transfer-date").find("option:selected").text());
+            $.ajax({
+                url: "/transfer/check",
+                type: "POST",
+                data: fd,
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function (data) {
+                    $('#transfer-main').html(data);
+                },
+                error: function () {
 
-            }
-        });
-    }
+                }
+            });
+        }
 
-    function uploadResultsFile() {
-        var fd = new FormData();
-        fd.append('file', $("#result-upload")[0].files[0]);
-        fd.append('date', $("#transfer-date").find("option:selected").text());
-        $.ajax({
-            url: "/transfer/result",
-            type: "POST",
-            data: fd,
-            enctype: 'multipart/form-data',
-            processData: false,
-            contentType: false,
-            cache: false,
-            success: function () {
-                window.location.href = '/transfer';
-            },
-            error: function () {
+        function uploadResultsFile() {
+            var fd = new FormData();
+            fd.append('file', $("#result-upload")[0].files[0]);
+            fd.append('date', $("#transfer-date").find("option:selected").text());
+            $.ajax({
+                url: "/transfer/result",
+                type: "POST",
+                data: fd,
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function () {
+                    window.location.href = '/transfer';
+                },
+                error: function () {
 
-            }
-        });
-    }
+                }
+            });
+        }
 
-    function showTransfer() {
-        window.location.href = '/transfer/' + $("#transfer-date").find("option:selected").text();
-    }
-</script>
+        function showTransfer() {
+            window.location.href = '/transfer/' + $("#transfer-date").find("option:selected").text();
+        }
+    </script>
+</div>
 </body>
 </html>

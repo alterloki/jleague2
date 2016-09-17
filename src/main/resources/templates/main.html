@@ -21,7 +21,7 @@
     <div id="navbarCollapse" class="collapse navbar-collapse">
         <div class="container">
             <div class="row">
-                <div class="col-md-2"></div>
+                <div class="col-md-1"></div>
                 <div class="col-md-8">
                     <ul class="nav navbar-nav">
                         <li th:each="jTeam : ${japanTeams}">
@@ -29,7 +29,7 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col-md-2"></div>
+                <div class="col-md-1"></div>
             </div>
         </div>
     </div>
@@ -72,6 +72,7 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li th:if="${#authentication.name == 'anonymousUser'}"><a href="/new/login"><span class="glyphicon glyphicon-log-in"></span> Вход</a></li>
+                        <li th:if="${#authentication.name != 'anonymousUser'}"><a href="/new/admin">Админ</a></li>
                         <li th:if="${#authentication.name != 'anonymousUser'}"><a href="/j_spring_security_logout" th:text="'Выход: ' + ${#authentication.name}"><span class="glyphicon glyphicon-log-in"></span>Выход: Login</a></li>
                     </ul>
                 </div>
