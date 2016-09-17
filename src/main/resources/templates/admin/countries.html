@@ -45,7 +45,7 @@
     </button>
 </div>
 <div layout:fragment="script-after" th:remove="tag">
-    <script>
+    <script th:inline="none">
         $(document).ready(function () {
             $('#countries-table').Tabledit({
                 url: '/new/admin/country',

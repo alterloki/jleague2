@@ -1,32 +1,30 @@
 <div class="panel pane-default" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
      xmlns:th="http://www.thymeleaf.org">
     <div class="panel-body">
-
-            <table class="table table-bordered">
-                <tr th:each="image : ${images}">
-                    <td th:text="${image.id}">1</td>
-                    <td th:text="${image.name.length() > 20} ? ${image.name.substring(0, 20) + '...'} : ${image.name}">
-                        1.jpg
-                    </td>
-                    <td><img src="/images/upload/1.jpg" th:attr="src=${image.getPath()},alt=${image.name}"
-                             alt="1.jpg" class="img-thumbnail center-block" style="height:140px;"></td>
-                    <td><a th:attr="id=${'delete-photo-' + image.id}" id="delete-photo-1" href="#">Удалить</a></td>
-                </tr>
-            </table>
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
-                    <li th:each="index : ${pager.indexes}" th:class="${index == pager.active ? 'active' : ''}">
-                        <a th:if="${index eq '<'}" th:href="${pager.indexLink(index)}" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                        <a th:if="${index != '<' and index != '>'}" th:text="${index}" th:href="${pager.indexLink(index)}" href="#">1</a>
-                        <a th:if="${index eq '>'}" href="#" aria-label="Next" th:href="${pager.indexLink(index)}">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-
-
+        <table class="table table-bordered">
+            <tr th:each="image : ${images}">
+                <td th:text="${image.id}">1</td>
+                <td th:text="${image.name.length() > 20} ? ${image.name.substring(0, 20) + '...'} : ${image.name}">
+                    1.jpg
+                </td>
+                <td><img src="/images/upload/1.jpg" th:attr="src=${image.getPath()},alt=${image.name}"
+                         alt="1.jpg" class="img-thumbnail center-block" style="height:140px;"></td>
+                <td><a th:attr="id=${'delete-photo-' + image.id}" id="delete-photo-1" href="#">Удалить</a></td>
+            </tr>
+        </table>
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li th:each="index : ${pager.indexes}" th:class="${index == pager.active ? 'active' : ''}">
+                    <a th:if="${index eq '<'}" th:href="${pager.indexLink(index)}" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                    <a th:if="${index != '<' and index != '>'}" th:text="${index}" th:href="${pager.indexLink(index)}"
+                       href="#">1</a>
+                    <a th:if="${index eq '>'}" href="#" aria-label="Next" th:href="${pager.indexLink(index)}">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </div>

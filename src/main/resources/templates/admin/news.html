@@ -1,35 +1,32 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="main::head"></head>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{admin-layout}">
+<head>
+    <title>Новости</title>
+</head>
 <body>
-<nav th:replace="main::adminnav('news')"></nav>
-<div class="container">
-    <div class="row">
-        <div class="page-header">
-            <h2>Пишем новость</h2>
-        </div>
-        <div class="container jumbotron">
+<nav layout:fragment="adminmenu" th:remove="tag">
+    <div th:replace="main::adminnav('news')"/>
+</nav>
+<h2 layout:fragment="main-title">Пишем новость</h2>
 
-            <button id="add-news" type="button" class="btn btn-success">Добавить</button>
-        </div>
-    </div>
+<div layout:fragment="main-content" class="container jumbotron">
+    <button id="add-news" type="button" class="btn btn-success">Добавить</button>
 </div>
-<footer th:replace="main::footer"></footer>
-<script src="/js/jquery-2.1.4.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/jquery.tabledit.js"></script>
-<script th:inline="javascript">
-    $(document).ready(function () {
-        $('#add-news').click(function () {
-            $.ajax({
-                url: '/new/admin/news',
-                type: 'PUT',
-                success: function(result) {
-                    window.location.href='/admin/news';
-                }
+<div layout:fragment="script-after" th:remove="tag">
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            $('#add-news').click(function () {
+                $.ajax({
+                    url: '/new/admin/news',
+                    type: 'PUT',
+                    success: function (result) {
+                        window.location.href = '/admin/news';
+                    }
+                });
             });
         });
-    });
-</script>
+    </script>
+</div>
 </body>
 </html>

@@ -1,59 +1,57 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="main::head"></head>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{admin-layout}">
+<head>
+    <title>Команды</title>
+</head>
 <body>
-<nav th:replace="main::adminnav"></nav>
-<div class="container">
-    <div class="row">
-        <div class="page-header">
-            <h2>Команды страны <span th:text="${country.name}">Япония</span></h2>
-        </div>
-        <div class="container jumbotron">
-            <table class="table table-bordered table-responsive" id="teams-table">
-                <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Индекс</th>
-                    <th>Название</th>
-                    <th>Эмблема</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="team : ${teams}">
-                    <td th:text="${team.id}"></td>
-                    <td th:text="${team.shortName}"></td>
-                    <td th:text="${team.name}"></td>
-                    <td><img src="" th:attr="src=${team.emblem}" width="40" height="40"/></td>
-                </tr>
-                </tbody>
-            </table>
-            <button id="add-team" type="button" class="btn btn-success">Добавить</button>
-        </div>
-    </div>
+<nav layout:fragment="adminmenu" th:remove="tag">
+    <div th:replace="main::adminnav('countries')"/>
+</nav>
+<h2 layout:fragment="main-title">Команды страны <span th:text="${country.name}">Япония</span></h2>
+
+<div layout:fragment="main-content" class="container jumbotron">
+    <table class="table table-bordered table-responsive" id="teams-table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Индекс</th>
+            <th>Название</th>
+            <th>Эмблема</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="team : ${teams}">
+            <td th:text="${team.id}"></td>
+            <td th:text="${team.shortName}"></td>
+            <td th:text="${team.name}"></td>
+            <td><img src="" th:attr="src=${team.emblem}" width="40" height="40"/></td>
+        </tr>
+        </tbody>
+    </table>
+    <button id="add-team" type="button" class="btn btn-success">Добавить</button>
 </div>
-<footer th:replace="main::footer"></footer>
-<script src="/js/jquery-2.1.4.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/jquery.tabledit.js"></script>
-<script th:inline="javascript">
-    $(document).ready(function () {
-        $('#teams-table').Tabledit({
-            url: '/new/admin/country/[[${country.id}]]/team',
-            columns: {
-                identifier: [0, 'id'],
-                editable: [[1, 'shortName'], [2, 'name']]
-            }
-        });
-        $('#add-team').click(function () {
-            $.ajax({
+<div layout:fragment="script-after" th:remove="tag">
+    <script th:inline="javascript">
+        $(document).ready(function () {
+            $('#teams-table').Tabledit({
                 url: '/new/admin/country/[[${country.id}]]/team',
-                type: 'PUT',
-                success: function(result) {
-                    window.location.href='/new/admin/country/[[${country.id}]]/team';
+                columns: {
+                    identifier: [0, 'id'],
+                    editable: [[1, 'shortName'], [2, 'name']]
                 }
             });
+            $('#add-team').click(function () {
+                $.ajax({
+                    url: '/new/admin/country/[[${country.id}]]/team',
+                    type: 'PUT',
+                    success: function (result) {
+                        window.location.href = '/new/admin/country/[[${country.id}]]/team';
+                    }
+                });
+            });
         });
-    });
-</script>
+    </script>
+</div>
 </body>
 </html>
