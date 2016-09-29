@@ -173,7 +173,12 @@ public class AllParser {
                 defendersCoach, midfieldersCoach, forwardsCoach, fitnessCoach, moraleCoach,
                 doctorQualification, doctorPlayers, scout, homeTop, awayTop, homeBottom, awayBottom,
                 competitions);
-        Team team = new Team(0, id, name, countryMap.get(country).getId(), 0,
+        Country countryObj = countryMap.get(country);
+        int countryId = 0;
+        if(countryObj != null) {
+            countryId = countryObj.getId();
+        }
+        Team team = new Team(0, id, name, countryId, 0,
                 calculateDiv(competitions), teamInfo);
 
         List<Player> players = new ArrayList<>(15);
