@@ -1,11 +1,14 @@
 package ru.jleague13.download;
 
+import com.google.common.io.ByteStreams;
+import com.google.common.io.Files;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.jleague13.all.AllParser;
 import ru.jleague13.all.AllZip;
@@ -14,10 +17,9 @@ import ru.jleague13.repository.CountryDao;
 import ru.jleague13.repository.TeamDao;
 import ru.jleague13.repository.UserDao;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.zip.ZipInputStream;
 
@@ -37,6 +39,9 @@ public class SimpleUrlDownloadInfo implements DownloadInfo {
     private CountryDao countryDao;
     @Autowired
     private TeamDao teamDao;
+    @Value("${download.dir}")
+    private String downloadDir;
+
 
     @Override
     public List<Country> downloadCountries() throws IOException {
@@ -84,12 +89,22 @@ public class SimpleUrlDownloadInfo implements DownloadInfo {
 
     @Override
     public AllZip downloadAll() throws IOException {
-        ZipInputStream allStream = new ZipInputStream(new URL(faUrlResolver.getAllZip()).openStream());
-        BufferedReader reader = new BufferedReader(new InputStreamReader(allStream, "Cp1251"));
-        AllZip all = new AllParser(loadCountryMap()).readAll(reader);
-        reader.close();
-        allStream.close();
+        InputStream is = new URL(faUrlResolver.getAllZip()).openStream();
+        AllZip all = new AllParser(loadCountryMap()).readAll(is);
+        is.close();
         return all;
+    }
+
+    @Override
+    public void downloadCurrentAllFile() throws IOException {
+        URL url = new URL(faUrlResolver.getAllZip());
+        String dateString = new SimpleDateFormat("dd_MM_yyyy").format(new Date());
+        log.info("Downloading today all.zip. Date = " + dateString);
+        byte[] allBytes = ByteStreams.toByteArray(url.openStream());
+        File to = new File(downloadDir + "/all/" + dateString + "_all.zip");
+        log.info("File = " + to.getAbsolutePath());
+        Files.createParentDirs(to);
+        Files.write(allBytes, to);
     }
 
     private Map<String, Team> loadTeams() {

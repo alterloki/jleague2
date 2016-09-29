@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="20160924-01" author="alterloki">
+        <comment>
+            Создание таблицы метаинформации периодических задач
+        </comment>
+        <sql>
+            CREATE TABLE task_info
+            (
+            name character varying(100),
+            cron character varying(255),
+            progress int not null,
+            CONSTRAINT task_info_pkey PRIMARY KEY (name)
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="20160924-02" author="alterloki">
+        <comment>
+            Создание таблицы лога изменений периодических задач
+        </comment>
+        <sql>
+            CREATE TABLE task_log
+            (
+            id bigint NOT NULL,
+            task_name character varying(1024),
+            status int,
+            log_time datetime,
+            message character varying(4096),
+            CONSTRAINT task_log_pkey PRIMARY KEY (id)
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="20160924-03" author="alterloki">
+        <comment>
+            Добавим автоинкремент для таблицы лога изменений периодических задач
+        </comment>
+        <addAutoIncrement
+                columnDataType="int"
+                columnName="id"
+                incrementBy="1"
+                startWith="1"
+                tableName="task_log"/>
+    </changeSet>
+
+
+</databaseChangeLog>

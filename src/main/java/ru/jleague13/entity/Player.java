@@ -29,6 +29,8 @@ public class Player {
     private int birthtour;
     private String clubName;
 
+    private PlayerGameInfo gameInfo;
+
     public Player() {
     }
 
@@ -54,6 +56,15 @@ public class Player {
         this.birthtour = birthtour;
         this.abilities = abilities;
         this.abilitiesString = abilitiesString;
+    }
+
+    public Player(int id, int playerId, String name, PlayerType playerType, String country,
+                  String seller, String buyer, int age, int talent, int experience, int strength,
+                  int health, int price, int salary, int payed, String abilitiesString, int birthtour,
+                  Abilities abilities, PlayerGameInfo gameInfo) {
+        this(id, playerId, name, playerType, country, seller, buyer, age, talent, experience,
+        strength, health, price, salary, payed, abilitiesString, birthtour, abilities);
+        this.gameInfo = gameInfo;
     }
 
     public int getId() {

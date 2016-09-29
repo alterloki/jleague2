@@ -29,6 +29,6 @@ public class FaUrlResolver {
     }
 
     public String getAllZip() {
-        return FA13_URL + "build/all13.zip";
+        return FA13_URL + "/build/all13.zip";
     }
 }

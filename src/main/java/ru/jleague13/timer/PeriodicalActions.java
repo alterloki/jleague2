@@ -22,10 +22,10 @@ public class PeriodicalActions {
 
     @Scheduled(cron="0 0 6 * * ?")
     public void loadAllZip() {
-        try {
+        /*try {
             informationManager.updateTodayAll();
         } catch (IOException e) {
             log.error("Problem updating all13.zip", e);
-        }
+        }*/
     }
 }

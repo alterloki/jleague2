@@ -17,4 +17,6 @@ public interface DownloadInfo {
     List<Team> downloadTeams(Country country) throws IOException;
 
     AllZip downloadAll() throws IOException;
+
+    void downloadCurrentAllFile() throws IOException;
 }

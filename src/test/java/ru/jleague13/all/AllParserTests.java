@@ -33,9 +33,8 @@ public class AllParserTests {
     @Test
     public void testParseAllFromFile() throws Exception {
         Resource resource = new ClassPathResource("all13.zip");
-        BufferedReader br = new BufferedReader(new InputStreamReader(resource.getInputStream()));
-        AllZip allZip = new AllParser(loadCountryMap()).readAll(br);
-        //System.out.println(allZip.getTeams().size());
+        AllZip allZip = new AllParser(loadCountryMap()).readAll(resource.getInputStream());
+        System.out.println(allZip.getTeams().size());
     }
 
     private Map<String, Country> loadCountryMap() {

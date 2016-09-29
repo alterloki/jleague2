@@ -4,11 +4,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import ru.jleague13.entity.*;
 
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
 
 /**
  * @author ashevenkov 23.04.16 16:33.
@@ -22,9 +24,22 @@ public class AllParser {
         this.countryMap = countryMap;
     }
 
+    public AllZip readAll(InputStream is) throws IOException {
+        ZipInputStream zipStream = new ZipInputStream(is);
+        zipStream.getNextEntry();
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new InputStreamReader(zipStream, "Cp1251"));
+        } catch (UnsupportedEncodingException e) {
+            System.err.println("Error while encoding all file");
+        }
+        AllZip all = readAllUnzipped(reader);
+        reader.close();
+        zipStream.close();
+        return all;
+    }
 
-    public AllZip readAll(BufferedReader reader) throws IOException {
-
+    private AllZip readAllUnzipped(BufferedReader reader) throws IOException {
         String s = reader.readLine();
         if (s.compareTo("format=4") != 0) {
             System.err.println("Inappropriate file format");
@@ -40,7 +55,7 @@ public class AllParser {
             return null;
         }
 
-        Map<String, String> competitions = new TreeMap<String, String>();
+        Map<String, String> competitions = new TreeMap<>();
         s = reader.readLine();
 
         while (!s.equals("/888/")) {
@@ -86,11 +101,12 @@ public class AllParser {
 
         s = reader.readLine();
         parsedData = s.split("/");
-        int[] cntArr = new int[0];
-        cntArr[0] = 1;
-
-        cnt = cntArr[0];
-        int games = Integer.valueOf(parsedData[cnt++]);
+        cnt = 1;
+        int[] cntArr = new int[1];
+        cntArr[0] = cnt;
+        FaUser user = parseUserData(parsedData, cntArr, 0);
+        users.put(user.getFaId(), user);
+        int games = Integer.valueOf(parsedData[cntArr[0]++]);
 
         s = reader.readLine();
         parsedData = s.split("/");
@@ -101,6 +117,7 @@ public class AllParser {
         int boom = Integer.valueOf(parsedData[cnt++]);
         int teamFinance = Integer.valueOf(parsedData[cnt++]);
         int managerFinance = Integer.valueOf(parsedData[cnt++]);
+        user.setManagerFinance(managerFinance);
         int rating = Integer.valueOf(parsedData[cnt++]);
         int sportbase = Integer.valueOf(parsedData[cnt++]);
         int sportbaseState = Integer.valueOf(parsedData[cnt++]);
@@ -121,9 +138,6 @@ public class AllParser {
         int doctorQualification = Integer.valueOf(parsedData[cnt++]);
         int doctorPlayers = Integer.valueOf(parsedData[cnt++]);
         int scout = Integer.valueOf(parsedData[cnt++]);
-
-        FaUser user = parseUserData(parsedData, cntArr, managerFinance);
-        users.put(user.getFaId(), user);
 
         s = reader.readLine();
         parsedData = s.split("/");
@@ -155,10 +169,10 @@ public class AllParser {
         Collections.addAll(competitions, parsedData);
 
         TeamInfo teamInfo = new TeamInfo(0, town, games, stadiumCapacity, boom, teamFinance, stadium, stadiumState,
-                    rating, sportbase, sportbaseState, sportschool, sportschoolState, coach, goalkeepersCoach,
-                    defendersCoach, midfieldersCoach, forwardsCoach, fitnessCoach, moraleCoach,
-                    doctorQualification, doctorPlayers, scout, homeTop, awayTop, homeBottom, awayBottom,
-                    competitions);
+                rating, sportbase, sportbaseState, sportschool, sportschoolState, coach, goalkeepersCoach,
+                defendersCoach, midfieldersCoach, forwardsCoach, fitnessCoach, moraleCoach,
+                doctorQualification, doctorPlayers, scout, homeTop, awayTop, homeBottom, awayBottom,
+                competitions);
         Team team = new Team(0, id, name, countryMap.get(country).getId(), 0,
                 calculateDiv(competitions), teamInfo);
 
@@ -181,13 +195,14 @@ public class AllParser {
     }
 
     private int calculateDiv(List<String> competitions) {
-        //todo implement
-        return 0;
-    }
-
-    private void updateUsers(Map<Integer, User> newUserMap) {
-        //todo implement
-
+        for (String competition : competitions) {
+            if(competition.contains("3")) {
+                return 3;
+            } else if(competition.contains("2")) {
+                return 2;
+            }
+        }
+        return 1;
     }
 
     private FaUser parseUserData(String[] parsedData, int[] cnt, int managerFinance) {
@@ -196,7 +211,16 @@ public class AllParser {
         String managerTown = parsedData[cnt[0]++];
         String managerCountry = parsedData[cnt[0]++];
         String managerEmail = parsedData[cnt[0]++];
-        String icq = parsedData[cnt[0]++].substring(4);
+        String icq = null;
+        String s = "";
+        try {
+            s = parsedData[cnt[0]++];
+            icq = s.substring(4);
+        } catch (Exception e) {
+            System.out.println(s);
+            System.out.println(Arrays.toString(parsedData));
+            e.printStackTrace();
+        }
         int uin = 0;
         if (!icq.isEmpty()) {
             try {
@@ -276,6 +300,9 @@ public class AllParser {
         return new Player(0, id, name, position, nationality, "", "", age, talent, experience, strength, health,
                 price, salary, 0, "", birthtour,
                 new Abilities(shooting, handling, reflexes, passing, crossing, dribbling,
-                        tackling, heading, speed, stamina));
+                        tackling, heading, speed, stamina),
+                new PlayerGameInfo(number, fitness, morale, disqualification, rest, teamwork, games, goalsTotal,
+                        goalsMissed, goalsChamp, mark, gamesCareer, goalsCareer, yellowCards, redCards, transfer,
+                        lease, birthplace, birthdate, assists, profit));
     }
 }
