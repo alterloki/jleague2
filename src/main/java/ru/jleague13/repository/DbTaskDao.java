@@ -48,7 +48,7 @@ public class DbTaskDao implements TaskDao {
     public List<TaskLogRecord> getTaskLastLogs(String taskName, int count) {
         return jdbcTemplate.query(
                 "select " + TASK_LOG_FULL_FIELDS +
-                        " from (select * from task_log tl where name = ? order by id desc) tl limit ?",
+                        " from (select * from task_log tl where task_name = ? order by id desc) tl limit ?",
                 (resultSet, i) -> taskLogFromRs(resultSet), taskName, count);
     }
 

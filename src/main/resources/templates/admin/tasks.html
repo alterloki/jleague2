@@ -25,7 +25,7 @@
         </thead>
         <tbody>
         <tr th:each="task : ${taskList}">
-            <td><a th:text="${task.getTaskName()}" href="#" th:href="${'/tasks/' + task.getTaskName()}"></a></td>
+            <td><a th:text="${task.getTaskName()}" href="#" th:href="${'/new/admin/tasks/' + task.getTaskName()}"></a></td>
             <td th:text="${task.getCron()}"></td>
             <td>
                 <div class="progress">

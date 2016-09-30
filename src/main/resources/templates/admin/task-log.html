@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{admin-layout}">
+<head>
+    <title th:text="'Лог запуска задачи ' + ${taskName}">Лог запуска задачи</title>
+</head>
+<body>
+<nav layout:fragment="adminmenu" th:remove="tag">
+    <div th:replace="main::adminnav('tasks')"/>
+</nav>
+<h2 layout:fragment="main-title" th:text="'Лог запуска задачи ' + ${taskName}">Лог запуска задачи</h2>
+
+<div layout:fragment="main-content" class="container jumbotron">
+    <table class="table table-bordered table-responsive" id="teams-table">
+        <thead>
+        <tr>
+            <th>Название</th>
+            <th>Время</th>
+            <th>Состояние</th>
+            <th>Сообщение</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="taskLog : ${taskLogList}">
+            <td th:text="${taskLog.getTaskName()}"></td>
+            <td th:text="${#dates.format(taskLog.getTime(), 'dd.MM.yyyy HH:mm:ss')}"></td>
+            <td th:text="${taskLog.getStatus().toString()}"></td>
+            <td th:text="${taskLog.getMessage()}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

@@ -30,7 +30,8 @@ public class TaskController {
 
     @RequestMapping(value="/{task_name}", method = RequestMethod.GET)
     public String showTaskLogs(@PathVariable("task_name") String taskName, Model model) {
-        model.addAttribute("taskList", taskDao.getTaskLastLogs(taskName, 10));
+        model.addAttribute("taskLogList", taskDao.getTaskLastLogs(taskName, 10));
+        model.addAttribute("taskName", taskName);
         return "admin/task-log";
     }
 
