@@ -7,8 +7,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ru.jleague13.controller.InformationManager;
 
-import java.io.IOException;
-
 /**
  * @author ashevenkov 23.04.16 13:44.
  */

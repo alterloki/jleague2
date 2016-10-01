@@ -10,6 +10,7 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import ru.jleague13.all.AllManager;
 import ru.jleague13.all.AllParser;
 import ru.jleague13.all.AllZip;
 import ru.jleague13.entity.*;
@@ -41,6 +42,8 @@ public class SimpleUrlDownloadInfo implements DownloadInfo {
     private TeamDao teamDao;
     @Value("${download.dir}")
     private String downloadDir;
+    @Autowired
+    private AllManager allManager;
 
 
     @Override
@@ -98,13 +101,13 @@ public class SimpleUrlDownloadInfo implements DownloadInfo {
     @Override
     public void downloadCurrentAllFile() throws IOException {
         URL url = new URL(faUrlResolver.getAllZip());
-        String dateString = new SimpleDateFormat("dd_MM_yyyy").format(new Date());
-        log.info("Downloading today all.zip. Date = " + dateString);
         byte[] allBytes = ByteStreams.toByteArray(url.openStream());
-        File to = new File(downloadDir + "/all/" + dateString + "_all.zip");
+        Date date = new Date();
+        File to = new File(allManager.getAllFileName(date));
         log.info("File = " + to.getAbsolutePath());
         Files.createParentDirs(to);
         Files.write(allBytes, to);
+        allManager.registerAllFile(date);
     }
 
     private Map<String, Team> loadTeams() {

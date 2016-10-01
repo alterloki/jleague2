@@ -3,9 +3,7 @@ package ru.jleague13.repository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -14,11 +12,12 @@ import ru.jleague13.entity.Country;
 import ru.jleague13.images.ImagesManager;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author ashevenkov 15.09.15 0:52.
@@ -55,6 +54,19 @@ public class DbCountryDao implements CountryDao {
         return jdbcTemplate.query(
                 "select id, fa_id, fa_index, name from country order by name",
                 (rs, i) -> fromResultSet(rs));
+    }
+
+    @Override
+    public Map<String, Country> getCountriesMap() {
+        return loadCountriesMap(getCountries());
+    }
+
+    private Map<String, Country> loadCountriesMap(List<Country> countries) {
+        Map<String, Country> result = new HashMap<>();
+        for (Country country : countries) {
+            result.put(country.getName(), country);
+        }
+        return result;
     }
 
     private Country fromResultSet(ResultSet resultSet) throws SQLException {

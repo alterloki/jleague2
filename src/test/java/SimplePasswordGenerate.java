@@ -8,7 +8,7 @@ public class SimplePasswordGenerate {
 
     @Test
     public void testGenerate() {
-        String password = "123456";
+        String password = "456789";
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String hashedPassword = passwordEncoder.encode(password);
         System.out.println(hashedPassword);

@@ -15,7 +15,7 @@ public class SimpleLogTask extends AbstractFaTask {
     private Log log = LogFactory.getLog(SimpleLogTask.class);
 
     public SimpleLogTask() {
-        super("simpleTask", "0 0 3 * * *");
+        super("simpleTask", "0/15 * * * * *");
     }
 
     @Override

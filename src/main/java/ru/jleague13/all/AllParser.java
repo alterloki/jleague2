@@ -195,7 +195,7 @@ public class AllParser {
             }
         }
         team.setPlayers(players);
-        return new Team();
+        return team;
 
     }
 
