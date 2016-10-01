@@ -35,7 +35,7 @@ public class Jleague2Application extends SpringBootServletInitializer {
         return application.sources(Jleague2Application.class);
     }
 
-    /*public static void main(String[] args) {
-        SpringApplication.run(Jleague2Application.class, args);
-    }*/
+    public static void main(String[] args) {
+        //SpringApplication.run(Jleague2Application.class, args);
+    }
 }
