@@ -121,7 +121,7 @@
 				<version>2.2</version>
 				<configuration>
 					<url>http://52.28.238.73:8085/manager/text</url>
-					<path>/www</path>
+					<path>/</path>
 					<username>maven</username>
 					<password>${env.TOMCAT_PASS}</password>
 				</configuration>
@@ -145,6 +145,14 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<warName>ROOT.war</warName>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
