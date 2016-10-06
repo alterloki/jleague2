@@ -19,9 +19,11 @@ public class AllParser {
 
     private static final Log log = LogFactory.getLog(AllParser.class);
     private final Map<String, Country> countryMap;
+    private final Map<Integer, User> usersMap;
 
-    public AllParser(Map<String, Country> countryMap) {
+    public AllParser(Map<String, Country> countryMap, Map<Integer, User> usersMap) {
         this.countryMap = countryMap;
+        this.usersMap = usersMap;
     }
 
     public AllZip readAll(InputStream is) throws IOException {
@@ -77,7 +79,7 @@ public class AllParser {
             teams.put(current.getShortName(), current);
             current = readTeam(reader, users);
         }
-        return new AllZip(date, competitions, bankRate, teams);
+        return new AllZip(date, competitions, bankRate, teams, users);
     }
 
     private Team readTeam(BufferedReader reader, Map<Integer, FaUser> users) throws IOException {
@@ -188,11 +190,8 @@ public class AllParser {
             players.add(current);
             current = readPlayer(reader);
         }
-        if (nationalTeam != null) {
-            for (Iterator<Player> iterator = players.iterator(); iterator.hasNext(); ) {
-                Player player = iterator.next();
-                player.setCountry(nationalTeam);
-            }
+        for (Player player : players) {
+            player.setCountry(nationalTeam);
         }
         team.setPlayers(players);
         return team;
@@ -234,7 +233,12 @@ public class AllParser {
                 uin = 0;
             }
         }
-        return new FaUser(0, managerName, managerEmail, managerId, uin, managerTown, managerCountry, managerFinance);
+        int id = 0;
+        FaUser oldUser = usersMap.get(managerId);
+        if(oldUser != null) {
+            id = oldUser.getId();
+        }
+        return new FaUser(id, managerName, managerEmail, managerId, uin, managerTown, managerCountry, managerFinance);
     }
 
     public static Player readPlayer(BufferedReader reader) throws IOException {

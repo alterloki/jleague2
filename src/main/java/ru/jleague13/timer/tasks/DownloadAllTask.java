@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.jleague13.all.AllManager;
 import ru.jleague13.download.DownloadInfo;
 import ru.jleague13.timer.AbstractFaTask;
 import ru.jleague13.timer.ProgressConnection;
@@ -17,7 +18,7 @@ public class DownloadAllTask extends AbstractFaTask {
     private Log log = LogFactory.getLog(DownloadAllTask.class);
 
     @Autowired
-    private DownloadInfo downloadInfo;
+    private AllManager allManager;
 
     public DownloadAllTask() {
         super("downloadAllTask", "0 0 4 * * *");
@@ -26,7 +27,7 @@ public class DownloadAllTask extends AbstractFaTask {
     @Override
     public void runTask(ProgressConnection progress) throws Exception {
         log.info("Running downolad all.zip task");
-        downloadInfo.downloadCurrentAllFile();
+        allManager.downloadCurrentAllFile();
     }
 
 }

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="20161003-01" author="alterloki">
+        <comment>
+            Создание таблицы All файлов
+        </comment>
+        <sql>
+            CREATE TABLE all_zip
+            (
+            all_date datetime,
+            parsed int not null,
+            CONSTRAINT all_zip_pkey PRIMARY KEY (all_date)
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="20161003-02" author="alterloki">
+        <addColumn tableName="users">
+            <column name="icq" type="int"/>
+            <column name="town" type="varchar(255)"/>
+            <column name="country" type="varchar(255)"/>
+            <column name="finance" type="int"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20161003-03" author="alterloki">
+        <addColumn tableName="all_zip">
+            <column name="id" type="int"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20161003-04" author="alterloki">
+        <dropPrimaryKey tableName="all_zip"/>
+    </changeSet>
+
+    <changeSet id="20161003-05" author="alterloki">
+        <addPrimaryKey tableName="all_zip"
+                       columnNames="id"/>
+    </changeSet>
+
+    <changeSet id="20161003-06" author="alterloki">
+        <comment>
+            Добавим автоинкремент для таблицы all_zip
+        </comment>
+        <addAutoIncrement
+                columnDataType="int"
+                columnName="id"
+                incrementBy="1"
+                startWith="1"
+                tableName="all_zip"/>
+    </changeSet>
+
+
+</databaseChangeLog>

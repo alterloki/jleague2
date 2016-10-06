@@ -27,6 +27,12 @@
       <column name="LOCKEDBY" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="ID"/>
     </table>
+    <table name="all_zip" schema="" catalog="jleague13" type="TABLE">
+      <column name="all_date" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93" def="JzAwMDAtMDAtMDAgMDA6MDA6MDAn"/>
+      <column name="parsed" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
+      <primary-key name="PRIMARY" columns="id"/>
+    </table>
     <table name="country" schema="" catalog="jleague13" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="fa_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
@@ -124,6 +130,10 @@
       <column name="registered" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="admin" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="email" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="icq" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="town" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="country" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="finance" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>
   </data-source>

@@ -13,7 +13,6 @@ public class User extends FaUser {
     private boolean admin;
 
     public User() {
-        super();
     }
 
     public User(FaUser faUser, String login, String password, boolean registered, boolean admin) {

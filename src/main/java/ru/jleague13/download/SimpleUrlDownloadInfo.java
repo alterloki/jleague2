@@ -30,20 +30,12 @@ import java.util.zip.ZipInputStream;
 @Component
 public class SimpleUrlDownloadInfo implements DownloadInfo {
 
-    private Log log = LogFactory.getLog(SimpleUrlDownloadInfo.class);
-
     @Autowired
     private FaUrlResolver faUrlResolver;
     @Autowired
     private UserDao userDao;
-    @Autowired
-    private CountryDao countryDao;
-    @Autowired
-    private TeamDao teamDao;
     @Value("${download.dir}")
     private String downloadDir;
-    @Autowired
-    private AllManager allManager;
 
 
     @Override
@@ -90,51 +82,5 @@ public class SimpleUrlDownloadInfo implements DownloadInfo {
         return teams;
     }
 
-    @Override
-    public AllZip downloadAll() throws IOException {
-        InputStream is = new URL(faUrlResolver.getAllZip()).openStream();
-        AllZip all = new AllParser(loadCountryMap()).readAll(is);
-        is.close();
-        return all;
-    }
-
-    @Override
-    public void downloadCurrentAllFile() throws IOException {
-        URL url = new URL(faUrlResolver.getAllZip());
-        byte[] allBytes = ByteStreams.toByteArray(url.openStream());
-        Date date = new Date();
-        File to = new File(allManager.getAllFileName(date));
-        log.info("File = " + to.getAbsolutePath());
-        Files.createParentDirs(to);
-        Files.write(allBytes, to);
-        allManager.registerAllFile(date);
-    }
-
-    private Map<String, Team> loadTeams() {
-        List<Team> allTeams = teamDao.getAllTeams();
-        Map<String, Team> result = new HashMap<>();
-        for (Team team : allTeams) {
-            result.put(team.getShortName(), team);
-        }
-        return result;
-    }
-
-    private Map<Integer, User> loadUserMap() {
-        List<User> allUsers = userDao.getAllUsers();
-        Map<Integer, User> result = new HashMap<>();
-        for (User user : allUsers) {
-            result.put(user.getFaId(), user);
-        }
-        return result;
-    }
-
-    private Map<String, Country> loadCountryMap() {
-        Map<String, Country> result = new HashMap<>();
-        List<Country> countries = countryDao.getCountries();
-        for (Country country : countries) {
-            result.put(country.getName(), country);
-        }
-        return result;
-    }
 
 }

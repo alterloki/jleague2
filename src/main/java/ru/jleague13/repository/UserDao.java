@@ -1,5 +1,6 @@
 package ru.jleague13.repository;
 
+import ru.jleague13.entity.FaUser;
 import ru.jleague13.entity.User;
 
 import java.util.List;
@@ -12,6 +13,8 @@ public interface UserDao {
     User getUser(int userId);
 
     int saveUser(User user);
+
+    int saveFaUser(FaUser user);
 
     User getUserByFaId(int faId);
 

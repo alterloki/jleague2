@@ -43,6 +43,34 @@
             </div>
         </div>
         <div class="form-group">
+            <label th:for="${#ids.next('icq')}" class="col-xs-2 control-label">ICQ:</label>
+
+            <div class="col-xs-10">
+                <input type="text" class="form-control" th:field="*{icq}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label th:for="${#ids.next('town')}" class="col-xs-2 control-label">Town:</label>
+
+            <div class="col-xs-10">
+                <input type="text" class="form-control" th:field="*{town}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label th:for="${#ids.next('country')}" class="col-xs-2 control-label">Country:</label>
+
+            <div class="col-xs-10">
+                <input type="text" class="form-control" th:field="*{country}"/>
+            </div>
+        </div>
+        <div class="form-group">
+            <label th:for="${#ids.next('managerFinance')}" class="col-xs-2 control-label">ФМ:</label>
+
+            <div class="col-xs-10">
+                <input type="text" class="form-control" th:field="*{managerFinance}"/>
+            </div>
+        </div>
+        <div class="form-group">
             <label th:for="${#ids.next('password')}" class="col-xs-2 control-label">Пароль:</label>
 
             <div class="col-xs-10">

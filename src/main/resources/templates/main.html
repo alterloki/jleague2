@@ -47,6 +47,7 @@
             <li th:attr="class=((${pageType} eq 'countries') ? 'active' : '')"><a href="/new/admin/countries">Страны</a></li>
             <li th:attr="class=((${pageType} eq 'users') ? 'active' : '')"><a href="/new/admin/users">Пользователи</a></li>
             <li th:attr="class=((${pageType} eq 'tasks') ? 'active' : '')"><a href="/new/admin/tasks">Задачи</a></li>
+            <li th:attr="class=((${pageType} eq 'all') ? 'active' : '')"><a href="/new/admin/all">All</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li th:if="${#authentication.name == 'anonymousUser'}"><a href="/new/login"><span class="glyphicon glyphicon-log-in"></span> Вход</a></li>

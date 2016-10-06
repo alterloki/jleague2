@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="20161003-01" author="alterloki">
+        <comment>
+            Создание таблицы team_info данных
+        </comment>
+        <sql>
+            CREATE TABLE team_info
+            (
+            all_id int not null,
+            team_id int not null,
+            games int,
+            stadiumCapacity int,
+            boom int,
+            town int,
+            teamFinance int,
+            stadium character varying(256),
+            stadiumState int,
+            rating int,
+            sportbase int,
+            sportbaseState int,
+            sportschool int,
+            sportschoolState int,
+            coach int,
+            goalkeepersCoach int,
+            defendersCoach int,
+            midfieldersCoach int,
+            forwardsCoach int,
+            fitnessCoach int,
+            moraleCoach int,
+            doctorQualification int,
+            doctorPlayers int,
+            scout int,
+            homeTop int,
+            awayTop int,
+            homeBottom int,
+            awayBottom int,
+            competitions character varying(256)
+            )
+        </sql>
+    </changeSet>
+
+
+</databaseChangeLog>

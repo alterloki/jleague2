@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{admin-layout}">
+<head>
+    <title>Управление All</title>
+</head>
+<body>
+<nav layout:fragment="adminmenu" th:remove="tag">
+    <div th:replace="main::adminnav('all')"/>
+</nav>
+<h2 layout:fragment="main-title">Управление All</h2>
+
+<div layout:fragment="main-content" class="container jumbotron">
+    <table class="table table-bordered table-responsive" id="teams-table">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>Дата</th>
+            <th>Парсинг</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="allFile : ${all_files}">
+            <td th:text="${allFile.getId()}"></td>
+            <td th:text="${#dates.format(allFile.getAllDate(), 'dd-MM-yyyy')}"></td>
+            <td th:text="${allFile.isParsed() ? 'Да' : 'Нет'}"></td>
+            <td><a th:id="'reparse-all-' + ${allFile.getId()}" href="#">Загрузить</a></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="well">
+        <button id="reregister-all" class="btn btn-default" type="submit">Перерегистрировать all</button>
+    </div>
+</div>
+<div layout:fragment="script-after" th:remove="tag">
+    <script>
+        $(document).ready(function () {
+            $("#reregister-all").click(reregisterAll);
+            $("a[id^='reparse-all-']").click(function () {
+                var allId = this.id.substring(12);
+                $.ajax({
+                    url: '/new/admin/all/' + allId,
+                    type: 'POST',
+                    success: function (result) {
+                        location.reload();
+                    }
+                });
+            })
+        });
+
+        function reregisterAll() {
+            $.ajax({
+                url: "/new/admin/all/refresh",
+                type: "POST",
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function (result) {
+                    location.reload();
+                }
+            });
+        }
+    </script>
+</div>
+</body>
+</html>

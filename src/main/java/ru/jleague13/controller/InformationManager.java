@@ -14,6 +14,7 @@ import ru.jleague13.repository.CountryDao;
 import ru.jleague13.repository.TeamDao;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -32,14 +33,10 @@ public class InformationManager {
     private CountryDao countryDao;
     @Autowired
     private TeamDao teamDao;
-    @Autowired
-    private AllDao allDao;
 
     @Transactional
-    public void updateCountries() throws IOException {
-        Map<String, Country> countryMap =
-                downloadInfo.downloadCountries().stream().
-                        collect(Collectors.toMap(Country::getFaId, Function.<Country>identity()));
+    public void updateCountries(Map<String, Country> newCountries) throws IOException {
+        Map<String, Country> countryMap = new HashMap<>(newCountries);
         Map<String, Country> currentMap =
                 countryDao.getCountries().stream().
                         collect(Collectors.toMap(Country::getFaId, Function.<Country>identity()));
@@ -61,16 +58,21 @@ public class InformationManager {
         }
     }
 
+    public void updateCountries() throws IOException {
+        Map<String, Country> countryMap =
+                downloadInfo.downloadCountries().stream().
+                        collect(Collectors.toMap(Country::getFaId, Function.<Country>identity()));
+        updateCountries(countryMap);
+    }
+
     private void updateCountry(Country currentCountry, Country country) {
         if(!country.equals(currentCountry))     {
             countryDao.saveCountry(country);
         }
     }
 
-    public void updateCountryTeams(Country country) throws IOException {
-        Map<String, Team> teamMap =
-                downloadInfo.downloadTeams(country).stream().
-                        collect(Collectors.toMap(Team::getShortName, Function.<Team>identity()));
+    public void updateCountryTeams(Country country, Map<String, Team> newTeams) throws IOException {
+        Map<String, Team> teamMap = new HashMap<>(newTeams);
         Map<String, Team> currentMap =
                 teamDao.getCountryTeams(country.getId()).stream().
                         collect(Collectors.toMap(Team::getShortName, Function.<Team>identity()));
@@ -90,6 +92,13 @@ public class InformationManager {
         }
     }
 
+    public void updateCountryTeams(Country country) throws IOException {
+        Map<String, Team> teamMap =
+                downloadInfo.downloadTeams(country).stream().
+                        collect(Collectors.toMap(Team::getShortName, Function.<Team>identity()));
+        updateCountryTeams(country, teamMap);
+    }
+
     private void updateTeam(Team currentTeam, Team team) {
         if(!team.equals(currentTeam)) {
             if(currentTeam.getId() > 0) {
@@ -97,12 +106,6 @@ public class InformationManager {
             }
             teamDao.saveTeam(team);
         }
-    }
-
-    public void updateTodayAll() throws IOException {
-        log.info("Started all.zip reload.");
-        AllZip allZip = downloadInfo.downloadAll();
-        log.info("Finished all.zip reload.");
     }
 
 }

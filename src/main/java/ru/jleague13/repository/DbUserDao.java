@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
+import ru.jleague13.entity.FaUser;
 import ru.jleague13.entity.User;
 
 import java.sql.PreparedStatement;
@@ -20,7 +21,8 @@ public class DbUserDao implements UserDao {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    private static String FIELDS = "id, fa_id, login, name, password, registered, admin, email";
+    private static String FIELDS = "id, fa_id, login, name, password, registered, " +
+            "admin, email, icq, town, country, finance";
 
     @Override
     public List<User> getAllUsers() {
@@ -63,8 +65,8 @@ public class DbUserDao implements UserDao {
 
     private User userFromResultSet(ResultSet rs) throws SQLException {
         return new User(rs.getInt("id"), rs.getString("name"), rs.getString("email"),
-                rs.getInt("fa_id"), 0, "", "", 0,
-                rs.getString("login"), rs.getString("password"),
+                rs.getInt("fa_id"), rs.getInt("icq"), rs.getString("town"), rs.getString("country"),
+                rs.getInt("finance"), rs.getString("login"), rs.getString("password"),
                 rs.getInt("registered") == 1, rs.getInt("admin") == 1);
     }
 
@@ -98,6 +100,25 @@ public class DbUserDao implements UserDao {
             user.setId(id);
             return id;
         }
+    }
+
+    @Override
+    public int saveFaUser(FaUser user) {
+        if(user.getId() > 0) {
+            return doSaveFaUser(user);
+        }
+        return 0;
+    }
+
+    public int doSaveFaUser(FaUser user) {
+        jdbcTemplate.update("update users set " +
+                        "name = ?, fa_id = ?, email = ?," +
+                        "icq = ?, town = ?, country = ?, finance = ? " +
+                        "where id = ?",
+                user.getName(), user.getFaId(), user.getEmail(),
+                user.getIcq(), user.getTown(), user.getCountry(), user.getManagerFinance(),
+                user.getId());
+        return user.getId();
     }
 
     @Override

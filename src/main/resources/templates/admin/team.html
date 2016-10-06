@@ -32,7 +32,7 @@
     <button id="add-team" type="button" class="btn btn-success">Добавить</button>
 </div>
 <div layout:fragment="script-after" th:remove="tag">
-    <script th:inline="javascript" th:inline="none">
+    <script th:inline="javascript">
         $(document).ready(function () {
             $('#teams-table').Tabledit({
                 url: '/new/admin/country/[[${country.id}]]/team',

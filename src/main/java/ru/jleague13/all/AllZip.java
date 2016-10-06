@@ -1,5 +1,6 @@
 package ru.jleague13.all;
 
+import ru.jleague13.entity.FaUser;
 import ru.jleague13.entity.Team;
 
 import java.util.*;
@@ -14,13 +15,16 @@ public class AllZip {
     private int bankRate;
     private Map<String, Team> teams;
     private String currentTeam;
+    private Map<Integer, FaUser> usersMap;
 
-    public AllZip(Date date, Map<String, String> competitions, int bankRate, Map<String, Team> teams) {
+    public AllZip(Date date, Map<String, String> competitions, int bankRate, Map<String, Team> teams,
+                  Map<Integer, FaUser> usersMap) {
         this.date = date;
         this.competitions = competitions;
         this.bankRate = bankRate;
         this.teams = teams;
         this.currentTeam = "";
+        this.usersMap = usersMap;
     }
 
     public Date getDate() {
@@ -49,5 +53,9 @@ public class AllZip {
 
     public int getBankRate() {
         return bankRate;
+    }
+
+    public Map<Integer, FaUser> getUsersMap() {
+        return usersMap;
     }
 }
