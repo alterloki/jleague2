@@ -121,7 +121,7 @@
 				<version>2.2</version>
 				<configuration>
 					<url>http://52.28.238.73:8085/manager/text</url>
-					<path>/www</path>
+					<path>/</path>
 					<username>maven</username>
 					<password>${env.TOMCAT_PASS}</password>
 				</configuration>
