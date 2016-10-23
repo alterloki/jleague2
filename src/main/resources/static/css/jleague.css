@@ -196,3 +196,11 @@ div[data-role="editor-toolbar"] {
 .dropdown-menu a {
     cursor: pointer;
 }
+
+.upperspace {
+    margin-top: 10px;
+}
+
+.next-month {
+    margin-right: 18px;
+}

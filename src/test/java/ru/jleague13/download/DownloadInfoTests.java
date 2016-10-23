@@ -1,5 +1,7 @@
 package ru.jleague13.download;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,11 +10,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ru.jleague13.Jleague2Application;
 import ru.jleague13.all.AllZip;
+import ru.jleague13.calendar.Calendar;
+import ru.jleague13.calendar.CalendarDay;
+import ru.jleague13.calendar.Event;
 import ru.jleague13.entity.Country;
 import ru.jleague13.entity.Team;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 
 /**
  * @author ashevenkov 19.09.15 0:17.
@@ -20,6 +29,8 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(webEnvironment= SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class DownloadInfoTests {
+
+    private Log log = LogFactory.getLog(DownloadInfoTests.class);
 
     @Autowired
     private DownloadInfo downloadInfo;
@@ -46,4 +57,17 @@ public class DownloadInfoTests {
         assert teams.size() == 32;
     }
 
+    @Test
+    public void testDownloadCalendar() throws IOException {
+        Calendar calendar = downloadInfo.downloadCalendar("");
+        assert calendar != null;
+        Map<Date, CalendarDay> days = calendar.getDays();
+        for (Map.Entry<Date, CalendarDay> entry : days.entrySet()) {
+            log.info(entry.getKey() + " - ");
+            Set<Event> events = entry.getValue().getEvents();
+            for (Event event : events) {
+                log.info(" - " + event);
+            }
+        }
+    }
 }

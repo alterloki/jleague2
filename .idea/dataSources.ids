@@ -33,6 +33,16 @@
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>
+    <table name="calendar_event" schema="" catalog="jleague13" type="TABLE">
+      <column name="event_date" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="event_type" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="schedule_for" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="text" sqlType="VARCHAR" precision="512" scale="0" nullable="true" jdbcType="12"/>
+      <column name="tour_num" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="part" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="match_type" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <index name="idx_calendar_event_date" unique="false" columns="event_date"/>
+    </table>
     <table name="country" schema="" catalog="jleague13" type="TABLE">
       <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4" autoIncrement="true"/>
       <column name="fa_id" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
@@ -85,6 +95,37 @@
       <column name="views" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="division" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="team_info" schema="" catalog="jleague13" type="TABLE">
+      <column name="all_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="team_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="games" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="stadiumCapacity" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="boom" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="town" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="teamFinance" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="stadium" sqlType="VARCHAR" precision="256" scale="0" nullable="true" jdbcType="12"/>
+      <column name="stadiumState" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="rating" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="sportbase" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="sportbaseState" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="sportschool" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="sportschoolState" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="coach" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="goalkeepersCoach" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="defendersCoach" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="midfieldersCoach" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="forwardsCoach" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="fitnessCoach" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="moraleCoach" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="doctorQualification" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="doctorPlayers" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="scout" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="homeTop" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="awayTop" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="homeBottom" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="awayBottom" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="competitions" sqlType="VARCHAR" precision="256" scale="0" nullable="true" jdbcType="12"/>
     </table>
     <table name="transfer" schema="" catalog="jleague13" type="TABLE">
       <column name="transfer_date" sqlType="DATE" precision="10" scale="0" nullable="false" jdbcType="91"/>

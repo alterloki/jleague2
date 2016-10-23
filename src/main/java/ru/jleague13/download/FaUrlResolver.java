@@ -10,25 +10,32 @@ import ru.jleague13.entity.Team;
 @Component
 public class FaUrlResolver {
 
-    public static final String FA13_URL = "http://old.fa13.info";
+    public static final String OLD_FA13_URL = "http://old.fa13.info";
+    public static final String REPOSITORY_FA13_URL = "http://repository.fa13.info";
+    public static final String FA13_URL = "http://fa13.info";
+
 
     public String getFaCountryFlag(Country country) {
-        return FA13_URL + "/image/flag_s/flag_s_" + country.getFaIndex() + ".gif";
+        return OLD_FA13_URL + "/image/flag_s/flag_s_" + country.getFaIndex() + ".gif";
     }
 
     public String getFaTeamEmblem(Team team) {
-        return FA13_URL + "/image/logo/" + team.getShortName() + ".gif";
+        return OLD_FA13_URL + "/image/logo/" + team.getShortName() + ".gif";
     }
 
     public String getFa13Countries() {
-        return FA13_URL + "/team.html";
+        return OLD_FA13_URL + "/team.html";
     }
 
     public String getFa13Teams(Country country) {
-        return FA13_URL + "/team.html?country=" + country.getFaId();
+        return OLD_FA13_URL + "/team.html?country=" + country.getFaId();
     }
 
     public String getAllZip() {
-        return FA13_URL + "/build/all13.zip";
+        return REPOSITORY_FA13_URL + "/site/build/all13.zip";
+    }
+
+    public String getCalendarUrl() {
+        return FA13_URL + "/calendar";
     }
 }

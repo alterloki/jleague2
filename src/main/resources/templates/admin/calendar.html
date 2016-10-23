@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{admin-layout}">
+<head>
+    <title>Календарь</title>
+</head>
+<body>
+<nav layout:fragment="adminmenu" th:remove="tag">
+    <div th:replace="main::adminnav('calendar')"/>
+</nav>
+<h2 layout:fragment="main-title">Календарь</h2>
+
+<div layout:fragment="main-content" class="container jumbotron">
+    <div class="row">
+        <div class="col-md-1 pull-left">
+            <a class="btn btn-default" th:href="${'/new/admin/calendar/' + prev}" role="button"
+               th:text="${prev}">Prev</a>
+        </div>
+        <div class="col-md-9 text-center"><b th:text="${current}">Center aligned text.</b></div>
+        <div class="pull-right col-md-1 next-month">
+            <a class="btn btn-default" href="#" th:href="${'/new/admin/calendar/' + next}"
+               role="button" th:text="${next}">Next</a>
+        </div>
+    </div>
+    <table class="table table-bordered table-responsive upperspace" id="teams-table">
+        <thead>
+        <tr>
+            <th>День</th>
+            <th>Событие</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="calendarDay : ${calendar.getDays().values()}">
+            <td th:text="${#dates.format(calendarDay.getDate(), 'dd.MM.yyyy')}"></td>
+            <td>
+                <div th:each="event : ${calendarDay.getEvents()}" th:text="${event.getText()}"></div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <button id="do-parse" type="button" class="btn btn-success">Обновить</button>
+    <div class="row upperspace">
+        <div class="col-md-2">
+            <button id="do-parse-date" type="submit" class="btn btn-default">Обновить с</button>
+        </div>
+        <div class="col-md-3">
+            <input type="text" class="form-control" id="update-date" placeholder="MM-yyyy">
+        </div>
+    </div>
+</div>
+<div layout:fragment="script-after" th:remove="tag">
+    <script src="/js/transfer.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#do-parse').click(function () {
+                $.ajax({
+                    url: '/new/admin/calendar/parse',
+                    type: 'POST',
+                    success: function (result) {
+                        window.location.href = '/new/admin/calendar';
+                    }
+                });
+            });
+            $('#do-parse-date').click(function () {
+                $.ajax({
+                    url: '/new/admin/calendar/parse/' + $('#update-date').val(),
+                    type: 'POST',
+                    success: function (result) {
+                        window.location.href = '/new/admin/calendar';
+                    }
+                });
+            });
+        })
+    </script>
+</div>
+</body>
+</html>

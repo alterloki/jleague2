@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="20161015-01" author="alterloki">
+        <comment>
+            Создание таблицы calendar_event данных
+        </comment>
+        <sql>
+            CREATE TABLE calendar_event
+            (
+            event_date datetime,
+            event_type int not null,
+            schedule_for int,
+            text character varying(512),
+            tour_num int,
+            part int,
+            match_type int
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="20161015-02" author="alterloki">
+        <createIndex indexName="idx_calendar_event_date"
+                     tableName="calendar_event">
+            <column name="event_date" type="datetime"/>
+        </createIndex>
+    </changeSet>
+
+
+</databaseChangeLog>

@@ -180,7 +180,7 @@ public class AllParser {
         if(countryObj != null) {
             countryId = countryObj.getId();
         }
-        Team team = new Team(0, id, name, countryId, 0,
+        Team team = new Team(0, id, name, countryId, user.getId(),
                 calculateDiv(competitions), teamInfo);
 
         List<Player> players = new ArrayList<>(15);

@@ -6,6 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Component;
 import ru.jleague13.all.AllManager;
 import ru.jleague13.all.AllParser;
 import ru.jleague13.all.AllZip;
+import ru.jleague13.calendar.*;
+import ru.jleague13.calendar.Calendar;
 import ru.jleague13.entity.*;
 import ru.jleague13.repository.CountryDao;
 import ru.jleague13.repository.TeamDao;
@@ -20,6 +23,7 @@ import ru.jleague13.repository.UserDao;
 
 import java.io.*;
 import java.net.URL;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.zip.ZipInputStream;
@@ -30,10 +34,14 @@ import java.util.zip.ZipInputStream;
 @Component
 public class SimpleUrlDownloadInfo implements DownloadInfo {
 
+    private Log log = LogFactory.getLog(SimpleUrlDownloadImages.class);
+
     @Autowired
     private FaUrlResolver faUrlResolver;
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private EventFactory eventFactory;
     @Value("${download.dir}")
     private String downloadDir;
 
@@ -80,6 +88,57 @@ public class SimpleUrlDownloadInfo implements DownloadInfo {
             teams.add(team);
         }
         return teams;
+    }
+
+    @Override
+    public Calendar downloadCalendar(String startFrom) throws IOException {
+        try {
+            Calendar result = new Calendar();
+            String url = faUrlResolver.getCalendarUrl() + startFrom;
+            while(url != null) {
+                Document doc = Jsoup.connect(url).get();
+                int count = parsePage(doc, result);
+                if(count > 0) {
+                    String nextUrl = doc.select(".link-next").attr("href");
+                    url = FaUrlResolver.FA13_URL + nextUrl;
+                } else {
+                    url = null;
+                }
+            }
+            return result;
+        } catch (ParseException e) {
+            log.error("Error parsing date.", e);
+            return null;
+        }
+    }
+
+    private int parsePage(Document doc, Calendar result) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("d-M-yyyy");
+        String monthString = doc.select("#select-month > option[selected]").attr("value");
+        log.info("Month = " + monthString);
+        Elements select = doc.select(".calendar > tbody > tr");
+        log.info("Selected size = " + select.size());
+        int sum = 0;
+        for (int i = 0; i < select.size(); i++) {
+            String dayString = select.get(i).select("td:eq(0)").text().
+                    trim().split(",")[0];
+            Date date = dateFormat.parse(dayString + "-" + monthString);
+            Elements lines = select.get(i).select("td:eq(1) > div");
+            HashSet<Event> events = new HashSet<>();
+            for (Element line : lines) {
+                String[] parts = line.text().split(",");
+                for (String part : parts) {
+                    String[] parts1 = part.split(" и ");
+                    for (String s : parts1) {
+                        Event event = eventFactory.createEvent(s);
+                        events.add(event);
+                    }
+                }
+            }
+            result.addDay(new CalendarDay(date, events));
+            sum += events.size();
+        }
+        return sum;
     }
 
 
