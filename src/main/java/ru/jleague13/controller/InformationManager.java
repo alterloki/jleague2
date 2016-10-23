@@ -15,6 +15,7 @@ import ru.jleague13.repository.TeamDao;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -108,4 +109,10 @@ public class InformationManager {
         }
     }
 
+    public void updateAllTeamInfo(int allId, Map<Integer, List<Team>> countryId2Team) {
+        teamDao.deleteTeamInfoByAllId(allId);
+        for (List<Team> teams : countryId2Team.values()) {
+            teamDao.saveTeamInfoByAllId(allId, teams);
+        }
+    }
 }

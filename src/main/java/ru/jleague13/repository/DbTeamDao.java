@@ -10,6 +10,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.jleague13.download.DownloadImages;
 import ru.jleague13.entity.Team;
+import ru.jleague13.entity.TeamInfo;
 import ru.jleague13.images.ImagesManager;
 
 import java.io.File;
@@ -158,6 +159,44 @@ public class DbTeamDao implements TeamDao {
                 "select * from (select " + FULL_FIELDS + " from team t left outer join users u " +
                         "on t.manager_id = u.id order by t.views desc, t.name) v1 where v1.manager_id > 0 limit ?",
                 (resultSet, i) -> teamFromRs(resultSet), number);
+    }
+
+    @Override
+    public void deleteTeamInfoByAllId(int allId) {
+        jdbcTemplate.update("delete from team_info where all_id = ?", allId);
+    }
+
+    @Override
+    public void saveTeamInfoByAllId(int allId, List<Team> teams) {
+        List<Object[]> params = new ArrayList<>();
+        for (Team team : teams) {
+            TeamInfo teamInfo = team.getTeamInfo();
+            params.add(new Object[]{allId, team.getId(), teamInfo.getGames(), teamInfo.getStadiumCapacity(),
+                    teamInfo.getBoom(), teamInfo.getTown(), teamInfo.getTeamFinance(), teamInfo.getStadium(),
+                    teamInfo.getStadiumState(), teamInfo.isSportschool() ? 1 : 0, teamInfo.getSportschoolState(),
+                    teamInfo.getCoach(), teamInfo.getGoalkeepersCoach(), teamInfo.getDefendersCoach(),
+                    teamInfo.getMidfieldersCoach(), teamInfo.getForwardsCoach(), teamInfo.getFitnessCoach(),
+                    teamInfo.getMoraleCoach(), teamInfo.getDoctorQualification(), teamInfo.getDoctorPlayers(),
+                    teamInfo.getScout(), teamInfo.getHomeTop(), teamInfo.getAwayTop(), teamInfo.getHomeBottom(),
+                    teamInfo.getAwayBottom(), stringCompetitions(teamInfo.getCompetitions())});
+        }
+        jdbcTemplate.batchUpdate("insert into team_info (all_id, team_id, games, stadiumCapacity," +
+                "boom, town, teamFinance, stadium, stadiumState, sportschool, sportschoolState," +
+                "coach, goalkeepersCoach, defendersCoach, midfieldersCoach, forwardsCoach, fitnessCoach," +
+                "moraleCoach, doctorQualification, doctorPlayers, scout, homeTop, awayTop, homeBottom," +
+                "awayBottom, competitions) " +
+                "values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)", params);
+    }
+
+    private String stringCompetitions(List<String> competitions) {
+        StringBuilder sb = new StringBuilder();
+        for (String competition : competitions) {
+            if(sb.length() > 0) {
+                sb.append(",");
+            }
+            sb.append(competition);
+        }
+        return sb.toString();
     }
 
     private Team teamFromRs(ResultSet rs) throws SQLException {

@@ -61,6 +61,7 @@ public class AllManager {
 
     public void parseAndUpdateAll(Date date) throws IOException {
         AllInfo lastAll = allDao.getLastAll();
+        AllInfo currentAllInfo = allDao.getAllInfoOnDate(date);
         List<Country> countriesList = countryDao.getCountries();
         Map<String, Country> name2Country = countriesList.stream().collect(Collectors.toMap(Country::getName,
                 Function.<Country>identity()));
@@ -75,6 +76,7 @@ public class AllManager {
                 Function.<Country>identity()));
         Map<Integer, List<Team>> countryId2Team = teams.stream().
                 collect(Collectors.groupingBy(Team::getCountryId));
+        informationManager.updateAllTeamInfo(currentAllInfo.getId(), countryId2Team);
         if (lastAll.getAllDate().equals(date)) {
             for (Map.Entry<Integer, FaUser> entry : usersMap.entrySet()) {
                 userDao.saveFaUser(entry.getValue());

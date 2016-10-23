@@ -30,4 +30,8 @@ public interface TeamDao {
     List<Team> getTeamsBySubstr(String substring, int count);
 
     List<Team> getTopTeams(int number);
+
+    void deleteTeamInfoByAllId(int allId);
+
+    void saveTeamInfoByAllId(int allId, List<Team> teams);
 }

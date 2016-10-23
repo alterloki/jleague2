@@ -18,7 +18,7 @@
             games int,
             stadiumCapacity int,
             boom int,
-            town int,
+            town character varying(256),
             teamFinance int,
             stadium character varying(256),
             stadiumState int,
