@@ -1,5 +1,6 @@
 package ru.jleague13.repository;
 
+import org.jsoup.nodes.Element;
 import ru.jleague13.entity.Player;
 import ru.jleague13.entity.Transfer;
 import ru.jleague13.entity.TransferQueryPlayer;
@@ -31,5 +32,5 @@ public interface TransferDao {
 
     List<TransferQueryPlayer> readTransferQuery(Reader reader) throws IOException;
 
-    Player extractPlayer(String str, Map<String, Player> playerMap);
+    Player extractPlayer(Element str, Map<String, Player> playerMap);
 }

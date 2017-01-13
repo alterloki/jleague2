@@ -5,6 +5,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -132,10 +133,10 @@ public class DbTransferDao implements TransferDao {
         Map<String, Player> map = new HashMap<>();
         String str = CharStreams.toString(reader);
         Document doc = Jsoup.parse(str);
-        Elements select = doc.select("div[id=trans]").select("b");
-        for(int i = 0; i < select.size(); i++) {
-            String t = select.get(i).text();
-            Player player = extractPlayer(t, allPlayersMap);
+        Elements select = doc.select("table.alternated-rows-bg").select("tbody > tr");
+        for(int i = 1; i < select.size(); i++) {
+            Element lineElement = select.get(i);
+            Player player = extractPlayer(lineElement, allPlayersMap);
             map.put(player.getName(), player);
         }
         return map;
@@ -163,20 +164,11 @@ public class DbTransferDao implements TransferDao {
     }
 
     @Override
-    public Player extractPlayer(String str, Map<String, Player> playerMap) {
-        int firstI = str.indexOf('(');
-        String name = str.substring(0, firstI - 1);
-        Player oldPlayer = playerMap.get(name);
-        if(oldPlayer != null) {
-            String seller = oldPlayer.getSeller();
-            str = str.replace(seller, "");
-        }
-        String[] parts = str.split(" ");
-        int price = Integer.parseInt(parts[parts.length - 2]);
-        String withoutNums = str.replaceAll("[0-9]*", "");
-        int firstTo = withoutNums.indexOf(')');
-        int secondI = withoutNums.indexOf('(', firstI + 1);
-        String buyer = withoutNums.substring(firstTo + 1, secondI).trim();
+    public Player extractPlayer(Element elem, Map<String, Player> playerMap) {
+        Elements fields = elem.select("td");
+        String name = fields.get(1).text();
+        int price = Integer.parseInt(fields.get(11).text());
+        String buyer = fields.get(9).select("a").text();
         Player player = new Player();
         player.setName(name);
         player.setPayed(price);

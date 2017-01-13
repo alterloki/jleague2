@@ -71,13 +71,13 @@ public class TransferDaoTests {
 
     @Test
     public void testReadResult() throws IOException {
-        Resource resource = new ClassPathResource("02_09_transfer_result");
+        Resource resource = new ClassPathResource("13_01_transfer_result");
         InputStream resourceInputStream = resource.getInputStream();
         Map<String, Player> result = transferDao.readTransferResult(new InputStreamReader(
-                resourceInputStream, "cp1251"), new Date());
-        assert result.size() == 691;
-        Player player = result.get("Салвадор Агра");
-        assert player.getPayed() == 3132;
+                resourceInputStream, "utf-8"), new Date());
+        assert result.size() == 1444;
+        Player player = result.get("Тимур Досмагамбетов");
+        assert player.getPayed() == 15114;
     }
 
     @Test
@@ -120,26 +120,4 @@ public class TransferDaoTests {
         assert player.getBirthtour() == 3;
     }
 
-    @Test
-    public void testParseTransfer() {
-        Map<String, Player> map = new HashMap<>();
-        Player p1 = new Player();
-        p1.setName("Томмасо Морозини");
-        p1.setSeller("Специя");
-        map.put(p1.getName(), p1);
-        Player p2 = new Player();
-        p2.setName("Петар Томич");
-        p2.setSeller("Лелле");
-        map.put(p2.getName(), p2);
-        String str = "Томмасо Морозини (14) Специя Нанси 177 (811)";
-        Player player = transferDao.extractPlayer(str, map);
-        assert player.getPayed() == 177;
-        assert player.getName().equals("Томмасо Морозини");
-        assert player.getBuyer().equals("Нанси");
-        str = "Петар Томич (25) Лелле Сентрал Коуст Маринерс 128 (191)";
-        player = transferDao.extractPlayer(str, map);
-        assert player.getPayed() == 128;
-        assert player.getName().equals("Петар Томич");
-        assert player.getBuyer().equals("Сентрал Коуст Маринерс");
-    }
 }
