@@ -37,7 +37,7 @@ public class TransferTask extends AbstractFaTask {
     @Autowired
     private CalendarEventsDao calendarEventsDao;
 
-    public TransferTask(String name, String cron) {
+    public TransferTask() {
         super("transferTask", "0 0 4 * * *");
     }
 
