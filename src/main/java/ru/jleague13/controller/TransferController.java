@@ -88,7 +88,7 @@ public class TransferController {
                                  @RequestParam("date")
                                  @DateTimeFormat(pattern = "dd-MM-yyyy") Date transferDate) throws IOException {
         Map<String, Player> resultMap = transferDao.readTransferResult(
-                new InputStreamReader(uploadfile.getInputStream(), "cp1251"), transferDate);
+                new InputStreamReader(uploadfile.getInputStream(), "utf-8"), transferDate);
         if(transferDao.haveTransfer(transferDate)) {
             Transfer transfer = transferDao.loadTransfer(transferDate);
             List<Player> players = transfer.getPlayers();
