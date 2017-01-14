@@ -24,6 +24,7 @@ import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -66,8 +67,9 @@ public class TransferController {
 
     private void addTransferText(Transfer transfer, StringBuilder result) {
         List<Player> players = transfer.getPlayers();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         for (Player player : players) {
-            result.append(toTabString(player));
+            result.append(simpleDateFormat.format(transfer.getDate())).append(" ").append(toTabString(player));
             result.append("\n");
         }
     }
