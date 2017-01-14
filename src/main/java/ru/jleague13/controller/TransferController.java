@@ -19,6 +19,7 @@ import ru.jleague13.repository.TeamDao;
 import ru.jleague13.repository.TransferDao;
 import ru.jleague13.util.HelperUtils;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.websocket.server.PathParam;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -48,6 +49,48 @@ public class TransferController {
         } else {
             return transferTableByDate(model, null);
         }
+    }
+
+    @RequestMapping(value="/transfer/text", method = RequestMethod.GET)
+    public void allTransfers(HttpServletResponse response) throws IOException {
+        List<Date> transfers = transferDao.allTransferDates();
+        StringBuilder result = new StringBuilder();
+        for (Date transferDate : transfers) {
+            Transfer transfer = transferDao.loadTransfer(transferDate);
+            addTransferText(transfer, result);
+        }
+        response.setContentType("text/plain");
+        response.setCharacterEncoding("UTF-8");
+        response.getOutputStream().write(result.toString().getBytes());
+    }
+
+    private void addTransferText(Transfer transfer, StringBuilder result) {
+        List<Player> players = transfer.getPlayers();
+        for (Player player : players) {
+            result.append(toTabString(player));
+            result.append("\n");
+        }
+    }
+
+    private String toTabString(Player player) {
+        return  player.getAge() + " " +
+                player.getPrice() + " " +
+                player.getTalent() + " " +
+                player.getStrength() + " " +
+                player.getSalary() + " " +
+                player.getHealth() + " " +
+                player.getBirthtour() + " " +
+                player.getAbilities().getShooting() + " " +
+                player.getAbilities().getHandling() + " " +
+                player.getAbilities().getReflexes() + " " +
+                player.getAbilities().getPassing() + " " +
+                player.getAbilities().getCross() + " " +
+                player.getAbilities().getDribbling() + " " +
+                player.getAbilities().getTackling() + " " +
+                player.getAbilities().getHeading() + " " +
+                player.getAbilities().getSpeed() + " " +
+                player.getAbilities().getStamina() + " " +
+                player.getPayed();
     }
 
     @RequestMapping(value="/transfer/{date}", method = RequestMethod.GET)
