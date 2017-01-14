@@ -30,6 +30,7 @@ public class EventFactory {
         simpleEventType.put("Аренда", EventType.RENT);
         simpleEventType.put("подготовка к старту сезона", EventType.SEASON_PREPARE);
         simpleEventType.put("матчи на новом генераторе", EventType.NEW_TEST);
+        simpleEventType.put("старт сезона", EventType.SEASON_START);
     }
 
     public Event createEvent(String input) {

@@ -31,5 +31,6 @@ public enum EventType {
     YOUTH_WORLD_CH,
     RENT,
     SEASON_PREPARE,
-    NEW_TEST
+    NEW_TEST,
+    SEASON_START
 }
