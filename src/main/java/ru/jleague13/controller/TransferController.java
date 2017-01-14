@@ -73,7 +73,8 @@ public class TransferController {
     }
 
     private String toTabString(Player player) {
-        return  player.getAge() + " " +
+        return  player.getPlayerType().toString() + " " +
+                player.getAge() + " " +
                 player.getPrice() + " " +
                 player.getTalent() + " " +
                 player.getStrength() + " " +
