@@ -38,4 +38,12 @@ public class FaUrlResolver {
     public String getCalendarUrl() {
         return FA13_URL + "/calendar";
     }
+
+    public String getTransferListUrl() {
+        return FA13_URL + "/transfer/TList";
+    }
+
+    public String getTransferResultUrl() {
+        return FA13_URL + "/transfer";
+    }
 }
