@@ -15,7 +15,11 @@ import ru.jleague13.timer.AbstractFaTask;
 import ru.jleague13.timer.ProgressConnection;
 
 import java.io.InputStreamReader;
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -43,8 +47,12 @@ public class TransferTask extends AbstractFaTask {
 
     @Override
     public void runTask(ProgressConnection progress) throws Exception {
-        List<Event> dayEvents = calendarEventsDao.getDayEvents(new Date());
+        CookieHandler.setDefault(new CookieManager(null, CookiePolicy.ACCEPT_ALL));
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Date today = dateFormat.parse(dateFormat.format(new Date()));
+        List<Event> dayEvents = calendarEventsDao.getDayEvents(today);
         for (Event dayEvent : dayEvents) {
+            log.info("Today event = " + dayEvent.getEventType());
             if(dayEvent.getEventType() == EventType.TRANSFER_FINAL) {
                 log.info("Today final transfer list! Loading new transfer list.");
                 URL url = new URL(faUrlResolver.getTransferListUrl());

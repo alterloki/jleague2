@@ -38,7 +38,7 @@ public abstract class AbstractFaTask implements FaTask {
             tms.sendProgress(this.name, 100);
             tms.logStatus(this.name, TaskStatus.FINISHED, "Finished task " + this.name);
         } catch (Exception e) {
-            log.error(e);
+            log.error("Error executing task " + this.name, e);
             tms.logStatus(this.name, TaskStatus.ERROR, e.getMessage());
         } finally {
             lock.unlock();

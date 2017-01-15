@@ -12,7 +12,7 @@ public class FaUrlResolver {
 
     public static final String OLD_FA13_URL = "http://old.fa13.info";
     public static final String REPOSITORY_FA13_URL = "http://repository.fa13.info";
-    public static final String FA13_URL = "http://fa13.info";
+    public static final String FA13_URL = "http://www.fa13.info";
 
 
     public String getFaCountryFlag(Country country) {
