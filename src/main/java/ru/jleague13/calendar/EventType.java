@@ -32,5 +32,8 @@ public enum EventType {
     RENT,
     SEASON_PREPARE,
     NEW_TEST,
-    SEASON_START
+    SEASON_START,
+    COMMERCE,
+    ALL_CHEMP,
+    KBL, SEASON_FINISH, BLATTER
 }

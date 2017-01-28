@@ -1,0 +1,392 @@
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{main-layout}">
+<head>
+    <title>Трансфер</title>
+</head>
+<body>
+<nav layout:fragment="mainmenu" th:remove="tag">
+    <div th:replace="main::mainmenu('transfer')"/>
+</nav>
+<div layout:fragment="mainframe" th:remove="tag">
+    <div id="transfer-main" class="well" th:if="${not #lists.isEmpty(transfers)}">
+        <div class="container-fluid">
+            <div class="row">
+                <form class="form-horizontal col-xs-2 col-wrapper">
+                    <div class="form-group row">
+                        <label class="control-label col-xs-4">Поз:</label>
+
+                        <div class="input-group col-xs-8">
+                            <select id="position" class="form-control">
+                                <option th:each="position : ${positions}" th:text="${position}"></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-xs-4">ЗП:</label>
+
+                        <div class="input-group col-xs-8">
+                            <input id="minSalary" type="text" class="form-control" placeholder="от"/>
+                            <span class="input-group-addon"> - </span>
+                            <input id="maxSalary" type="text" class="form-control" placeholder="до"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-xs-4">Д:</label>
+
+                        <div class="input-group col-xs-8">
+                            <input id="minD" type="text" class="form-control" placeholder="от"/>
+                            <span class="input-group-addon"> - </span>
+                            <input id="maxD" type="text" class="form-control" placeholder="до"/>
+                        </div>
+                    </div>
+                </form>
+                <form class="form-horizontal col-xs-2 col-wrapper">
+                    <div class="form-group row">
+                        <label class="control-label col-xs-4" for="inputStrength">Сила:</label>
+
+                        <div class="input-group col-xs-8" id="inputStrength">
+                            <input id="minStrength" type="text" class="form-control" placeholder="от"/>
+                            <span class="input-group-addon"> - </span>
+                            <input id="maxStrength" type="text" class="form-control" placeholder="до"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-xs-4" for="inputU">У:</label>
+
+                        <div class="input-group col-xs-8" id="inputU">
+                            <input id="minU" type="text" class="form-control" placeholder="от"/>
+                            <span class="input-group-addon"> - </span>
+                            <input id="maxU" type="text" class="form-control" placeholder="до"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-xs-4">О:</label>
+
+                        <div class="input-group col-xs-8">
+                            <input id="minO" type="text" class="form-control" placeholder="от"/>
+                            <span class="input-group-addon"> - </span>
+                            <input id="maxO" type="text" class="form-control" placeholder="до"/>
+                        </div>
+                    </div>
+                </form>
+                <form class="form-horizontal col-xs-2 col-wrapper">
+                    <div class="form-group row">
+                        <label class="control-label col-xs-4" for="inputTalent">Тал:</label>
+
+                        <div class="input-group col-xs-8" id="inputTalent">
+                            <input id="minTalent" type="text" class="form-control" placeholder="от"/>
+                            <span class="input-group-addon"> - </span>
+                            <input id="maxTalent" type="text" class="form-control" placeholder="до"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-xs-4" for="inputT">Т:</label>
+
+                        <div class="input-group col-xs-8" id="inputT">
+                            <input id="minT" type="text" class="form-control" placeholder="от"/>
+                            <span class="input-group-addon"> - </span>
+                            <input id="maxT" type="text" class="form-control" placeholder="до"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-xs-4">ВГ:</label>
+
+                        <div class="input-group col-xs-8">
+                            <input id="minVG" type="text" class="form-control" placeholder="от"/>
+                            <span class="input-group-addon"> - </span>
+                            <input id="maxVG" type="text" class="form-control" placeholder="до"/>
+                        </div>
+                    </div>
+                </form>
+                <form class="form-horizontal col-xs-2 col-wrapper">
+                    <div class="form-group row">
+                        <label class="control-label col-xs-4" for="inputAge">Вз:</label>
+
+                        <div class="input-group col-xs-8" id="inputAge">
+                            <input id="minAge" type="text" class="form-control" placeholder="от"/>
+                            <span class="input-group-addon"> - </span>
+                            <input id="maxAge" type="text" class="form-control" placeholder="до"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-xs-4" for="inputR">Р:</label>
+
+                        <div class="input-group col-xs-8" id="inputR">
+                            <input id="minR" type="text" class="form-control" placeholder="от"/>
+                            <span class="input-group-addon"> - </span>
+                            <input id="maxR" type="text" class="form-control" placeholder="до"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-xs-4" for="inputS">C:</label>
+
+                        <div class="input-group col-xs-8" id="inputS">
+                            <input id="minS" type="text" class="form-control" placeholder="от"/>
+                            <span class="input-group-addon"> - </span>
+                            <input id="maxS" type="text" class="form-control" placeholder="до"/>
+                        </div>
+                    </div>
+                </form>
+                <form class="form-horizontal col-xs-2 col-wrapper">
+                    <div class="form-group row">
+                        <label class="control-label col-xs-4" for="inputHealth">Зд:</label>
+
+                        <div class="input-group col-xs-8" id="inputHealth">
+                            <input id="minHealth" type="text" class="form-control" placeholder="от"/>
+                            <span class="input-group-addon"> - </span>
+                            <input id="maxHealth" type="text" class="form-control" placeholder="до"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-xs-4" for="inputP">П:</label>
+
+                        <div class="input-group col-xs-8" id="inputP">
+                            <input id="minP" type="text" class="form-control" placeholder="от"/>
+                            <span class="input-group-addon"> - </span>
+                            <input id="maxP" type="text" class="form-control" placeholder="до"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-xs-4" for="inputF">Ф:</label>
+
+                        <div class="input-group col-xs-8" id="inputF">
+                            <input id="minF" type="text" class="form-control" placeholder="от"/>
+                            <span class="input-group-addon"> - </span>
+                            <input id="maxF" type="text" class="form-control" placeholder="до"/>
+                        </div>
+                    </div>
+                </form>
+                <form class="form-horizontal col-xs-2 col-wrapper">
+                    <div class="form-group row">
+                        <label class="control-label col-xs-4" for="inputPrice">Цена:</label>
+
+                        <div class="input-group col-xs-8" id="inputPrice">
+                            <input id="minPrice" type="text" class="form-control" placeholder="от"/>
+                            <span class="input-group-addon"> - </span>
+                            <input id="maxPrice" type="text" class="form-control" placeholder="до"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-xs-4" for="inputN">Н:</label>
+
+                        <div class="input-group col-xs-8" id="inputN">
+                            <input id="minN" type="text" class="form-control" placeholder="от"/>
+                            <span class="input-group-addon"> - </span>
+                            <input id="maxN" type="text" class="form-control" placeholder="до"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label class="control-label col-xs-4" for="inputPayed">Опл:</label>
+
+                        <div class="input-group col-xs-8" id="inputPayed">
+                            <input id="minPayed" type="text" class="form-control" placeholder="от"/>
+                            <span class="input-group-addon"> - </span>
+                            <input id="maxPayed" type="text" class="form-control" placeholder="до"/>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="container-fluid">
+            <table id="transfer-table" class="display compact">
+                <thead>
+                <tr>
+                    <th>FA_ID</th>
+                    <th>Поз</th>
+                    <th>Имя</th>
+                    <th>Страна</th>
+                    <th>Продавец</th>
+                    <th>Вз</th>
+                    <th>Тал</th>
+                    <th>Сила</th>
+                    <th>СВ</th>
+                    <th>Зд</th>
+                    <th>ЗП</th>
+                    <th>ТР</th>
+                    <th>Цена</th>
+                    <th>Опл</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="player : ${players}">
+                    <td th:text="${player.playerId}"></td>
+                    <td th:text="${player.playerType}"></td>
+                    <td th:text="${player.name}"></td>
+                    <td th:text="${player.country}"></td>
+                    <td th:text="${player.seller}"></td>
+                    <td th:text="${player.age}"></td>
+                    <td th:text="${player.talent}"></td>
+                    <td th:text="${player.strength}"></td>
+                    <td th:text="${player.functions}"></td>
+                    <td th:text="${player.health}"></td>
+                    <td th:text="${player.salary}"></td>
+                    <td th:text="${player.birthtour}"></td>
+                    <td th:text="${player.price}"></td>
+                    <td th:text="${player.payed}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="container">
+            <div class="row form-inline">
+                <div class="form-group">
+                    <p class="form-control-static">Дата:</p>
+                </div>
+                <div class="form-group">
+                    <select class="form-control" id="transfer-date">
+                        <option th:each="transfer : ${transfers}"
+                                th:text="${#calendars.format(transfer,'dd-MM-yyyy')}"
+                                th:selected="${currentDate} eq ${transfer}"></option>
+                    </select>
+                </div>
+
+                <button id="show-transfer" class="btn btn-default" type="submit">Показать</button>
+
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">Легенда</div>
+        <div class="panel-body">
+            <b>Поз</b> - позиция<br/>
+            <b>Тал</b> - талант<br/>
+            <b>Вз</b> - возраст<br/>
+            <b>Зд</b> - здоровье<br/>
+            <b>ЗП</b> - зарплата<br/>
+            <b>Опл</b> - цена, заплаченная за игрока<br/>
+            <b>У</b> - удар<br/>
+            <b>П</b> - пас<br/>
+            <b>Н</b> - навес<br/>
+            <b>Д</b> - дриблинг<br/>
+            <b>О</b> - отбор<br/>
+            <b>Г</b> - голова<br/>
+            <b>С</b> - скорость<br/>
+            <b>Ф</b> - физическая выносливость<br/>
+            <b>Т</b> - вратарская техника<br/>
+            <b>Р</b> - реакция<br/>
+            <b>В</b> - воздух<br/>
+            <b>Ставка</b> - Предложено за игрока<br/>
+            <b>Замена</b> - Номер игрока, предложенного на замену<br/>
+        </div>
+    </div>
+    <div th:if="${#lists.isEmpty(transfers)}">
+        <h2>Трансферов нет</h2>
+    </div>
+    <div class="well">
+        <span class="btn btn-default btn-file">
+            Загрузить трансфер <input id="transfer-upload" type="file"/>
+        </span>
+        <span class="btn btn-default btn-file">
+            Загрузить результаты <input id="result-upload" type="file"/>
+        </span>
+        <span class="btn btn-default btn-file">
+            Проверить заявку <input id="transfer-check" type="file"/>
+        </span>
+    </div>
+</div>
+<div layout:fragment="script-after" th:remove="tag">
+    <script src="/js/transfer.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#transfer-upload").on("change", uploadFile);
+            $("#result-upload").on("change", uploadResultsFile);
+            $("#show-transfer").click("change", showTransfer);
+            $("#transfer-check").on("change", checkTransfer);
+            var table = $("#transfer-table").DataTable();
+            var ids = gen(['Strength', 'Salary', 'D', 'U', 'O', 'Talent',
+                'T', 'VG', 'Age', 'R', 'S', 'Health', 'P', 'F', 'Price', 'N', 'Payed']);
+            $(ids).keyup(function () {
+                table.draw();
+            });
+            $('#position').change(function () {
+                table.draw();
+            })
+        });
+
+        function gen(arr) {
+            var result = '';
+            var i;
+            for (i in arr) {
+                var s = arr[i];
+                if (result.length > 0) {
+                    result += ', ';
+                }
+                result += '#min';
+                result += s;
+                result += ', ';
+                result += '#max';
+                result += s;
+            }
+            return result;
+        }
+
+        function uploadFile() {
+            var fd = new FormData();
+            fd.append('file', $("#transfer-upload")[0].files[0]);
+            $.ajax({
+                url: "/transfer",
+                type: "POST",
+                data: fd,
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function () {
+                    window.location.href = '/transfer';
+                },
+                error: function () {
+
+                }
+            });
+        }
+
+        function checkTransfer() {
+            var fd = new FormData();
+            fd.append('file', $("#transfer-check")[0].files[0]);
+            fd.append('date', $("#transfer-date").find("option:selected").text());
+            $.ajax({
+                url: "/transfer/check",
+                type: "POST",
+                data: fd,
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function (data) {
+                    $('#transfer-main').html(data);
+                },
+                error: function () {
+
+                }
+            });
+        }
+
+        function uploadResultsFile() {
+            var fd = new FormData();
+            fd.append('file', $("#result-upload")[0].files[0]);
+            fd.append('date', $("#transfer-date").find("option:selected").text());
+            $.ajax({
+                url: "/transfer/result",
+                type: "POST",
+                data: fd,
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                cache: false,
+                success: function () {
+                    window.location.href = '/transfer';
+                },
+                error: function () {
+
+                }
+            });
+        }
+
+        function showTransfer() {
+            window.location.href = '/transfer/' + $("#transfer-date").find("option:selected").text();
+        }
+    </script>
+</div>
+</body>
+</html>

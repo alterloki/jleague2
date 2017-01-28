@@ -1,5 +1,7 @@
 package ru.jleague13.calendar;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -10,6 +12,8 @@ import java.util.Map;
  */
 @Component
 public class EventFactory {
+
+    private Log log = LogFactory.getLog(EventFactory.class);
 
     private Map<String, EventType> simpleEventType = new HashMap<>();
 
@@ -31,34 +35,41 @@ public class EventFactory {
         simpleEventType.put("подготовка к старту сезона", EventType.SEASON_PREPARE);
         simpleEventType.put("матчи на новом генераторе", EventType.NEW_TEST);
         simpleEventType.put("старт сезона", EventType.SEASON_START);
+        simpleEventType.put("взятка Блаттеру", EventType.BLATTER);
+        simpleEventType.put("Подведение итогов сезона", EventType.SEASON_FINISH);
     }
 
     public Event createEvent(String input) {
-        if(input.startsWith("расписание")) {
-            String replace = input.replace("расписание ", "");
-            EventType forType = extractEventTypeForMatch(replace);
-            int tourNum = extractTourNum(input);
-            int gameNum = extractGameNum(input);
-            MatchType matchType = extractMatchType(input);
-            Event event = new Event(EventType.SCHEDULE, input, tourNum, gameNum, matchType);
-            event.setScheduleFor(forType);
-            return event;
-        } else {
-            EventType trySimpleType = simpleEventType.get(input);
-            if(trySimpleType != null) {
-                return new Event(trySimpleType, input, 0, 0);
-            } else if(input.startsWith("регулярные чемпионаты")) {
-                String tourNumStr = input.replace("регулярные чемпионаты (тур-", "").replace(")", "");
-                return new Event(EventType.REGULAR_TOUR, input, Integer.parseInt(tourNumStr), 0, MatchType.TOUR);
-            } else if (input.contains("товарищеские матчи")){
-                return new Event(EventType.FRIEND_GAME, input, 0, 0, MatchType.SINGLE);
-            } else {
-                EventType eventType = extractEventTypeForMatch(input);
-                int tourNum = extractTourNum(input);
+        try {
+            if(input.startsWith("расписание")) {
+                String replace = input.replace("расписание ", "");
+                EventType forType = extractEventTypeForMatch(replace);
+                int tourNum = extractTourNum(input, forType);
                 int gameNum = extractGameNum(input);
                 MatchType matchType = extractMatchType(input);
-                return new Event(eventType, input, tourNum, gameNum, matchType);
+                Event event = new Event(EventType.SCHEDULE, input, tourNum, gameNum, matchType);
+                event.setScheduleFor(forType);
+                return event;
+            } else {
+                EventType trySimpleType = simpleEventType.get(input);
+                if(trySimpleType != null) {
+                    return new Event(trySimpleType, input, 0, 0);
+                } else if(input.startsWith("регулярные чемпионаты")) {
+                    String tourNumStr = input.replace("регулярные чемпионаты (тур-", "").replace(")", "");
+                    return new Event(EventType.REGULAR_TOUR, input, Integer.parseInt(tourNumStr), 0, MatchType.TOUR);
+                } else if (input.contains("товарищеские матчи")){
+                    return new Event(EventType.FRIEND_GAME, input, 0, 0, MatchType.SINGLE);
+                } else {
+                    EventType eventType = extractEventTypeForMatch(input);
+                    int tourNum = extractTourNum(input, eventType);
+                    int gameNum = extractGameNum(input);
+                    MatchType matchType = extractMatchType(input);
+                    return new Event(eventType, input, tourNum, gameNum, matchType);
+                }
             }
+        } catch (Exception e) {
+            log.error("Error extracting event from string = \"" + input + "\"", e);
+            throw e;
         }
     }
 
@@ -88,8 +99,8 @@ public class EventFactory {
         return 0;
     }
 
-    private int extractTourNum(String input) {
-        if(input.contains("/")) {
+    private int extractTourNum(String input, EventType forType) {
+        if(input.contains("/") && forType != EventType.COMMERCE) {
             int i = input.indexOf('/');
             int j = input.indexOf(' ', i);
             return Integer.parseInt(input.substring(i + 1, j));
@@ -108,9 +119,9 @@ public class EventFactory {
             return EventType.LEAGUE_CUP;
         } else if(str.contains("ЛЧ")) {
             return EventType.L_CHAMP;
-        } else if(str.contains("КА")) {
+        } else if(str.contains("КА") || str.contains("KA")) {
             return EventType.CUP_A;
-        } else if(str.contains("КФ")) {
+        } else if(str.contains("КФ") || str.contains("KФ")) {
             return EventType.CUP_F;
         } else if(str.contains("ЮЧМ")) {
             return EventType.YOUTH_WORLD_CH;
@@ -126,7 +137,14 @@ public class EventFactory {
             return EventType.REGULAR_TOUR;
         } else if(str.contains("переход")) {
             return EventType.REGULAR_TOUR;
+        } else if(str.contains("коммерч") || str.contains("Комтурниры")) {
+            return EventType.COMMERCE;
+        } else if(str.contains("чемпионатов")) {
+            return EventType.ALL_CHEMP;
+        } else if(str.contains("КБЛ")) {
+            return EventType.KBL;
         }
+        log.error("EventType is null for input = \"" + str + "\"");
         return null;
     }
 }

@@ -126,13 +126,18 @@ public class SimpleUrlDownloadInfo implements DownloadInfo {
             Elements lines = select.get(i).select("td:eq(1) > div");
             HashSet<Event> events = new HashSet<>();
             for (Element line : lines) {
-                String[] parts = line.text().split(",");
-                for (String part : parts) {
-                    String[] parts1 = part.split(" и ");
-                    for (String s : parts1) {
-                        Event event = eventFactory.createEvent(s);
-                        events.add(event);
+                if(!line.text().contains("тест")) {
+                    String[] parts = line.text().split(",");
+                    for (String part : parts) {
+                        String[] parts1 = part.split(" и ");
+                        for (String s : parts1) {
+                            Event event = eventFactory.createEvent(s);
+                            events.add(event);
+                        }
                     }
+                } else {
+                    Event event = eventFactory.createEvent(line.text());
+                    events.add(event);
                 }
             }
             result.addDay(new CalendarDay(date, events));
