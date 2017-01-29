@@ -9,7 +9,7 @@
     <tbody>
     <tr th:each="team : ${teams}">
         <td th:text="${team.shortName}"></td>
-        <td th:text="${team.name}">
+        <td>
             <a href="/team" th:href="@{/team/{team_id}(team_id=${team.id})}" th:text="${team.name}"></a>
         </td>
         <td th:text="${team.managerLogin}"></td>
