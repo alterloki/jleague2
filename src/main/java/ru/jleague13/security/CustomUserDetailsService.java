@@ -40,7 +40,6 @@ public class CustomUserDetailsService implements UserDetailsService {
                 true, true, true, true, getGrantedAuthorities(user));
     }
 
-
     private List<GrantedAuthority> getGrantedAuthorities(User user){
         log.info("Get granted authorities!");
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="20170129-01" author="alterloki">
+        <comment>
+            Создание таблицы match
+        </comment>
+        <sql>
+            CREATE TABLE jmatch
+            (
+            id int not null,
+            event_id int not null,
+            owner_team_id int not null,
+            guest_team_id int not null,
+            owner_score int not null,
+            guest_score int not null
+            )
+        </sql>
+    </changeSet>
+
+    <changeSet id="20170129-02" author="alterloki">
+        <addColumn tableName="jmatch">
+            <column name="event_date" type="datetime"/>
+            <column name="event_type" type="int"/>
+        </addColumn>
+    </changeSet>
+
+    <changeSet id="20170129-03" author="alterloki">
+        <dropColumn tableName="jmatch"
+                    columnName="event_id"/>
+    </changeSet>
+
+    <changeSet id="20170129-04" author="alterloki">
+        <comment>
+            Создание таблицы prediction
+        </comment>
+        <sql>
+            CREATE TABLE prediction
+            (
+            match_id int not null,
+            user_id int not null,
+            owner_score int not null,
+            guest_score int not null,
+            pred_time datetime not null
+            )
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

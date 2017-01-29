@@ -36,7 +36,7 @@ public class CalendarManager {
         return calendar;
     }
 
-    private void trunc(java.util.Calendar calendarInst) {
+    public static void trunc(java.util.Calendar calendarInst) {
         calendarInst.set(java.util.Calendar.HOUR_OF_DAY, 0);
         calendarInst.set(java.util.Calendar.MINUTE, 0);
         calendarInst.set(java.util.Calendar.SECOND, 0);

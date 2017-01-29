@@ -59,6 +59,15 @@
       <column name="content_type" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <primary-key name="PRIMARY" columns="id"/>
     </table>
+    <table name="jmatch" schema="" catalog="jleague13" type="TABLE">
+      <column name="id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="owner_team_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="guest_team_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="owner_score" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="guest_score" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="event_date" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
+      <column name="event_type" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
+    </table>
     <table name="news_item" schema="" catalog="jleague13" type="TABLE">
       <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
       <column name="title" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>
@@ -66,6 +75,13 @@
       <column name="post_date" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
       <column name="text" sqlType="LONGBLOB" precision="2147483647" scale="0" nullable="true" jdbcType="-4"/>
       <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="prediction" schema="" catalog="jleague13" type="TABLE">
+      <column name="match_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="owner_score" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="guest_score" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="pred_time" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
     </table>
     <table name="progress" schema="" catalog="jleague13" type="TABLE">
       <column name="type" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
@@ -95,6 +111,11 @@
       <column name="views" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="division" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <primary-key name="PRIMARY" columns="id"/>
+    </table>
+    <table name="team_calc_info" schema="" catalog="jleague13" type="TABLE">
+      <column name="team_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="finances" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="stadium_tours" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
     </table>
     <table name="team_info" schema="" catalog="jleague13" type="TABLE">
       <column name="all_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
