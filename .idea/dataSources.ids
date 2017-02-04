@@ -68,6 +68,10 @@
       <column name="event_date" sqlType="DATETIME" precision="19" scale="0" nullable="true" jdbcType="93"/>
       <column name="event_type" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>
     </table>
+    <table name="jparam" schema="" catalog="jleague13" type="TABLE">
+      <column name="name" sqlType="VARCHAR" precision="256" scale="0" nullable="true" jdbcType="12"/>
+      <column name="value" sqlType="VARCHAR" precision="256" scale="0" nullable="true" jdbcType="12"/>
+    </table>
     <table name="news_item" schema="" catalog="jleague13" type="TABLE">
       <column name="id" sqlType="BIGINT" precision="19" scale="0" nullable="false" jdbcType="-5"/>
       <column name="title" sqlType="VARCHAR" precision="255" scale="0" nullable="true" jdbcType="12"/>

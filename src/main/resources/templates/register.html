@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{main-layout}">
+<head>
+    <title>Регистрация</title>
+</head>
+<body>
+<nav layout:fragment="mainmenu" th:remove="tag">
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10 col-wrapper">
+            <img id="logo" src="/images/jlogo.png"/>
+            <div layout:fragment="mainframe" class="container">
+                <div class="row">
+                    <div class="col-md-2"></div>
+                    <div class="col-md-5">
+                        <h1 class="text-center login-title">Регистрация</h1>
+
+                        <div class="account-wall">
+                            <img class="profile-img"
+                                 src="/images/flag.jpg"
+                                 alt=""/>
+                            <div class="text-danger" th:if="${registerError} eq 'already-registered'">
+                                Вы уже зарегистрированы. Если вы забыли пароль напшите администратору.
+                            </div>
+                            <div class="text-danger" th:if="${registerError} eq 'wrong-email'">
+                                В FA13 указан другой email. Укажите тот же email, что и в FA13.
+                            </div>
+                            <div class="text-danger" th:if="${registerError} eq 'no-fa-user'">
+                                Нет такого менеджера в FA13. Укажите логин тот же, что у вас в FA13.
+                            </div>
+
+                            <form action="/new/register" class="form-signin" method="post">
+                                <input id="login" name="login" type="text" class="form-control" placeholder="Логин" required autofocus>
+                                <input id="email" name="email" type="text" class="form-control" placeholder="Email" required autofocus>
+                                <button class="btn btn-lg btn-primary btn-block" type="submit">
+                                    Зарегистрироваться
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-md-2"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+</div>
+</body>
+</html>

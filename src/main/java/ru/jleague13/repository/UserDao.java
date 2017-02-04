@@ -27,4 +27,5 @@ public interface UserDao {
     void deleteUser(int userId);
 
     User getUserByLogin(String login);
+
 }

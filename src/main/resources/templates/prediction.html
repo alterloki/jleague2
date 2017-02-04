@@ -2,10 +2,10 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
       layout:decorate="~{main-layout}">
 <head>
-    <title>Трансфер</title>
+    <title>Прогнозы</title>
 </head>
 <body>
-<nav layout:fragment="mainmenu" th:remove="tag" >
+<nav layout:fragment="mainmenu" th:remove="tag">
     <div th:replace="main::mainmenu('prediction')"/>
 </nav>
 <div layout:fragment="content" class="col-md-8">
@@ -16,20 +16,31 @@
                 <thead>
                 <tr>
                     <th>Хозяева</th>
-                    <th>с_х</th>
-                    <th>с_г</th>
+                    <th>Счёт</th>
                     <th>Гости</th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr th:each="match : ${matches}">
                     <td th:text="${match.ownerTeamName}"></td>
-                    <td th:text="${match.ownerScore}"></td>
-                    <td th:text="${match.guestScore}"></td>
+                    <td th:text="${match.score}"></td>
                     <td th:text="${match.guestTeamName}"></td>
                 </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <button class="btn btn-default" id="make-prediction" type="submit"
+                    th:disabled="${#authentication.name == 'anonymousUser'}">
+                Сделать прогноз
+            </button>
+        </div>
+    </div>
+    <div class="panel panel-default" th:if="${#authentication.name == 'anonymousUser'}">
+        <div class="panel-body">
+            Если вы хотите учавствовать в прогнозах <a href="/new/login">Залогиньтесь</a>
         </div>
     </div>
 </div>
@@ -42,6 +53,13 @@
 <div layout:fragment="script-after" th:remove="tag">
     <script>
 
+        $(document).ready(function () {
+            $("#make-prediction").click("change", makePrediction);
+        });
+
+        function makePrediction() {
+            window.location.href = '/prediction/make';
+        }
     </script>
 </div>
 </body>

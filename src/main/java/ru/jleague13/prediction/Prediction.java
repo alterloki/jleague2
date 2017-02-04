@@ -12,6 +12,14 @@ public class Prediction {
     private int guestScore;
     private Date predictionTime;
 
+    public Prediction(int userId, int matchId, int ownerScore, int guestScore, Date predictionTime) {
+        this.userId = userId;
+        this.matchId = matchId;
+        this.ownerScore = ownerScore;
+        this.guestScore = guestScore;
+        this.predictionTime = predictionTime;
+    }
+
     public int getUserId() {
         return userId;
     }

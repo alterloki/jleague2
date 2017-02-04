@@ -1,5 +1,7 @@
 package ru.jleague13.entity;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import ru.jleague13.calendar.Event;
 import ru.jleague13.calendar.EventType;
 
@@ -7,6 +9,9 @@ import ru.jleague13.calendar.EventType;
  * @author ashevenkov 28.01.17 15:54.
  */
 public class Match {
+
+    private Log log = LogFactory.getLog(Match.class);
+
     private int id;
     private int ownerTeamId;
     private String ownerTeamName;
@@ -17,6 +22,10 @@ public class Match {
     private int guestScore;
 
     private Event matchEvent;
+
+    public Match() {
+
+    }
 
     public Match(int id, int ownerTeamId, String ownerTeamName, int guestTeamId,
                  String guestTeamName, int ownerScore, int guestScore, Event matchEvent) {
@@ -78,6 +87,18 @@ public class Match {
         this.ownerScore = ownerScore;
     }
 
+    public String getOwnerScoreS() {
+        return ownerScore < 0 ? "?" : Integer.toString(ownerScore);
+    }
+
+    public void setOwnerScoreS(String ownerScoreString) {
+        try {
+            this.ownerScore = Integer.parseInt(ownerScoreString);
+        } catch (NumberFormatException e) {
+            this.ownerScore = -1;
+        }
+    }
+
     public int getGuestScore() {
         return guestScore;
     }
@@ -86,11 +107,29 @@ public class Match {
         this.guestScore = guestScore;
     }
 
+    public String getGuestScoreS() {
+        return guestScore < 0 ? "?" : Integer.toString(guestScore);
+    }
+
+    public void setGuestScoreS(String guestScoreString) {
+        try {
+            this.guestScore = Integer.parseInt(guestScoreString);
+        } catch (NumberFormatException e) {
+            this.guestScore = -1;
+        }
+    }
+
     public Event getMatchEvent() {
         return matchEvent;
     }
 
     public void setMatchEvent(Event matchEvent) {
         this.matchEvent = matchEvent;
+    }
+
+    public String getScore() {
+        String os = ownerScore < 0 ? "?" : Integer.toString(ownerScore);
+        String gs = guestScore < 0 ? "?" : Integer.toString(guestScore);
+        return os + ":" + gs;
     }
 }

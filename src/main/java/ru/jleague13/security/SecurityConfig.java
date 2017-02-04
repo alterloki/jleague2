@@ -11,6 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
 /**
  * @author ashevenkov 20.03.16 16:54.
@@ -32,6 +34,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public AuthenticationSuccessHandler successHandler() {
+        return new JleagueLoginSuccessHandler("/");
     }
 
 
@@ -59,9 +66,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .and()
                 .formLogin().loginPage("/new/login").permitAll().usernameParameter("j_username")
-                .passwordParameter("j_password").loginProcessingUrl("/j_spring_security_check").failureUrl("/new/login-error")
-                .and().authorizeRequests().antMatchers("/new/admin/**").access("hasRole('ADMIN')")
-                .and().logout().logoutUrl("/j_spring_security_logout").logoutSuccessUrl("/")
+                .successHandler(successHandler())
+                .passwordParameter("j_password").loginProcessingUrl("/j_spring_security_check")
+                .failureUrl("/new/login-error").and().authorizeRequests().antMatchers("/new/admin/**")
+                .access("hasRole('ADMIN')").and().logout().
+                logoutUrl("/j_spring_security_logout").logoutSuccessUrl("/")
                 .and().csrf().disable();
     }
 }

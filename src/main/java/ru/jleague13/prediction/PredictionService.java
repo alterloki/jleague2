@@ -12,6 +12,7 @@ import ru.jleague13.entity.Match;
 import ru.jleague13.entity.Player;
 import ru.jleague13.repository.MatchDao;
 import ru.jleague13.repository.UserDao;
+import ru.jleague13.security.SecurityService;
 
 import java.io.FileReader;
 import java.io.Reader;
@@ -31,6 +32,9 @@ public class PredictionService {
     private UserDao userDao;
     @Autowired
     private PredictionDao predictionDao;
+    @Autowired
+    private SecurityService securityService;
+
 
     public List<PredictionUser> getPredictionUsersTable() {
         ArrayList<PredictionUser> predictionUsers = new ArrayList<>();
@@ -40,7 +44,7 @@ public class PredictionService {
     }
 
     public List<Match> getPredictionMatchesForUser(EventType eventType) {
-        String name = SecurityContextHolder.getContext().getAuthentication().getName();
+        String name = securityService.findLoggedInUsername();
         ru.jleague13.entity.User faUser = userDao.getUserByLogin(name);
         java.util.Calendar calendarInst = new GregorianCalendar();
         CalendarManager.trunc(calendarInst);
@@ -69,4 +73,14 @@ public class PredictionService {
     }
 
 
+    public void savePrediction(List<Match> matches) {
+        String name = securityService.findLoggedInUsername();
+        ru.jleague13.entity.User faUser = userDao.getUserByLogin(name);
+        if(faUser != null) {
+            for (Match match : matches) {
+                predictionDao.savePrediction(new Prediction(faUser.getId(), match.getId(),
+                        match.getOwnerScore(), match.getGuestScore(), new Date()));
+            }
+        }
+    }
 }

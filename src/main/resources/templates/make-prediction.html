@@ -1,0 +1,75 @@
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{main-layout}">
+<head>
+    <title>Трансфер</title>
+</head>
+<body>
+<nav layout:fragment="mainmenu" th:remove="tag">
+    <div th:replace="main::mainmenu('prediction')"/>
+</nav>
+<div layout:fragment="content" class="col-md-8">
+    <form action="#" th:action="@{/prediction/save}" method="POST" th:object="${matchesList}" th:if="${#authentication.name != 'anonymousUser'}">
+        <div class="panel panel-default">
+            <div class="panel-heading">Матчи</div>
+            <div class="panel-body">
+                <table class="table table-bordered table-responsive" id="teams-table">
+                    <thead>
+                    <tr>
+                        <th>Хозяева</th>
+                        <th>Счёт хозяев</th>
+                        <th>Счёт гостей</th>
+                        <th>Гости</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="match, status : *{matches}">
+                        <input type="hidden" th:field="*{matches[__${status.index}__].id}"/>
+                        <td th:text="${match.ownerTeamName}">
+                        </td>
+                        <td>
+                            <input type="text"
+                                   class="form-control" th:field="*{matches[__${status.index}__].ownerScoreS}"/>
+                        </td>
+                        <td>
+                            <input type="text"
+                                   class="form-control" th:field="*{matches[__${status.index}__].guestScoreS}"/>
+                        </td>
+                        <td th:text="${match.guestTeamName}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <button type="submit" class="btn btn-default">Сохранить прогноз</button>
+            </div>
+        </div>
+    </form>
+    <div class="panel panel-default" th:if="${#authentication.name == 'anonymousUser'}">
+        <div class="panel-body">
+            Если вы хотите учавствовать в прогнозах <a href="/new/login">Залогиньтесь</a>
+        </div>
+    </div>
+</div>
+<div layout:fragment="widjets" class="col-md-4">
+    <div class="panel panel-default">
+        <div class="panel-heading">Участники</div>
+        <div class="panel-body">А тут таблица участников</div>
+    </div>
+</div>
+<div layout:fragment="script-after" th:remove="tag">
+    <script>
+
+        $(document).ready(function () {
+            $("#make-prediction").click("change", makePrediction);
+        });
+
+        function makePrediction() {
+            window.location.href = '/prediction/make';
+        }
+    </script>
+</div>
+</body>
+</html>

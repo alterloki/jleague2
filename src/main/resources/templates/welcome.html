@@ -1,0 +1,20 @@
+<!DOCTYPE HTML>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org"
+      layout:decorate="~{main-layout}">
+<head>
+    <title>Добро пожаловать</title>
+</head>
+<body>
+<nav layout:fragment="mainmenu" th:remove="tag">
+    <div th:replace="main::mainmenu('news')"/>
+</nav>
+<div layout:fragment="content" class="col-md-8">
+    <div class="panel panel-default">
+        <div class="panel-heading"></div>
+        <div class="panel-body">
+            На вашу почту отправлено письмо с паролем. Спасибо за регистрацию!
+        </div>
+    </div>
+</div>
+</body>
+</html>

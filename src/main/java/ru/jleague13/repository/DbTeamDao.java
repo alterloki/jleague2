@@ -134,7 +134,7 @@ public class DbTeamDao implements TeamDao {
     public List<Team> getJapanLiveTeams() {
         return jdbcTemplate.query(
                 "select " + FULL_FIELDS + " from team t left outer join users u on t.manager_id = u.id where t.country_id = " +
-                        "(select id from country where fa_index = ?) and manager_id > 0",
+                        "(select id from country where fa_index = ?) and manager_id > 0 and division = 1",
                 (resultSet, i) -> teamFromRs(resultSet), "JPN");
     }
 
