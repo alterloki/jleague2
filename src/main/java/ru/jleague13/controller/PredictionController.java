@@ -12,6 +12,7 @@ import ru.jleague13.calendar.EventType;
 import ru.jleague13.entity.Match;
 import ru.jleague13.prediction.MatchesList;
 import ru.jleague13.prediction.PredictionService;
+import ru.jleague13.repository.TeamDao;
 import ru.jleague13.security.SecurityService;
 
 import java.util.List;
@@ -26,9 +27,12 @@ public class PredictionController {
 
     @Autowired
     private PredictionService predictionService;
+    @Autowired
+    private TeamDao teamDao;
 
     @RequestMapping(value = "/prediction", method = RequestMethod.GET)
     public String predictionTable(Model model) {
+        model.addAttribute("japanTeams", teamDao.getJapanLiveTeams());
         List<Match> matchesForUser =
                 predictionService.getPredictionMatchesForUser(EventType.REGULAR_TOUR);
         model.addAttribute("matches", matchesForUser);
@@ -38,6 +42,7 @@ public class PredictionController {
 
     @RequestMapping(value = "/prediction/make", method = RequestMethod.GET)
     public String makePrediction(Model model) {
+        model.addAttribute("japanTeams", teamDao.getJapanLiveTeams());
         List<Match> matchesForUser =
                 predictionService.getPredictionMatchesForUser(EventType.REGULAR_TOUR);
         for (Match match : matchesForUser) {

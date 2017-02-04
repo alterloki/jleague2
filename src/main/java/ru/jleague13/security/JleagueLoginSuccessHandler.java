@@ -22,6 +22,7 @@ public class JleagueLoginSuccessHandler extends SavedRequestAwareAuthenticationS
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
         HttpSession session = request.getSession();
         if (session != null) {
+            session.setMaxInactiveInterval(60 * 60 * 24);
             String redirectUrl = (String) session.getAttribute("url_prior_login");
             if (redirectUrl != null) {
                 // we do not forget to clean this attribute from session

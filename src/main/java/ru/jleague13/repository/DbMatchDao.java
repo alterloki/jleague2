@@ -53,4 +53,19 @@ public class DbMatchDao implements MatchDao {
         //todo implement
         return 0;
     }
+
+    @Override
+    public Match loadMatchById(int id) {
+        return jdbcTemplate.query(
+                "select " + MATCH_FULL_FIELDS +
+                        " from " + MATCH_TABLES +
+                        " where m.owner_team_id = t1.id " +
+                        " and m.guest_team_id = t2.id and m.id = ?",
+                rs -> {
+                    if(rs.next()) {
+                        return matchFromRs(rs, new Event(rs.getDate("event_date")));
+                    }
+                    return null;
+                }, id);
+    }
 }

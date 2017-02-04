@@ -40,7 +40,7 @@ public class InformationManager {
         Map<String, Country> countryMap = new HashMap<>(newCountries);
         Map<String, Country> currentMap =
                 countryDao.getCountries().stream().
-                        collect(Collectors.toMap(Country::getFaId, Function.<Country>identity()));
+                        collect(Collectors.toMap(Country::getFaIndex, Function.<Country>identity()));
         for (String currentKey : currentMap.keySet()) {
             if(countryMap.containsKey(currentKey)) {
                 Country country = countryMap.get(currentKey);
@@ -62,7 +62,7 @@ public class InformationManager {
     public void updateCountries() throws IOException {
         Map<String, Country> countryMap =
                 downloadInfo.downloadCountries().stream().
-                        collect(Collectors.toMap(Country::getFaId, Function.<Country>identity()));
+                        collect(Collectors.toMap(Country::getFaIndex, Function.<Country>identity()));
         updateCountries(countryMap);
     }
 

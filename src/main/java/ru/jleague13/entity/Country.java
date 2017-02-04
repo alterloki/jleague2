@@ -68,8 +68,7 @@ public class Country {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Country country = (Country) o;
-        return Objects.equal(faId, country.faId) &&
-                Objects.equal(faIndex, country.faIndex) &&
+        return Objects.equal(faIndex, country.faIndex) &&
                 Objects.equal(name, country.name);
     }
 

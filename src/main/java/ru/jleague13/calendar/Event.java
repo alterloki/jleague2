@@ -15,6 +15,10 @@ public class Event {
     private MatchType matchType;
     private Date day;
 
+    public Event(Date day) {
+        this.day = day;
+    }
+
     public Event(EventType eventType, String text, int tourNum, int part) {
         this.eventType = eventType;
         this.text = text;

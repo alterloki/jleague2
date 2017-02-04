@@ -24,11 +24,11 @@ public class FaUrlResolver {
     }
 
     public String getFa13Countries() {
-        return OLD_FA13_URL + "/team.html";
+        return FA13_URL + "/club/list/by-countries";
     }
 
     public String getFa13Teams(Country country) {
-        return OLD_FA13_URL + "/team.html?country=" + country.getFaId();
+        return FA13_URL + "/club/list/country/" + country.getFaIndex();
     }
 
     public String getAllZip() {

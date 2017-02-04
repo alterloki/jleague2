@@ -44,7 +44,7 @@ public class DownloadInfoTests {
             if(country.getFaIndex().equals("JPN")) {
                 wasJapan = true;
                 assert country.getName().equals("Япония");
-                assert country.getFaId().equals("209");
+                assert country.getFaId() == null;
             }
         }
         assert wasJapan;
@@ -52,8 +52,18 @@ public class DownloadInfoTests {
 
     @Test
     public void testDownloadTeams() throws IOException {
-        Country country = new Country(0, "209", "Япония", "JPN");
+        Country country = new Country(0, "0", "Япония", "JPN");
         List<Team> teams = downloadInfo.downloadTeams(country);
+        boolean wasAkita = false;
+        for (Team team : teams) {
+            if(team.getName().equals("Блаублитз Акита")) {
+                wasAkita = true;
+                assert team.getShortName().equals("N16");
+                assert team.getDiv() == 1;
+                assert team.getManagerLogin().equals("alterloki");
+            }
+        }
+        assert wasAkita;
         assert teams.size() == 32;
     }
 

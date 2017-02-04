@@ -48,6 +48,7 @@ public class PredictionService {
         String name = securityService.findLoggedInUsername();
         ru.jleague13.entity.User faUser = userDao.getUserByLogin(name);
         java.util.Calendar calendarInst = new GregorianCalendar();
+        calendarInst.add(Calendar.HOUR_OF_DAY, 3);
         CalendarManager.trunc(calendarInst);
         for(int i = 0; i < 10; i++) {
             calendarInst.add(Calendar.DAY_OF_MONTH, 1);
@@ -81,9 +82,14 @@ public class PredictionService {
             if(!predictionDao.isUserParticipant(faUser.getId())) {
                 predictionDao.savePoints(faUser.getId(), 0);
             }
+            java.util.Calendar calendarInst = new GregorianCalendar();
+            calendarInst.add(Calendar.HOUR_OF_DAY, 3);
             for (Match match : matches) {
-                predictionDao.savePrediction(new Prediction(faUser.getId(), match.getId(),
-                        match.getOwnerScore(), match.getGuestScore(), new Date()));
+                Date matchDate = matchDao.loadMatchById(match.getId()).getMatchEvent().getDay();
+                if(matchDate.after(calendarInst.getTime())) {
+                    predictionDao.savePrediction(new Prediction(faUser.getId(), match.getId(),
+                            match.getOwnerScore(), match.getGuestScore(), new Date()));
+                }
             }
         }
     }

@@ -50,12 +50,11 @@ public class SimpleUrlDownloadInfo implements DownloadInfo {
     public List<Country> downloadCountries() throws IOException {
         ArrayList<Country> countries = new ArrayList<>();
         Document doc = Jsoup.connect(faUrlResolver.getFa13Countries()).get();
-        Elements select = doc.select("div[id=team]").select("tr[class^=table]");
-        for (int i = 0; i < select.size(); i++) {
-            String faId = select.get(i).select("a").attr("href").substring(18);
-            String name = select.get(i).select("a").text();
-            String faIndex = select.get(i).select("img").attr("src").substring(20, 23);
-            countries.add(new Country(0, faId, name, faIndex));
+        Elements select = doc.select("section[class=l-content-frame]").select("table").select("tr");
+        for (int i = 1; i < select.size(); i++) {
+            String name = select.get(i).select("td:eq(1)").text();
+            String faIndex = select.get(i).select("a").attr("href").substring(19);
+            countries.add(new Country(0, null, name, faIndex));
         }
         return countries;
     }
@@ -64,28 +63,34 @@ public class SimpleUrlDownloadInfo implements DownloadInfo {
     public List<Team> downloadTeams(Country country) throws IOException {
         ArrayList<Team> teams = new ArrayList<>();
         Document doc = Jsoup.connect(faUrlResolver.getFa13Teams(country)).get();
-        Elements select = doc.select("div[id=team]").select("tr[class^=table]");
-        for (int i = 0; i < select.size(); i++) {
-            String shortName = select.get(i).select("a[href^=team]").attr("href").substring(15);
-            String name = select.get(i).select("a[href^=team]").select("b").text();
-            //TODO fix
-            Team team = new Team(0, shortName, name, country.getId());
-            String managerLogin = select.get(i).select("a[href^=profile]").text();
-            String managerIdString = select.get(i).select("a[href^=profile]").attr("href").substring(16);
-            if (managerIdString.length() > 0) {
-                int managerId = Integer.parseInt(managerIdString);
-                User user = userDao.getUserByFaId(managerId);
-                team.setManagerId(managerId);
-                if (user != null) {
-                    team.setManagerId(user.getId());
-                } else {
-                    //TODO fix
-                    int userId = userDao.saveUser(new User(0, managerLogin, "", managerId, 0, "", "",
-                            0, "", "", false, false));
-                    team.setManagerId(userId);
+        Elements select = doc.select("section[class=l-content-frame]").select("table");
+        for(int div = 1; div <= select.size(); div++) {
+            Element table = select.get(div - 1);
+            Elements lines = table.select("tr");
+            for (int i = 1; i < lines.size(); i++) {
+                String shortName = lines.get(i).select("td:eq(1)").select("a").attr("href").substring(6);
+                String name = lines.get(i).select("td:eq(1)").select("a").text();
+                Team team = new Team(0, shortName, name, country.getId());
+                team.setDiv(div);
+                String managerLogin = lines.get(i).select("td:eq(4)").select("a").text();
+                if(!managerLogin.equals("Отправить заявку")) {
+                    String managerIdString = lines.get(i).select("td:eq(4)").select("a").
+                            attr("href").substring(9);
+                    int managerId = Integer.parseInt(managerIdString);
+                    User user = userDao.getUserByFaId(managerId);
+                    team.setManagerId(managerId);
+                    team.setManagerLogin(managerLogin);
+                    if (user != null) {
+                        team.setManagerId(user.getId());
+                    } else {
+                        //TODO fix
+                        int userId = userDao.saveUser(new User(0, managerLogin, "", managerId, 0, "", "",
+                                0, "", "", false, false));
+                        team.setManagerId(userId);
+                    }
                 }
+                teams.add(team);
             }
-            teams.add(team);
         }
         return teams;
     }
