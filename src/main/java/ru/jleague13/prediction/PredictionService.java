@@ -37,9 +37,10 @@ public class PredictionService {
 
 
     public List<PredictionUser> getPredictionUsersTable() {
-        ArrayList<PredictionUser> predictionUsers = new ArrayList<>();
-        predictionUsers.add(new PredictionUser("alterloki", 15, 1));
-        predictionUsers.add(new PredictionUser("Def", 10, 2));
+        List<PredictionUser> predictionUsers = predictionDao.loadPredictionUsers();
+        for(int i = 0; i < predictionUsers.size(); i++) {
+            predictionUsers.get(i).setPosition(i + 1);
+        }
         return predictionUsers;
     }
 
@@ -77,6 +78,9 @@ public class PredictionService {
         String name = securityService.findLoggedInUsername();
         ru.jleague13.entity.User faUser = userDao.getUserByLogin(name);
         if(faUser != null) {
+            if(!predictionDao.isUserParticipant(faUser.getId())) {
+                predictionDao.savePoints(faUser.getId(), 0);
+            }
             for (Match match : matches) {
                 predictionDao.savePrediction(new Prediction(faUser.getId(), match.getId(),
                         match.getOwnerScore(), match.getGuestScore(), new Date()));

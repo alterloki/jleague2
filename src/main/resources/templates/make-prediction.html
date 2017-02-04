@@ -56,7 +56,10 @@
 <div layout:fragment="widjets" class="col-md-4">
     <div class="panel panel-default">
         <div class="panel-heading">Участники</div>
-        <div class="panel-body">А тут таблица участников</div>
+        <div class="panel-body">
+            <p th:each="puser : ${usersTable}" th:text="${puser.text}">
+            </p>
+        </div>
     </div>
 </div>
 <div layout:fragment="script-after" th:remove="tag">

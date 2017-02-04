@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * @author ashevenkov 29.01.17 18:22.
@@ -53,9 +54,42 @@ public class DbPredictionDao implements PredictionDao {
         }
     }
 
-    private boolean hasPrediction(int userId, int matchId) {
+    @Override
+    public boolean isUserParticipant(int userId) {
+        return jdbcTemplate.queryForObject(
+                "select count(1) from prediction_result where user_id = ?",
+                Integer.class, userId) > 0;
+    }
+
+    @Override
+    public void savePoints(int userId, int points) {
+        if(isUserParticipant(userId)) {
+            jdbcTemplate.update("update prediction_result set points = ? where user_id = ?",
+                    points, userId);
+        } else {
+            jdbcTemplate.update("insert into prediction_result (user_id, points) values (?,?)",
+                    userId, points);
+        }
+    }
+
+    @Override
+    public List<PredictionUser> loadPredictionUsers() {
+        return jdbcTemplate.query(
+                "select u.login, pr.points " +
+                "from prediction_result pr, users u " +
+                "where pr.user_id = u.id " +
+                "order by pr.points desc", (resultSet, i) -> pUserFromRs(resultSet));
+    }
+
+    private PredictionUser pUserFromRs(ResultSet rs) throws SQLException {
+        return new PredictionUser(rs.getString("login"), rs.getInt("points"), 0);
+    }
+
+    public boolean hasPrediction(int userId, int matchId) {
         return jdbcTemplate.queryForObject(
                 "select count(1) " +
                         " from prediction where user_id = ? and match_id = ?", Integer.class, userId, matchId) > 0;
     }
+
+
 }

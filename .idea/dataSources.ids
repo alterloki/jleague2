@@ -87,6 +87,10 @@
       <column name="guest_score" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
       <column name="pred_time" sqlType="DATETIME" precision="19" scale="0" nullable="false" jdbcType="93"/>
     </table>
+    <table name="prediction_result" schema="" catalog="jleague13" type="TABLE">
+      <column name="user_id" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+      <column name="points" sqlType="INT" precision="10" scale="0" nullable="false" jdbcType="4"/>
+    </table>
     <table name="progress" schema="" catalog="jleague13" type="TABLE">
       <column name="type" sqlType="VARCHAR" precision="255" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
       <column name="value" sqlType="INT" precision="10" scale="0" nullable="true" jdbcType="4"/>

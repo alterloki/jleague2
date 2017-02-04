@@ -19,5 +19,18 @@
         </sql>
     </changeSet>
 
+    <changeSet id="20170204-02" author="alterloki">
+        <comment>
+            Создание таблицы prediction_result
+        </comment>
+        <sql>
+            CREATE TABLE prediction_result
+            (
+            user_id int not null,
+            points int not null
+            )
+        </sql>
+    </changeSet>
+
 
 </databaseChangeLog>

@@ -38,4 +38,8 @@ public class PredictionUser {
     public void setPosition(int position) {
         this.position = position;
     }
+
+    public String getText() {
+        return Integer.toString(position) + ". " + name + " (" + Integer.toString(points) + ")";
+    }
 }

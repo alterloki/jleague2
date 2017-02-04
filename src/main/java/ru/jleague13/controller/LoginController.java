@@ -52,7 +52,7 @@ public class LoginController {
             if(userByLogin.isRegistered()) {
                 model.addAttribute("registerError", "already-registered");
             } else {
-                if(userByLogin.getEmail().equals(email)) {
+                if(userByLogin.getEmail().toLowerCase().equals(email.toLowerCase())) {
                     String password = generateAndSendPassword(email);
                     userByLogin.setPassword(password);
                     userByLogin.setRegistered(true);
@@ -69,8 +69,8 @@ public class LoginController {
     }
 
     private String generateAndSendPassword(String email) {
-        String pwd = RandomStringUtils.randomAlphabetic(6);
-        mail.sendMail(email, "Регистрация на jleague", "Ваш пароль: '" + pwd + "'");
+        String pwd = RandomStringUtils.randomNumeric(6);
+        mail.sendMail(email, "Регистрация на jleague", "Ваш пароль: " + pwd);
         return new BCryptPasswordEncoder().encode(pwd);
     }
 
