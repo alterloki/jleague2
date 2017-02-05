@@ -60,7 +60,8 @@ public class DbMatchDao implements MatchDao {
                     "update match set event_date = ?, event_type = ?, owner_team_id = ?, " +
                             "guest_team_id = ?, owner_score = ?, guest_score = ? where id = ?",
                     match.getMatchEvent().getDay(), match.getMatchEvent().getEventType().ordinal(),
-                    match.getOwnerTeamId(), match.getGuestTeamId(), match.getOwnerScore(), match.getGuestScore());
+                    match.getOwnerTeamId(), match.getGuestTeamId(), match.getOwnerScore(), match.getGuestScore(),
+                    match.getId());
             return match.getId();
         } else {
             KeyHolder keyHolder = new GeneratedKeyHolder();
