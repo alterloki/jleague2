@@ -1,4 +1,4 @@
-package ru.jleague13.download;
+package ru.jleague13.service;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.jleague13.calendar.Event;
 import ru.jleague13.calendar.EventType;
+import ru.jleague13.download.DownloadInfo;
 import ru.jleague13.entity.Match;
 import ru.jleague13.entity.Team;
 import ru.jleague13.repository.CalendarEventsDao;
@@ -37,15 +38,15 @@ public class MatchesServiceImpl implements MatchesService {
     private CalendarEventsDao calendarEventsDao;
     @Autowired
     private TeamDao teamDao;
+    @Autowired
+    private SeasonService seasonService;
 
     @Override
     public void downloadAndSaveRegular() {
         log.info("Started to download regular matches.");
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-            //TODO move to DB
-            Date seasonStart = dateFormat.parse("06.01.2017");
-            Date seasonEnd = dateFormat.parse("01.07.2017");
+            Date seasonStart = seasonService.getSeasonStart();
+            Date seasonEnd = seasonService.getSeasonFinish();
             List<Match> matches = downloadInfo.downloadAllTournamentMatches();
             Map<Integer, Map<String, Match>> newMatchesMap = convertList(matches);
             List<Event> regularEvents = calendarEventsDao.loadCalendarEventsOfType(seasonStart, seasonEnd,

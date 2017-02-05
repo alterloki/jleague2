@@ -16,4 +16,6 @@ public interface PredictionDao {
     void savePoints(int userId, int points);
 
     List<PredictionUser> loadPredictionUsers();
+
+    List<Prediction> loadMatchPredictions(int matchId);
 }

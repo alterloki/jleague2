@@ -8,7 +8,7 @@ import ru.jleague13.calendar.CalendarDay;
 import ru.jleague13.calendar.CalendarManager;
 import ru.jleague13.calendar.Event;
 import ru.jleague13.calendar.EventType;
-import ru.jleague13.service.MatchesService;
+import ru.jleague13.prediction.PredictionService;
 import ru.jleague13.timer.AbstractFaTask;
 import ru.jleague13.timer.ProgressConnection;
 
@@ -16,31 +16,31 @@ import java.util.Date;
 import java.util.Set;
 
 /**
- * @author ashevenkov 05.02.17 19:02.
+ * @author ashevenkov 05.02.17 23:34.
  */
 @Component
-public class DownloadMatchesAndAfterTask extends AbstractFaTask {
+public class PredictionCalculateTask extends AbstractFaTask {
 
-    private Log log = LogFactory.getLog(DownloadMatchesAndAfterTask.class);
+    private Log log = LogFactory.getLog(PredictionCalculateTask.class);
 
     @Autowired
     private CalendarManager calendarManager;
     @Autowired
-    private MatchesService matchesService;
+    private PredictionService predictionService;
 
-    public DownloadMatchesAndAfterTask() {
-        super("downloadMatchesAndAfterTask", "0 0 2 * * *");
+    public PredictionCalculateTask() {
+        super("predictionCalculateTask", "0 15 2 * * *");
     }
 
     @Override
     public void runTask(ProgressConnection progress) throws Exception {
-        log.info("Running downolad matches and all after task");
-        CalendarDay calendarDay = calendarManager.getCalendarDay(new Date());
+        log.info("Running score update task");
+        /*CalendarDay calendarDay = calendarManager.getCalendarDay(new Date());
         Set<Event> events = calendarDay.getEvents();
         for (Event event : events) {
-            if(event.getEventType() == EventType.REGULAR_TOUR) {
-                matchesService.downloadAndSaveRegular();
-            }
-        }
+            if (event.getEventType() == EventType.REGULAR_TOUR) {*/
+                predictionService.updateScores();
+            /*}
+        }*/
     }
 }

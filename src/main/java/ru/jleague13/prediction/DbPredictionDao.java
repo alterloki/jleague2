@@ -75,14 +75,21 @@ public class DbPredictionDao implements PredictionDao {
     @Override
     public List<PredictionUser> loadPredictionUsers() {
         return jdbcTemplate.query(
-                "select u.login, pr.points " +
+                "select pr.user_id, u.login, pr.points " +
                 "from prediction_result pr, users u " +
                 "where pr.user_id = u.id " +
                 "order by pr.points desc", (resultSet, i) -> pUserFromRs(resultSet));
     }
 
+    @Override
+    public List<Prediction> loadMatchPredictions(int matchId) {
+        return jdbcTemplate.query(
+                "select " + FULL_FIELDS +" from prediction where match_id = ?",
+                (resultSet, i) -> predictionFromRs(resultSet), matchId);
+    }
+
     private PredictionUser pUserFromRs(ResultSet rs) throws SQLException {
-        return new PredictionUser(rs.getString("login"), rs.getInt("points"), 0);
+        return new PredictionUser(rs.getInt("user_id"), rs.getString("login"), rs.getInt("points"), 0);
     }
 
     public boolean hasPrediction(int userId, int matchId) {

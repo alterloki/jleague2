@@ -8,11 +8,21 @@ public class PredictionUser {
     private String name;
     private int points;
     private int position;
+    private int userId;
 
-    public PredictionUser(String name, int points, int position) {
+    public PredictionUser(int userId, String name, int points, int position) {
         this.name = name;
         this.points = points;
         this.position = position;
+        this.userId = userId;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getName() {
