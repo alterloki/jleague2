@@ -10,7 +10,7 @@
 </nav>
 <div layout:fragment="content" class="col-md-8">
     <div class="panel panel-default">
-        <div class="panel-heading">Матчи</div>
+        <div class="panel-heading" th:text="'Матчи (Тур - ' + ${tour} + ')'">Матчи</div>
         <div class="panel-body">
             <table class="table table-bordered table-responsive" id="teams-table">
                 <thead>

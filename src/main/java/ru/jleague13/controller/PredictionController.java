@@ -35,6 +35,9 @@ public class PredictionController {
         model.addAttribute("japanTeams", teamDao.getJapanLiveTeams());
         List<Match> matchesForUser =
                 predictionService.getPredictionMatchesForUser(EventType.REGULAR_TOUR);
+        if(matchesForUser.size() > 0) {
+            model.addAttribute("tour", matchesForUser.get(0).getMatchEvent().getTourNum());
+        }
         model.addAttribute("matches", matchesForUser);
         model.addAttribute("usersTable", predictionService.getPredictionUsersTable());
         return "prediction";
@@ -45,8 +48,8 @@ public class PredictionController {
         model.addAttribute("japanTeams", teamDao.getJapanLiveTeams());
         List<Match> matchesForUser =
                 predictionService.getPredictionMatchesForUser(EventType.REGULAR_TOUR);
-        for (Match match : matchesForUser) {
-            log.info("Match prev = " + match.getId());
+        if(matchesForUser.size() > 0) {
+            model.addAttribute("tour", matchesForUser.get(0).getMatchEvent().getTourNum());
         }
         model.addAttribute("matchesList", new MatchesList(matchesForUser));
         model.addAttribute("usersTable", predictionService.getPredictionUsersTable());
