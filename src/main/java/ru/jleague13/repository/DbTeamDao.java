@@ -142,7 +142,7 @@ public class DbTeamDao implements TeamDao {
     public List<Team> getAllTeams() {
         return jdbcTemplate.query(
                 "select " + FULL_FIELDS + " from team t left outer join users u on t.manager_id = u.id",
-                (resultSet, i) -> teamFromRs(resultSet), "JPN");
+                (resultSet, i) -> teamFromRs(resultSet));
     }
 
     @Override

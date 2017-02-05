@@ -52,7 +52,10 @@ public class CalendarManager {
     }
 
     public CalendarDay getCalendarDay(Date day) {
-        List<Event> dayEvents = calendarDao.getDayEvents(day);
+        java.util.Calendar calendarInst = new GregorianCalendar();
+        calendarInst.setTime(day);
+        trunc(calendarInst);
+        List<Event> dayEvents = calendarDao.getDayEvents(calendarInst.getTime());
         return new CalendarDay(day, new HashSet<>(dayEvents));
     }
 }

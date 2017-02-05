@@ -2,13 +2,18 @@ package ru.jleague13.repository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 import ru.jleague13.calendar.Event;
 import ru.jleague13.calendar.EventType;
 import ru.jleague13.entity.Match;
 
+import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -50,8 +55,33 @@ public class DbMatchDao implements MatchDao {
 
     @Override
     public int saveMatch(Match match) {
-        //todo implement
-        return 0;
+        if(match.getId() > 0) {
+            jdbcTemplate.update(
+                    "update match set event_date = ?, event_type = ?, owner_team_id = ?, " +
+                            "guest_team_id = ?, owner_score = ?, guest_score = ? where id = ?",
+                    match.getMatchEvent().getDay(), match.getMatchEvent().getEventType().ordinal(),
+                    match.getOwnerTeamId(), match.getGuestTeamId(), match.getOwnerScore(), match.getGuestScore());
+            return match.getId();
+        } else {
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+            jdbcTemplate.update(connection -> {
+                PreparedStatement ps =
+                        connection.prepareStatement(
+                                "insert into jmatch " +
+                                        "(event_date, event_type, owner_team_id, guest_team_id, owner_score, guest_score)" +
+                                        " values (?,?,?,?,?,?)", new String[]{"id"});
+                ps.setTimestamp(1, new Timestamp(match.getMatchEvent().getDay().getTime()));
+                ps.setInt(2, match.getMatchEvent().getEventType().ordinal());
+                ps.setInt(3, match.getOwnerTeamId());
+                ps.setInt(4, match.getGuestTeamId());
+                ps.setInt(5, match.getOwnerScore());
+                ps.setInt(6, match.getGuestScore());
+                return ps;
+            }, keyHolder);
+            int id = keyHolder.getKey().intValue();
+            match.setId(id);
+            return id;
+        }
     }
 
     @Override
@@ -67,5 +97,12 @@ public class DbMatchDao implements MatchDao {
                     }
                     return null;
                 }, id);
+    }
+
+    @Override
+    public void deleteMatch(Match match) {
+        if(match.getId() > 0) {
+            jdbcTemplate.update("delete from jmatch where id = ?", match.getId());
+        }
     }
 }

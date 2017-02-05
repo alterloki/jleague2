@@ -29,6 +29,13 @@ public class DbCalendarEventsDao implements CalendarEventsDao {
     }
 
     @Override
+    public List<Event> loadCalendarEventsOfType(Date from, Date to, EventType eventType) {
+        return jdbcTemplate.query("select " + CALENDAR_FIELDS + " from calendar_event " +
+                        "where event_date >= ? AND event_date < ? and event_type = ?",
+                (rs, i) -> eventFromRs(rs), from, to, eventType.ordinal());
+    }
+
+    @Override
     public void saveCalendarEvents(List<Event> events) {
         Map<Date, CalendarDay> map = new HashMap<>();
         for (Event event : events) {

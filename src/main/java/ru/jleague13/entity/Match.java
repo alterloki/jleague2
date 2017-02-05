@@ -5,6 +5,8 @@ import org.apache.commons.logging.LogFactory;
 import ru.jleague13.calendar.Event;
 import ru.jleague13.calendar.EventType;
 
+import java.util.Objects;
+
 /**
  * @author ashevenkov 28.01.17 15:54.
  */
@@ -131,5 +133,23 @@ public class Match {
         String os = ownerScore < 0 ? "?" : Integer.toString(ownerScore);
         String gs = guestScore < 0 ? "?" : Integer.toString(guestScore);
         return os + ":" + gs;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Match match = (Match) o;
+        return Objects.equals(ownerTeamId, match.ownerTeamId) &&
+                Objects.equals(guestTeamId, match.guestTeamId) &&
+                Objects.equals(ownerScore, match.ownerScore) &&
+                Objects.equals(guestScore, match.guestScore) &&
+                Objects.equals(matchEvent.getDay(), match.matchEvent.getDay()) &&
+                Objects.equals(matchEvent.getEventType(), match.matchEvent.getEventType());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ownerTeamId, guestTeamId, ownerScore, guestScore, matchEvent);
     }
 }

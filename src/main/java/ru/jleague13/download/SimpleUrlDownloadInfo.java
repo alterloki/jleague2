@@ -117,6 +117,60 @@ public class SimpleUrlDownloadInfo implements DownloadInfo {
         }
     }
 
+    @Override
+    public List<Match> downloadTournamentMatches(String tournamentFaIndex) throws IOException, ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        List<Match> result = new ArrayList<>();
+        String url = faUrlResolver.getTournamentMatchesUrl(tournamentFaIndex);
+        Document doc = Jsoup.connect(url).get();
+        Elements tables = doc.select("section[class=l-content-frame]").select("table");
+        Elements headers = doc.select("section[class=l-content-frame]").select("h3");
+        for(int i = 0; i < tables.size(); i++) {
+            String tourDate = headers.get(i).select("span").text().substring(2);
+            Date date = dateFormat.parse(tourDate);
+            Elements lines = tables.get(i).select("tr");
+            for(int j = 1; j < lines.size(); j++) {
+                String score = lines.get(j).select("td:eq(0)").text();
+                Elements commands = lines.get(j).select("td:eq(1)").select("a");
+                String nameOwner = commands.get(0).text();
+                String nameGuest = commands.get(1).text();
+                int owner = -1;
+                int guest = -1;
+                if(score.length() > 0) {
+                    String[] parts = score.split(":");
+                    owner = Integer.parseInt(parts[0]);
+                    guest = Integer.parseInt(parts[1]);
+                }
+                Event matchEvent = new Event(EventType.REGULAR_TOUR, "", i + 1, 0);
+                matchEvent.setDay(date);
+                result.add(new Match(0, 0, nameOwner, 0,
+                        nameGuest, owner, guest, matchEvent));
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public List<Match> downloadAllTournamentMatches() throws IOException, ParseException {
+        log.info("Started to download regular matches pages.");
+        List<Match> result = new ArrayList<>();
+        String url = faUrlResolver.getRegularTournamensUrl();
+        Document doc = Jsoup.connect(url).get();
+        Elements lines = doc.select("section[class=l-content-frame]").select("table").select("tr");
+        for(int i = 1; i < lines.size(); i++) {
+            Elements cells = lines.get(i).select("td");
+            for(int j = 1; j < cells.size(); j++) {
+                String tournamentLink = cells.get(j).select("a").attr("href");
+                if(tournamentLink != null && tournamentLink.length() > 0) {
+                    String tournamentIndex = tournamentLink.substring(20);
+                    result.addAll(downloadTournamentMatches(tournamentIndex));
+                }
+            }
+        }
+        log.info("Regular matches pages downloaded. Matches size = " + result.size());
+        return result;
+    }
+
     private int parsePage(Document doc, Calendar result) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("d-M-yyyy");
         String monthString = doc.select("#select-month > option[selected]").attr("value");

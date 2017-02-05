@@ -14,6 +14,7 @@ import ru.jleague13.calendar.Calendar;
 import ru.jleague13.calendar.CalendarDay;
 import ru.jleague13.calendar.Event;
 import ru.jleague13.entity.Country;
+import ru.jleague13.entity.Match;
 import ru.jleague13.entity.Team;
 
 import java.io.IOException;
@@ -79,5 +80,11 @@ public class DownloadInfoTests {
                 log.info(" - " + event);
             }
         }
+    }
+
+    @Test
+    public void testDownloadTour() throws Exception {
+        List<Match> matches = downloadInfo.downloadTournamentMatches("rJp");
+        assert matches.size() == 240;
     }
 }

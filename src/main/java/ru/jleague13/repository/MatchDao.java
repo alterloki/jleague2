@@ -17,4 +17,6 @@ public interface MatchDao {
     int saveMatch(Match match);
 
     Match loadMatchById(int id);
+
+    void deleteMatch(Match match);
 }

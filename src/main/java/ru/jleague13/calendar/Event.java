@@ -71,6 +71,10 @@ public class Event {
         this.day = day;
     }
 
+    public void setTourNum(int tourNum) {
+        this.tourNum = tourNum;
+    }
+
     @Override
     public String toString() {
         return "Event{" +

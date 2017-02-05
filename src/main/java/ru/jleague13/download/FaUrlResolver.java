@@ -46,4 +46,12 @@ public class FaUrlResolver {
     public String getTransferResultUrl() {
         return FA13_URL + "/transfer";
     }
+
+    public String getTournamentMatchesUrl(String tournamentIndex) {
+        return FA13_URL + "/tournament/regular/" + tournamentIndex + "/schedule";
+    }
+
+    public String getRegularTournamensUrl() {
+        return FA13_URL + "/tournament/regular";
+    }
 }
