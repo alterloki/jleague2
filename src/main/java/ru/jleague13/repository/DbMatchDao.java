@@ -57,7 +57,7 @@ public class DbMatchDao implements MatchDao {
     public int saveMatch(Match match) {
         if(match.getId() > 0) {
             jdbcTemplate.update(
-                    "update match set event_date = ?, event_type = ?, owner_team_id = ?, " +
+                    "update jmatch set event_date = ?, event_type = ?, owner_team_id = ?, " +
                             "guest_team_id = ?, owner_score = ?, guest_score = ? where id = ?",
                     match.getMatchEvent().getDay(), match.getMatchEvent().getEventType().ordinal(),
                     match.getOwnerTeamId(), match.getGuestTeamId(), match.getOwnerScore(), match.getGuestScore(),
