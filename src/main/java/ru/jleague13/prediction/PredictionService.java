@@ -8,8 +8,10 @@ import ru.jleague13.calendar.CalendarDay;
 import ru.jleague13.calendar.CalendarManager;
 import ru.jleague13.calendar.Event;
 import ru.jleague13.calendar.EventType;
+import ru.jleague13.entity.Country;
 import ru.jleague13.entity.Match;
 import ru.jleague13.entity.Player;
+import ru.jleague13.repository.CountryDao;
 import ru.jleague13.repository.MatchDao;
 import ru.jleague13.repository.UserDao;
 import ru.jleague13.security.SecurityService;
@@ -34,6 +36,8 @@ public class PredictionService {
     private PredictionDao predictionDao;
     @Autowired
     private SecurityService securityService;
+    @Autowired
+    private CountryDao countryDao;
 
 
     public List<PredictionUser> getPredictionUsersTable() {
@@ -45,6 +49,7 @@ public class PredictionService {
     }
 
     public List<Match> getPredictionMatchesForUser(EventType eventType) {
+        Country japan = countryDao.getCountriesMap().get("Япония");
         String name = securityService.findLoggedInUsername();
         ru.jleague13.entity.User faUser = userDao.getUserByLogin(name);
         java.util.Calendar calendarInst = new GregorianCalendar();
@@ -56,7 +61,7 @@ public class PredictionService {
             Set<Event> events = calendarDay.getEvents();
             for (Event event : events) {
                 if(event.getEventType() == eventType) {
-                    List<Match> matches = matchDao.loadMatches(event);
+                    List<Match> matches = matchDao.loadMatches(event, japan.getId());
                     if(faUser != null) {
                         for (Match match : matches) {
                             Prediction prediction =

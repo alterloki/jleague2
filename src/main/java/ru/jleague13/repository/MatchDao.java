@@ -14,6 +14,8 @@ public interface MatchDao {
 
     List<Match> loadMatches(Event event);
 
+    List<Match> loadMatches(Event event, int countryId);
+
     int saveMatch(Match match);
 
     Match loadMatchById(int id);

@@ -54,6 +54,20 @@ public class DbMatchDao implements MatchDao {
     }
 
     @Override
+    public List<Match> loadMatches(Event event, int countryId) {
+        return jdbcTemplate.query(
+                "select " + MATCH_FULL_FIELDS +
+                        " from " + MATCH_TABLES +
+                        " where m.owner_team_id = t1.id " +
+                        " and m.guest_team_id = t2.id " +
+                        " and m.event_date = ? " +
+                        " and m.event_type = ?" +
+                        " and t1.country_id = ?",
+                (resultSet, i) -> matchFromRs(resultSet, event),
+                event.getDay(), event.getEventType().ordinal(), countryId);
+    }
+
+    @Override
     public int saveMatch(Match match) {
         if(match.getId() > 0) {
             jdbcTemplate.update(
