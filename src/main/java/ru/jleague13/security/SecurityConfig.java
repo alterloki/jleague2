@@ -71,6 +71,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/new/login-error").and().authorizeRequests().antMatchers("/new/admin/**")
                 .access("hasRole('ADMIN')").and().logout().
                 logoutUrl("/j_spring_security_logout").logoutSuccessUrl("/")
-                .and().csrf().disable();
+                .and().csrf().disable().headers().disable();
     }
 }
