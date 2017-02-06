@@ -24,8 +24,6 @@ public class PredictionCalculateTask extends AbstractFaTask {
     private Log log = LogFactory.getLog(PredictionCalculateTask.class);
 
     @Autowired
-    private CalendarManager calendarManager;
-    @Autowired
     private PredictionService predictionService;
 
     public PredictionCalculateTask() {
@@ -35,12 +33,6 @@ public class PredictionCalculateTask extends AbstractFaTask {
     @Override
     public void runTask(ProgressConnection progress) throws Exception {
         log.info("Running score update task");
-        /*CalendarDay calendarDay = calendarManager.getCalendarDay(new Date());
-        Set<Event> events = calendarDay.getEvents();
-        for (Event event : events) {
-            if (event.getEventType() == EventType.REGULAR_TOUR) {*/
-                predictionService.updateScores();
-            /*}
-        }*/
+        predictionService.updateScores();
     }
 }
