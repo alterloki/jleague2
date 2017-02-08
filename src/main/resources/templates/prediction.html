@@ -48,6 +48,12 @@
 </div>
 <div layout:fragment="widjets" class="col-md-4">
     <div class="panel panel-default">
+        <div class="panel-heading">Как сделать прогноз</div>
+        <div class="panel-body">
+            <a href="/blog/prognozy">Инструкция</a>
+        </div>
+    </div>
+    <div class="panel panel-default">
         <div class="panel-heading">Участники</div>
         <div class="panel-body">
             <p th:each="puser : ${usersTable}" th:text="${puser.text}">
@@ -57,7 +63,6 @@
     <div class="panel panel-default">
         <div class="panel-heading">Правила игры</div>
         <div class="panel-body">
-            <a href="/blog/prognozy">Как сделать прогноз - Инструкция</a>
             <p>Менеджеры оставляют на сайте прогнозы на матчи будущего тура. По итогам тура сравниваются прогнозы и результаты матчей. За угаданный исход менеджеру начисляется 1 балл, за разницу мячей 2 балла, за угаданный счет - 4 балла. В конце сезона подводится общий итог.</p>
         </div>
     </div>
