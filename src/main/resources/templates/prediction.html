@@ -9,8 +9,10 @@
     <div th:replace="main::mainmenu('prediction')"/>
 </nav>
 <div layout:fragment="content" class="col-md-8">
-    <div class="panel panel-default">
-        <div class="panel-heading" th:text="'Матчи (Тур - ' + ${tour} + ')'">Матчи</div>
+    <div class="panel panel-default" th:each="divMatches, status : ${matches}" th:if="${divMatches.size() > 0}">
+        <div class="panel-heading" th:text="${status.index + 1} + '-й Дивизион' + ' - Матчи (Тур - ' + ${tour} + ') '">
+            Матчи
+        </div>
         <div class="panel-body">
             <table class="table table-bordered table-responsive" id="teams-table">
                 <thead>
@@ -21,7 +23,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="match : ${matches}">
+                <tr th:each="match : ${divMatches}">
                     <td th:text="${match.ownerTeamName}"></td>
                     <td th:text="${match.score}"></td>
                     <td th:text="${match.guestTeamName}"></td>
@@ -50,6 +52,13 @@
         <div class="panel-body">
             <p th:each="puser : ${usersTable}" th:text="${puser.text}">
             </p>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">Правила игры</div>
+        <div class="panel-body">
+            <a href="/blog/prognozy">Как сделать прогноз - Инструкция</a>
+            <p>Менеджеры оставляют на сайте прогнозы на матчи будущего тура. По итогам тура сравниваются прогнозы и результаты матчей. За угаданный исход менеджеру начисляется 1 балл, за разницу мячей 2 балла, за угаданный счет - 4 балла. В конце сезона подводится общий итог.</p>
         </div>
     </div>
 </div>

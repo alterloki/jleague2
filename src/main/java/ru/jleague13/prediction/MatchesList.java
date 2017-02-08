@@ -9,20 +9,20 @@ import java.util.List;
  */
 public class MatchesList {
 
-    private List<Match> matches;
+    private List<List<Match>> matches;
 
     public MatchesList() {
     }
 
-    public MatchesList(List<Match> matches) {
+    public MatchesList(List<List<Match>> matches) {
         this.matches = matches;
     }
 
-    public List<Match> getMatches() {
+    public List<List<Match>> getMatches() {
         return matches;
     }
 
-    public void setMatches(List<Match> matches) {
+    public void setMatches(List<List<Match>> matches) {
         this.matches = matches;
     }
 

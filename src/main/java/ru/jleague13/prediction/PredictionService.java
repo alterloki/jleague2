@@ -13,16 +13,17 @@ import ru.jleague13.calendar.EventType;
 import ru.jleague13.entity.Country;
 import ru.jleague13.entity.Match;
 import ru.jleague13.entity.Player;
-import ru.jleague13.repository.CalendarEventsDao;
-import ru.jleague13.repository.CountryDao;
-import ru.jleague13.repository.MatchDao;
-import ru.jleague13.repository.UserDao;
+import ru.jleague13.entity.Team;
+import ru.jleague13.repository.*;
 import ru.jleague13.security.SecurityService;
 import ru.jleague13.service.SeasonService;
 
 import java.io.FileReader;
 import java.io.Reader;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * @author ashevenkov 25.09.15 23:00.
@@ -48,6 +49,8 @@ public class PredictionService {
     private SeasonService seasonService;
     @Autowired
     private CalendarEventsDao calendarEventsDao;
+    @Autowired
+    private TeamDao teamDao;
 
     public List<PredictionUser> getPredictionUsersTable() {
         List<PredictionUser> predictionUsers = predictionDao.loadPredictionUsers();
@@ -108,7 +111,7 @@ public class PredictionService {
         predictionUser.setPoints(predictionUser.getPoints() + score);
     }
 
-    public List<Match> getPredictionMatchesForUser(EventType eventType) {
+    public List<List<Match>> getPredictionMatchesForUser(EventType eventType) {
         Country japan = countryDao.getCountriesMap().get("Япония");
         String name = securityService.findLoggedInUsername();
         ru.jleague13.entity.User faUser = userDao.getUserByLogin(name);
@@ -132,7 +135,18 @@ public class PredictionService {
                             }
                         }
                     }
-                    return matches;
+                    List<Team> countryTeams = teamDao.getCountryTeams(japan.getId());
+                    Map<Integer, Team> id2teams = countryTeams.stream().collect(
+                            Collectors.toMap(Team::getId, Function.identity()));
+                    ArrayList<List<Match>> result = new ArrayList<>();
+                    for(int j = 0; j < 3; j++) {
+                        result.add(new ArrayList<>());
+                    }
+                    for (Match match : matches) {
+                        Team team = id2teams.get(match.getOwnerTeamId());
+                        result.get(team.getDiv() - 1).add(match);
+                    }
+                    return result;
                 }
             }
         }
@@ -157,5 +171,9 @@ public class PredictionService {
                 }
             }
         }
+    }
+
+    public List<PredictionLog> predictionLog() {
+        return null;
     }
 }
