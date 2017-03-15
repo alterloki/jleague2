@@ -42,43 +42,40 @@ public class MatchesServiceImpl implements MatchesService {
     private SeasonService seasonService;
 
     @Override
-    public void downloadAndSaveRegular() {
+    public void downloadAndSaveRegular() throws Exception {
         log.info("Started to download regular matches.");
-        try {
-            Date seasonStart = seasonService.getSeasonStart();
-            Date seasonEnd = seasonService.getSeasonFinish();
-            List<Match> matches = downloadInfo.downloadAllTournamentMatches();
-            Map<Integer, Map<String, Match>> newMatchesMap = convertList(matches);
-            List<Event> regularEvents = calendarEventsDao.loadCalendarEventsOfType(seasonStart, seasonEnd,
-                    EventType.REGULAR_TOUR);
-            for (Event regularEvent : regularEvents) {
-                log.info("Merging matches for regular matches for date " + regularEvent.getDay());
-                Map<String, Match> oldMatches = matchDao.loadMatches(regularEvent).stream().collect(Collectors.toMap(m -> m.getOwnerTeamId() + "|" + m.getGuestTeamId(),
-                        Function.identity()));
-                Map<String, Match> newMatches = newMatchesMap.get(regularEvent.getTourNum());
-                if(newMatches != null) {
-                    for (Map.Entry<String, Match> newEntry : newMatches.entrySet()) {
-                        Match oldMatch = oldMatches.get(newEntry.getKey());
-                        if (oldMatch != null) {
-                            if (!oldMatch.equals(newEntry.getValue())) {
-                                Match newM = newEntry.getValue();
-                                newM.setId(oldMatch.getId());
-                                matchDao.saveMatch(newM);
-                            }
-                            oldMatches.remove(newEntry.getKey());
-                        } else {
-                            matchDao.saveMatch(newEntry.getValue());
+        Date seasonStart = seasonService.getSeasonStart();
+        Date seasonEnd = seasonService.getSeasonFinish();
+        List<Match> matches = downloadInfo.downloadAllTournamentMatches();
+        Map<Integer, Map<String, Match>> newMatchesMap = convertList(matches);
+        List<Event> regularEvents = calendarEventsDao.loadCalendarEventsOfType(seasonStart, seasonEnd,
+                EventType.REGULAR_TOUR);
+        for (Event regularEvent : regularEvents) {
+            log.info("Merging matches for regular matches for date " + regularEvent.getDay());
+            Map<String, Match> oldMatches = matchDao.loadMatches(regularEvent).stream().collect(Collectors.toMap(m -> m.getOwnerTeamId() + "|" + m.getGuestTeamId(),
+                    Function.identity()));
+            Map<String, Match> newMatches = newMatchesMap.get(regularEvent.getTourNum());
+            if (newMatches != null) {
+                for (Map.Entry<String, Match> newEntry : newMatches.entrySet()) {
+                    Match oldMatch = oldMatches.get(newEntry.getKey());
+                    if (oldMatch != null) {
+                        if (!oldMatch.equals(newEntry.getValue())) {
+                            Match newM = newEntry.getValue();
+                            newM.setId(oldMatch.getId());
+                            matchDao.saveMatch(newM);
                         }
-                    }
-                    for (Match match : oldMatches.values()) {
-                        matchDao.deleteMatch(match);
+                        oldMatches.remove(newEntry.getKey());
+                    } else {
+                        matchDao.saveMatch(newEntry.getValue());
                     }
                 }
+                for (Match match : oldMatches.values()) {
+                    matchDao.deleteMatch(match);
+                }
             }
-            log.info("Finished downloading and saving regular matches.");
-        } catch (IOException | ParseException e) {
-            e.printStackTrace();
         }
+        log.info("Finished downloading and saving regular matches.");
+
     }
 
     private Map<Integer, Map<String, Match>> convertList(List<Match> matches) {
@@ -88,7 +85,7 @@ public class MatchesServiceImpl implements MatchesService {
             match.setOwnerTeamId(name2Team.get(match.getOwnerTeamName()).getId());
             match.setGuestTeamId(name2Team.get(match.getGuestTeamName()).getId());
         }
-        return  matches.stream().collect(Collectors.groupingBy((p) -> p.getMatchEvent().getTourNum(),
+        return matches.stream().collect(Collectors.groupingBy((p) -> p.getMatchEvent().getTourNum(),
                 Collectors.toMap(m -> m.getOwnerTeamId() + "|" + m.getGuestTeamId(),
                         Function.identity())));
     }

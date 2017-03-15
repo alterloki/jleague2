@@ -5,5 +5,5 @@ package ru.jleague13.service;
  */
 public interface MatchesService {
 
-    void downloadAndSaveRegular();
+    void downloadAndSaveRegular() throws Exception;
 }

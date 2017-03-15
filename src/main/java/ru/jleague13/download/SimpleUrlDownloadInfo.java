@@ -119,6 +119,7 @@ public class SimpleUrlDownloadInfo implements DownloadInfo {
 
     @Override
     public List<Match> downloadTournamentMatches(String tournamentFaIndex) throws IOException, ParseException {
+        log.info("Started to download regular matches for " + tournamentFaIndex);
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         List<Match> result = new ArrayList<>();
         String url = faUrlResolver.getTournamentMatchesUrl(tournamentFaIndex);
