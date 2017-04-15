@@ -37,10 +37,10 @@ public class DownloadMatchesAndAfterTask extends AbstractFaTask {
         log.info("Running downolad matches and all after task");
         CalendarDay calendarDay = calendarManager.getCalendarDay(new Date());
         Set<Event> events = calendarDay.getEvents();
-        for (Event event : events) {
-            if(event.getEventType() == EventType.REGULAR_TOUR) {
+        //for (Event event : events) {
+            //if(event.getEventType() == EventType.REGULAR_TOUR) {
                 matchesService.downloadAndSaveRegular();
-            }
-        }
+            //}
+        //}
     }
 }
