@@ -2,5 +2,5 @@ language: java
 jdk:
   - oraclejdk8
 before_install:
-  - mysql -e 'create database jleague13 DEFAULT CHARACTER SET utf8;'
+  - mysql -e 'create database jleague13 DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;'
 script: mvn liquibase:update tomcat7:redeploy
