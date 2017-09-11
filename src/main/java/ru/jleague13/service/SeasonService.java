@@ -17,7 +17,7 @@ public class SeasonService {
         Date result = null;
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-            result = dateFormat.parse("06.01.2017");
+            result = dateFormat.parse("01.09.2017");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -28,7 +28,7 @@ public class SeasonService {
         Date result = null;
         try {
             SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-            result = dateFormat.parse("01.07.2017");
+            result = dateFormat.parse("05.01.2018");
         } catch (ParseException e) {
             e.printStackTrace();
         }
