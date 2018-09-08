@@ -139,12 +139,14 @@ public class PredictionService {
                     Map<Integer, Team> id2teams = countryTeams.stream().collect(
                             Collectors.toMap(Team::getId, Function.identity()));
                     ArrayList<List<Match>> result = new ArrayList<>();
-                    for(int j = 0; j < 3; j++) {
+                    for(int j = 0; j < 1; j++) {
                         result.add(new ArrayList<>());
                     }
                     for (Match match : matches) {
                         Team team = id2teams.get(match.getOwnerTeamId());
-                        result.get(team.getDiv() - 1).add(match);
+                        if(team.getDiv() == 1) {
+                            result.get(team.getDiv() - 1).add(match);
+                        }
                     }
                     return result;
                 }
